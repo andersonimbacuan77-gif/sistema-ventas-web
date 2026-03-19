@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <script>
+        if(localStorage.getItem('userRol') !== 'admin') {
+            window.location.href = 'login.html';
+        }
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración - SISCONTED</title>
+    
+    <link rel="stylesheet" href="global.css">
+    <style>
+        .main {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            background: var(--bg);
+        }
+
+        .config-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .config-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .config-card h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            color: var(--accent);
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+        }
+
+        .user-row {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+
+        .user-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .badge-admin { background: rgba(99, 102, 241, 0.2); color: #818cf8; }
+        .badge-cliente { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
+
+        .edit-panel {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+            display: none;
+        }
+        .edit-panel.active { display: block; }
+
+        .permiso-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            font-size: 0.85rem;
+        }
+
+        /* Switch styling kept standard */
+        .switch { position: relative; display: inline-block; width: 34px; height: 18px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #334155; transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--accent); }
+        input:checked + .slider:before { transform: translateX(16px); }
+
+        @media (max-width: 768px) {
+            .main { padding: 15px; }
+            .config-grid { grid-template-columns: 1fr; }
+            .sidebar { width: 0; display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="menu-toggle" onclick="UI.toggleSidebar()">☰</div>
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">⚙️</div>
+            <div class="brand-name">SISCONTED</div>
+        </div>
+        <nav>
+            <a href="index.html">🏠 Inicio</a>
+            <a href="admin.html">📊 Ventas</a>
+            <a href="inventario.html">📦 Inventario</a>
+            <a href="config.html" class="active">⚙️ Configuración</a>
+            <a href="reportes.html">📂 Reportes</a>
+            <a href="#" onclick="cerrarSesion()" class="btn-logout" style="margin-top:20px; border:1px solid rgba(239,68,68,0.3); color:#f87171;">🚪 Salir</a>
+        </nav>
+    </div>
+
+    <div class="main">
+        <div style="margin-bottom: 25px;">
+            <h1 style="font-family: 'Orbitron', sans-serif; font-size: 1.5rem; margin: 0; color:var(--accent);">CONFIGURACIÓN</h1>
+            <p style="margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.85rem;">Gestión de parámetros y accesos</p>
+        </div>
+
+        <div class="config-grid">
+            <!-- Categorías -->
+            <div class="config-card">
+                <h2>📁 Categorías</h2>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="nueva-cat" placeholder="Nueva categoría..." style="flex:1;">
+                    <button class="btn btn-primary" onclick="agregarConfig('categorias', 'nueva-cat')">+</button>
+                </div>
+                <div id="lista-categorias" style="max-height: 200px; overflow-y: auto;"></div>
+            </div>
+
+            <!-- Unidades -->
+            <div class="config-card">
+                <h2>📏 Unidades de Medida</h2>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="nueva-uni" placeholder="Nueva unidad..." style="flex:1;">
+                    <button class="btn btn-primary" onclick="agregarConfig('unidades', 'nueva-uni')">+</button>
+                </div>
+                <div id="lista-unidades" style="max-height: 200px; overflow-y: auto;"></div>
+            </div>
+
+            <!-- Usuarios -->
+            <div class="config-card" style="grid-column: 1 / -1;">
+                <h2>👥 Usuarios y Accesos</h2>
+                <div id="lista-usuarios" class="config-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); margin-top:0;"></div>
+            </div>
+
+            <!-- Empresa -->
+            <div class="config-card" style="grid-column: 1 / -1;">
+                <h2>🏢 Datos de la Empresa</h2>
+                <div id="panel-empresa" class="config-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); margin-top:0;">
+                    <div>
+                        <label class="label-small">Nombre / Razón Social</label>
+                        <input type="text" id="emp-nombre">
+                    </div>
+                    <div>
+                        <label class="label-small">NIT / Documento</label>
+                        <input type="text" id="emp-nit">
+                    </div>
+                    <div>
+                        <label class="label-small">Dirección</label>
+                        <input type="text" id="emp-direccion">
+                    </div>
+                    <div>
+                        <label class="label-small">Teléfono</label>
+                        <input type="text" id="emp-telefono">
+                    </div>
+                    <div>
+                        <label class="label-small">WhatsApp Proveedor</label>
+                        <input type="number" id="emp-proveedor" placeholder="57321...">
+                    </div>
+                    <div>
+                        <label class="label-small">Logo Empresa</label>
+                        <input type="file" id="emp-logo" accept="image/*" onchange="previewLogo(event)">
+                        <img id="logo-preview" style="max-height: 50px; margin-top: 10px; display: none; border-radius: 5px;">
+                        <input type="hidden" id="emp-logo-b64">
+                    </div>
+                    <div style="grid-column: 1 / -1;">
+                        <button class="btn btn-primary" style="width: 100%;" onclick="guardarDatosEmpresa()">GUARDAR DATOS DE EMPRESA</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="api.js"></script>
+    <script src="ui-helpers.js"></script>
+    <script>
+        let configData = { categorias: [], unidades: [], empresa: {} };
+        let usuariosData = [];
+
+        async function init() {
+            await cargarConfig();
+            await cargarUsuarios();
+        }
+
+        async function cargarConfig() {
+            try {
+                const data = await API.getConfig();
+                configData = {
+                    categorias: Array.isArray(data.categorias) ? data.categorias : [],
+                    unidades: Array.isArray(data.unidades) ? data.unidades : [],
+                    empresa: data.empresa || {}
+                };
+                
+                renderListaSimple(configData.categorias, 'lista-categorias', 'categorias');
+                renderListaSimple(configData.unidades, 'lista-unidades', 'unidades');
+                
+                const emp = configData.empresa;
+                document.getElementById('emp-nombre').value = emp.nombre || '';
+                document.getElementById('emp-nit').value = emp.nit || '';
+                document.getElementById('emp-direccion').value = emp.direccion || '';
+                document.getElementById('emp-telefono').value = emp.telefono || '';
+                document.getElementById('emp-proveedor').value = emp.proveedor || '';
+                document.getElementById('emp-logo-b64').value = emp.logoBase64 || '';
+                
+                if (emp.logoBase64) {
+                    const preview = document.getElementById('logo-preview');
+                    preview.src = emp.logoBase64;
+                    preview.style.display = 'block';
+                }
+            } catch (e) { UI.showToast("Error al cargar configuración", "error"); }
+        }
+
+        async function guardarDatosEmpresa() {
+            try {
+                configData.empresa = {
+                    nombre: document.getElementById('emp-nombre').value.trim(),
+                    nit: document.getElementById('emp-nit').value.trim(),
+                    direccion: document.getElementById('emp-direccion').value.trim(),
+                    telefono: document.getElementById('emp-telefono').value.trim(),
+                    proveedor: document.getElementById('emp-proveedor').value.trim(),
+                    logoBase64: document.getElementById('emp-logo-b64').value
+                };
+                await API.saveConfig(configData);
+                UI.showToast("Datos de empresa guardados", "success");
+            } catch (e) { UI.showToast("Error al guardar", "error"); }
+        }
+
+        function previewLogo(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            if (file.size > 2 * 1024 * 1024) return UI.showToast("Imagen muy pesada (máx 2MB)", "warning");
+
+            const reader = new FileReader();
+            reader.onload = e => {
+                document.getElementById('emp-logo-b64').value = e.target.result;
+                const p = document.getElementById('logo-preview');
+                p.src = e.target.result;
+                p.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function cargarUsuarios() {
+            try {
+                usuariosData = await API.getUsuarios();
+                document.getElementById('lista-usuarios').innerHTML = usuariosData.map((u, i) => `
+                    <div class="user-row">
+                        <div class="user-header" onclick="toggleEdit(${i})">
+                            <span style="font-weight:700; color:var(--accent);">${u.nombre}</span>
+                            <span class="badge badge-${u.rol}">${u.rol}</span>
+                        </div>
+                        <div id="panel-${i}" class="edit-panel">
+                            <label class="label-small">Nombre Completo</label>
+                            <input type="text" id="edit-nom-${i}" value="${u.nombre}">
+                            
+                            <div style="margin: 15px 0;">
+                                <div class="permiso-row"><span>Precio</span><label class="switch"><input type="checkbox" id="edit-permiso-${i}" ${u.canEditPrice ? 'checked' : ''}><span class="slider"></span></label></div>
+                                <div class="permiso-row"><span>Excel</span><label class="switch"><input type="checkbox" id="edit-excel-${i}" ${u.permExcel ? 'checked' : ''}><span class="slider"></span></label></div>
+                                <div class="permiso-row"><span>Imprimir</span><label class="switch"><input type="checkbox" id="edit-print-${i}" ${u.permPrint ? 'checked' : ''}><span class="slider"></span></label></div>
+                                <div class="permiso-row"><span>WhatsApp</span><label class="switch"><input type="checkbox" id="edit-wa-${i}" ${u.permWA ? 'checked' : ''}><span class="slider"></span></label></div>
+                            </div>
+
+                            <label class="label-small">Login</label>
+                            <input type="text" id="edit-user-${i}" value="${u.user}">
+                            <label class="label-small">Password</label>
+                            <input type="text" id="edit-pass-${i}" value="${u.pass}" style="margin-bottom:10px;">
+                            <label class="label-small">Rol</label>
+                            <select id="edit-rol-${i}" style="margin-bottom:15px;">
+                                <option value="admin" ${u.rol === 'admin' ? 'selected' : ''}>Admin</option>
+                                <option value="cliente" ${u.rol === 'cliente' ? 'selected' : ''}>Vendedor</option>
+                            </select>
+                            
+                            <button class="btn btn-primary" style="width:100%;" onclick="guardarUsuario(${i})">GUARDAR</button>
+                            ${u.user !== 'admin' ? `<button class="btn btn-danger" style="width:100%; margin-top:10px;" onclick="eliminarUsuario(${i})">ELIMINAR</button>` : ''}
+                        </div>
+                    </div>
+                `).join('');
+            } catch (e) { UI.showToast("Error al cargar usuarios", "error"); }
+        }
+
+        function renderListaSimple(array, elementId, key) {
+            document.getElementById(elementId).innerHTML = array.map((item, idx) => `
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; border-bottom:1px solid var(--border);">
+                    <span style="font-size:0.85rem;">${item}</span>
+                    <button class="btn btn-danger btn-sm" onclick="eliminarConfig('${key}', ${idx})">×</button>
+                </div>
+            `).join('');
+        }
+
+        async function agregarConfig(key, inputId) {
+            const input = document.getElementById(inputId);
+            const val = input.value.trim();
+            if(!val) return;
+            configData[key].push(val);
+            if((await API.saveConfig(configData)).success) { input.value = ''; cargarConfig(); }
+        }
+
+        async function eliminarConfig(key, idx) {
+            configData[key].splice(idx, 1);
+            if((await API.saveConfig(configData)).success) cargarConfig();
+        }
+
+        function toggleEdit(idx) {
+            const el = document.getElementById(`panel-${idx}`);
+            const wasActive = el.classList.contains('active');
+            document.querySelectorAll('.edit-panel').forEach(p => p.classList.remove('active'));
+            if(!wasActive) el.classList.add('active');
+        }
+
+        async function guardarUsuario(idx) {
+            try {
+                usuariosData[idx] = {
+                    nombre: document.getElementById(`edit-nom-${idx}`).value.trim(),
+                    user: document.getElementById(`edit-user-${idx}`).value.trim(),
+                    pass: document.getElementById(`edit-pass-${idx}`).value.trim(),
+                    rol: document.getElementById(`edit-rol-${idx}`).value,
+                    canEditPrice: document.getElementById(`edit-permiso-${idx}`).checked,
+                    permExcel: document.getElementById(`edit-excel-${idx}`).checked,
+                    permPrint: document.getElementById(`edit-print-${idx}`).checked,
+                    permWA: document.getElementById(`edit-wa-${idx}`).checked
+                };
+                if((await API.saveUsuarios(usuariosData)).success) {
+                    UI.showToast("Usuario actualizado", "success");
+                    cargarUsuarios();
+                }
+            } catch (e) { UI.showToast("Error al guardar", "error"); }
+        }
+
+        async function eliminarUsuario(idx) {
+            UI.confirm("ELIMINAR", "¿Deseas eliminar este usuario?", async () => {
+                usuariosData.splice(idx, 1);
+                await API.saveUsuarios(usuariosData);
+                cargarUsuarios();
+            });
+        }
+
+        function cerrarSesion() { localStorage.clear(); window.location.href = 'login.html'; }
+        window.onload = init;
+    </script>
+</body>
+</html>
+    </script>
+</body>
+</html>

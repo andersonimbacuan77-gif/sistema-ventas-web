@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <script>
+        if(localStorage.getItem('userRol') !== 'admin') {
+            window.location.href = 'login.html';
+        }
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes - SISCONTED</title>
+    
+    <link rel="stylesheet" href="global.css">
+    <style>
+        .main {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            background: var(--bg);
+        }
+
+        .reports-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .filter-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            align-items: end;
+        }
+
+        .stats-summary {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-card.ventas { border-left: 4px solid var(--accent); }
+        .stat-card.ganancias { border-left: 4px solid var(--success); }
+
+        .stat-card small {
+            display: block;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .stat-card h2 {
+            margin: 0;
+            font-size: 1.2rem;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .report-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.2s;
+        }
+
+        .report-card:hover {
+            border-color: var(--accent);
+            transform: translateX(5px);
+        }
+
+        .report-info h3 {
+            margin: 0;
+            font-size: 1rem;
+            color: var(--accent);
+        }
+
+        .report-info p {
+            margin: 5px 0 0 0;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .report-values {
+            text-align: right;
+            margin-right: 20px;
+        }
+
+        .report-values .v { color: #818cf8; font-weight: 700; font-size: 0.9rem; }
+        .report-values .g { color: #4ade80; font-weight: 700; font-size: 0.9rem; }
+
+        @media (max-width: 768px) {
+            .main { padding: 15px; }
+            .stats-summary { grid-template-columns: 1fr; }
+            .report-card { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .report-values { text-align: left; }
+            .sidebar { width: 0; display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="menu-toggle" onclick="UI.toggleSidebar()">☰</div>
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">📊</div>
+            <div class="brand-name">SISCONTED</div>
+        </div>
+        <nav>
+            <a href="index.html">🏠 Inicio</a>
+            <a href="admin.html">📊 Ventas</a>
+            <a href="inventario.html">📦 Inventario</a>
+            <a href="config.html">⚙️ Configuración</a>
+            <a href="reportes.html" class="active">📂 Reportes</a>
+            <a href="#" onclick="cerrarSesion()" class="btn-logout" style="margin-top:20px; border:1px solid rgba(239,68,68,0.3); color:#f87171;">🚪 Salir</a>
+        </nav>
+    </div>
+
+    <div class="main">
+        <div style="margin-bottom: 25px;">
+            <h1 style="font-family: 'Orbitron', sans-serif; font-size: 1.5rem; margin: 0; color:var(--accent);">REPORTES E HISTORIAL</h1>
+            <p style="margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.85rem;">Consulta de ventas y utilidades generadas</p>
+        </div>
+
+        <div class="filter-section">
+            <div>
+                <label class="label-small">Desde</label>
+                <input type="date" id="f-inicio" onchange="cargarHistorial()">
+            </div>
+            <div>
+                <label class="label-small">Hasta</label>
+                <input type="date" id="f-fin" onchange="cargarHistorial()">
+            </div>
+            <div>
+                <label class="label-small">Administrador</label>
+                <input type="text" id="f-admin" placeholder="Buscar admin..." onkeyup="cargarHistorial()">
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn btn-primary" style="flex:1;" onclick="exportarResumenFiltrado()">FILTRADOS</button>
+                <button class="btn btn-secondary" style="flex:1;" onclick="exportarResumenExcel()">GENERAL</button>
+            </div>
+        </div>
+
+        <div class="stats-summary">
+            <div class="stat-card ventas">
+                <small>Venta Acumulada</small>
+                <h2 id="total-v-filtro" style="color: #818cf8;">$ 0</h2>
+            </div>
+            <div class="stat-card ganancias">
+                <small>Ganancia Acumulada</small>
+                <h2 id="total-g-filtro" style="color: #4ade80;">$ 0</h2>
+            </div>
+        </div>
+
+        <div id="lista-reportes" class="reports-grid"></div>
+    </div>
+
+    <script src="api.js"></script>
+    <script src="ui-helpers.js"></script>
+    <script>
+        let historialGlobal = [];
+        let productosDB = [];
+
+        async function init() {
+            inicializarFechas();
+            await cargarHistorial();
+        }
+
+        async function cargarHistorial() {
+            try {
+                historialGlobal = await API.getReportes();
+                productosDB = await API.getProductos();
+                const fIn = document.getElementById('f-inicio').value;
+                const fFi = document.getElementById('f-fin').value;
+                const fAdmin = document.getElementById('f-admin').value.toLowerCase();
+                
+                let html = "";
+                let sumaVentasTotal = 0;
+                let sumaGananciasTotal = 0;
+
+                const filtrados = [...historialGlobal].reverse().filter(rep => {
+                    const r = rep.rango || { desde: '', hasta: '' };
+                    const coincideFecha = (!fIn || r.desde >= fIn) && (!fFi || r.hasta <= fFi);
+                    const coincideAdmin = !fAdmin || (rep.admin && rep.admin.toLowerCase().includes(fAdmin));
+                    return coincideFecha && coincideAdmin;
+                });
+
+                filtrados.forEach(rep => {
+                    const v = parseFloat(rep.ventasRaw) || 0;
+                    const g = parseFloat(rep.gananciaRaw) || 0;
+                    sumaVentasTotal += v;
+                    sumaGananciasTotal += g;
+
+                    html += `
+                    <div class="report-card">
+                        <div class="report-info">
+                            <span class="badge" style="background:rgba(168,85,247,0.1); color:var(--accent); font-size:0.6rem;">ID: ${rep.idReporte}</span>
+                            <h3>${rep.rango.desde} al ${rep.rango.hasta}</h3>
+                            <p>${rep.admin} | ${rep.fechaCreacion}</p>
+                        </div>
+                        <div class="report-values">
+                            <div class="v">$ ${v.toLocaleString()}</div>
+                            <div class="g">$ ${g.toLocaleString()}</div>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-primary btn-sm" onclick="verDetalleReporte(${rep.idReporte})">👁️</button>
+                            <button class="btn btn-danger btn-sm" onclick="eliminarReporte(${rep.idReporte})">🗑️</button>
+                        </div>
+                    </div>`;
+                });
+
+                document.getElementById('lista-reportes').innerHTML = html || "<p style='grid-column:1/-1; text-align:center; padding:40px; color:var(--text-muted);'>No hay resultados.</p>";
+                document.getElementById('total-v-filtro').innerText = `$ ${sumaVentasTotal.toLocaleString()}`;
+                document.getElementById('total-g-filtro').innerText = `$ ${sumaGananciasTotal.toLocaleString()}`;
+
+            } catch (e) { UI.showToast("Error al cargar historial", "error"); }
+        }
+
+        function verDetalleReporte(id) {
+            const rep = historialGlobal.find(r => r.idReporte === id);
+            if (!rep) return;
+
+            const vModal = parseFloat(rep.ventasRaw) || 0;
+            const gModal = parseFloat(rep.gananciaRaw) || 0;
+
+            const content = `
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 20px;">
+                    <div class="stat-card" style="border-bottom:3px solid #818cf8;"><small>Venta</small><h2 style="color:#818cf8;">$ ${vModal.toLocaleString()}</h2></div>
+                    <div class="stat-card" style="border-bottom:3px solid #4ade80;"><small>Ganancia</small><h2 style="color:#4ade80;">$ ${gModal.toLocaleString()}</h2></div>
+                    <div class="stat-card"><small>Admin</small><h2>${rep.admin}</h2></div>
+                    <div class="stat-card"><small>Pedidos</small><h2>${rep.cantidadPedidos}</h2></div>
+                </div>
+                <button class="btn btn-success" style="width:100%; margin-bottom:15px;" onclick="exportarReporteActualExcel(${id})">📊 DESCARGAR EXCEL</button>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Fecha</th><th>Cliente</th><th>Total</th><th>Ganancia</th><th></th></tr>
+                        </thead>
+                        <tbody>
+                            ${rep.pedidos.map(p => `
+                                <tr>
+                                    <td>${p.fecha}<br><small>${p.hora}</small></td>
+                                    <td><b>${p.cliente}</b></td>
+                                    <td style="color:#818cf8; font-weight:700;">$${(parseFloat(p.total)||0).toLocaleString()}</td>
+                                    <td style="color:#4ade80;">$${(parseFloat(p.ganancia)||0).toLocaleString()}</td>
+                                    <td><button class="btn btn-primary btn-sm" onclick="verPedidoDelReporte(${id}, ${p.id})">👁️</button></td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            UI.showModal(`Reporte #${id}`, content);
+        }
+
+        function verPedidoDelReporte(idReporte, idPedido) {
+            const rep = historialGlobal.find(r => r.idReporte === idReporte);
+            if(!rep) return;
+            const p = rep.pedidos.find(x => x.id == idPedido);
+            if(!p) return;
+
+            const content = `
+                <div style="margin-bottom:15px; display:flex; justify-content:space-between; align-items:center;">
+                    <p style="margin:0; color:var(--text-muted);">${p.cliente} | ${p.fecha}</p>
+                    <button class="btn btn-success btn-sm" onclick="exportarPedidoIndividualExcelById(${idReporte}, ${idPedido})">EXCEL</button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Producto</th><th>Cant</th><th>Subtotal</th><th>Ganancia</th></tr>
+                        </thead>
+                        <tbody>
+                            ${p.items.map(i => {
+                                const sub = parseFloat(i.precio) * parseInt(i.cantidad);
+                                const gan = parseFloat(i.gananciaTotal) || 0;
+                                return `<tr>
+                                    <td>${i.nombre}</td>
+                                    <td>${i.cantidad}</td>
+                                    <td style="color:#818cf8;">$${sub.toLocaleString()}</td>
+                                    <td style="color:#4ade80;">$${gan.toLocaleString()}</td>
+                                </tr>`;
+                            }).join('')}
+                        </tbody>
+                        <tfoot>
+                            <tr><td colspan="3" align="right"><b>TOTAL VENTA:</b></td><td style="color:#818cf8; font-weight:700;">$${(parseFloat(p.total)||0).toLocaleString()}</td></tr>
+                            <tr><td colspan="3" align="right"><b>GANANCIA:</b></td><td style="color:#4ade80; font-weight:700;">$${(parseFloat(p.ganancia)||0).toLocaleString()}</td></tr>
+                        </tfoot>
+                    </table>
+                </div>
+            `;
+            UI.showModal(`Pedido #${p.id}`, content);
+        }
+
+        async function exportarResumenExcel() {
+            if(historialGlobal.length === 0) return UI.showToast("No hay historial", "warning");
+            const { headerHtml, logoBase64 } = await API.getExcelHeader(6);
+            let htmlResumen = `<table border="1">${headerHtml}<tr><th colspan="6" style="background:#0f172a; color:#00f2ff; height:40px; font-size:18px;">RESUMEN HISTÓRICO</th></tr><tr><th style="background:#1e293b; color:white;">ID</th><th style="background:#1e293b; color:white;">FECHA</th><th style="background:#1e293b; color:white;">PERIODO</th><th style="background:#1e293b; color:white;">ADMIN</th><th style="background:#1e293b; color:white;">VENTA</th><th style="background:#1e293b; color:white;">GANANCIA</th></tr>`;
+            let tV = 0, tG = 0;
+            historialGlobal.forEach(r => {
+                const v = parseFloat(r.ventasRaw) || 0, g = parseFloat(r.gananciaRaw) || 0;
+                tV += v; tG += g;
+                htmlResumen += `<tr height="20"><td>'${r.idReporte}</td><td>${r.fechaCreacion}</td><td>${r.rango.desde} a ${r.rango.hasta}</td><td>${r.admin}</td><td align="right">$ ${v.toLocaleString()}</td><td align="right">$ ${g.toLocaleString()}</td></tr>`;
+            });
+            htmlResumen += `<tr style="font-weight:bold; height:20px;"><td colspan="4" align="right">TOTALES:</td><td align="right">$ ${tV.toLocaleString()}</td><td align="right">$ ${tG.toLocaleString()}</td></tr></table>`;
+            API.descargarExcelMHT(htmlResumen, `Resumen_Historial_${API.getFechaLocal()}`, logoBase64);
+        }
+
+        async function exportarResumenFiltrado() {
+            const fIn = document.getElementById('f-inicio').value;
+            const fFi = document.getElementById('f-fin').value;
+            const fAdmin = document.getElementById('f-admin').value.toLowerCase();
+            const f = [...historialGlobal].reverse().filter(rep => {
+                const r = rep.rango || { desde: '', hasta: '' };
+                return (!fIn || r.desde >= fIn) && (!fFi || r.hasta <= fFi) && (!fAdmin || (rep.admin && rep.admin.toLowerCase().includes(fAdmin)));
+            });
+            if(f.length === 0) return UI.showToast("Nada para exportar", "warning");
+            const { headerHtml, logoBase64 } = await API.getExcelHeader(6);
+            let html = `<table border="1">${headerHtml}<tr><th colspan="6" style="background:#0f172a; color:#00f2ff; height:40px; font-size:18px;">RESUMEN FILTRADO</th></tr><tr><th style="background:#1e293b; color:white;">ID</th><th style="background:#1e293b; color:white;">FECHA</th><th style="background:#1e293b; color:white;">PERIODO</th><th style="background:#1e293b; color:white;">ADMIN</th><th style="background:#1e293b; color:white;">VENTA</th><th style="background:#1e293b; color:white;">GANANCIA</th></tr>`;
+            let tV = 0, tG = 0;
+            f.forEach(r => {
+                const v = parseFloat(r.ventasRaw) || 0, g = parseFloat(r.gananciaRaw) || 0;
+                tV += v; tG += g;
+                html += `<tr height="20"><td>'${r.idReporte}</td><td>${r.fechaCreacion}</td><td>${r.rango.desde} a ${r.rango.hasta}</td><td>${r.admin}</td><td align="right">$ ${v.toLocaleString()}</td><td align="right">$ ${g.toLocaleString()}</td></tr>`;
+            });
+            html += `<tr style="font-weight:bold;"><td colspan="4" align="right">TOTALES:</td><td align="right">$ ${tV.toLocaleString()}</td><td align="right">$ ${tG.toLocaleString()}</td></tr></table>`;
+            API.descargarExcelMHT(html, `Resumen_Filtrado_${API.getFechaLocal()}`, logoBase64);
+        }
+
+        async function exportarReporteActualExcel(id) {
+            const rep = historialGlobal.find(r => r.idReporte === id);
+            if(!rep) return;
+            const { headerHtml, logoBase64 } = await API.getExcelHeader(5);
+            let html = `<table border="1">${headerHtml}<tr><th colspan="5" style="background:#0f172a; color:#00f2ff; height:40px; font-size:18px;">DETALLE DE REPORTE #${rep.idReporte}</th></tr><tr><th style="background:#1e293b; color:white;">FECHA</th><th style="background:#1e293b; color:white;">CLIENTE</th><th style="background:#1e293b; color:white;">ID</th><th style="background:#1e293b; color:white;">VENTA</th><th style="background:#1e293b; color:white;">GANANCIA</th></tr>`;
+            rep.pedidos.forEach(p => {
+                html += `<tr><td>${p.fecha} ${p.hora}</td><td>${p.cliente}</td><td>'${p.id}</td><td align="right">$ ${parseFloat(p.total||0).toLocaleString()}</td><td align="right">$ ${parseFloat(p.ganancia||0).toLocaleString()}</td></tr>`;
+            });
+            html += `<tr style="font-weight:bold;"><td colspan="3" align="right">TOTALES:</td><td align="right">$ ${parseFloat(rep.ventasRaw).toLocaleString()}</td><td align="right">$ ${parseFloat(rep.gananciaRaw).toLocaleString()}</td></tr></table>`;
+            API.descargarExcelMHT(html, `Detalle_Reporte_${rep.idReporte}`, logoBase64);
+        }
+
+        async function exportarPedidoIndividualExcelById(idRep, idPed) {
+            const rep = historialGlobal.find(r => r.idReporte === idRep);
+            const p = rep.pedidos.find(x => x.id == idPed);
+            const { headerHtml, logoBase64 } = await API.getExcelHeader(7);
+            let html = `<table border="1">${headerHtml}<tr><th colspan="7" style="background:#0f172a; color:#00f2ff; height:40px;">COMPROBANTE PEDIDO #${p.id}</th></tr><tr><th style="background:#1e293b; color:white;">REF</th><th style="background:#1e293b; color:white;">PRODUCTO</th><th style="background:#1e293b; color:white;">UND</th><th style="background:#1e293b; color:white;">CANT</th><th style="background:#1e293b; color:white;">PRECIO</th><th style="background:#1e293b; color:white;">SUBTOTAL</th><th style="background:#1e293b; color:white;">GANANCIA</th></tr>`;
+            p.items.forEach(i => {
+                html += `<tr><td>'${i.referencia || i.codigo}</td><td>${i.nombre}</td><td>${i.unidad || 'Und'}</td><td>${i.cantidad}</td><td align="right">$ ${parseFloat(i.precio).toLocaleString()}</td><td align="right">$ ${(parseFloat(i.precio)*i.cantidad).toLocaleString()}</td><td align="right">$ ${parseFloat(i.gananciaTotal||0).toLocaleString()}</td></tr>`;
+            });
+            html += `<tr><td colspan="6" align="right"><b>TOTAL VENTA:</b></td><td align="right"><b>$ ${parseFloat(p.total||0).toLocaleString()}</b></td></tr></table>`;
+            API.descargarExcelMHT(html, `Pedido_${p.id}`, logoBase64);
+        }
+
+        async function eliminarReporte(id) {
+            UI.confirm("ELIMINAR", "¿Deseas eliminar este reporte?", async () => {
+                try {
+                    if((await API.deleteReporte(id)).success) { UI.showToast("Reporte eliminado", "success"); cargarHistorial(); }
+                } catch(e) { UI.showToast("Error al eliminar", "error"); }
+            });
+        }
+
+        function inicializarFechas() {
+            const d = new Date(), y = d.getFullYear(), m = (d.getMonth() + 1).toString().padStart(2, '0');
+            document.getElementById('f-inicio').value = `${y}-${m}-01`;
+            document.getElementById('f-fin').value = `${y}-${m}-${new Date(y, d.getMonth() + 1, 0).getDate()}`;
+        }
+
+        function cerrarSesion() { localStorage.clear(); window.location.href = 'login.html'; }
+        window.onload = init;
+    </script>
+</body>
+</html>
