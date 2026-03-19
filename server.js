@@ -239,21 +239,28 @@ app.get('/api/pedidos', async (req, res) => {
 app.post('/api/pedidos', async (req, res) => {
     const p = req.body;
     try {
-        const nuevo = new Pedido(p);
-        await nuevo.save();
+        if (!p.id) {
+            return res.status(400).json({ error: 'Pedido sin ID' });
+        }
+
+        // Usar upsert por si el cliente reintenta
+        await Pedido.findOneAndUpdate({ id: p.id }, p, { upsert: true });
 
         // Actualizar existencias de productos en MongoDB
-        for (const item of p.items) {
-            await Producto.findOneAndUpdate(
-                { codigo: item.referencia },
-                { $inc: { existencia: -(parseInt(item.cantidad) || 0) } }
-            );
+        if (p.items && Array.isArray(p.items)) {
+            for (const item of p.items) {
+                if (!item.referencia) continue;
+                await Producto.findOneAndUpdate(
+                    { codigo: item.referencia },
+                    { $inc: { existencia: -(parseInt(item.cantidad) || 0) } }
+                );
+            }
         }
 
         res.json({ success: true });
     } catch (error) {
-        console.error('Error saving order:', error);
-        res.status(500).json({ error: 'Error al guardar pedido' });
+        console.error('❌ Error fatal al guardar pedido:', error);
+        res.status(500).json({ error: 'Error al guardar pedido: ' + error.message });
     }
 });
 
