@@ -8,430 +8,172 @@
     </script>
 
     <meta charset="UTF-8">
-    <title>SISCONTED - Inventario Global</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario - SISCONTED</title>
+    
+    <link rel="stylesheet" href="global.css">
     <style>
-        :root {
-            --primary: #6366f1;
-            --primary-light: #818cf8;
-            --primary-glow: rgba(99, 102, 241, 0.2);
-            --secondary: #0ea5e9;
-            --success: #10b981;
-            --danger: #ef4444;
-            --bg: #0a0b14;
-            --sidebar-bg: #111827;
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.08);
-            --text: #f3f4f6;
-            --text-muted: #94a3b8;
-        }
-
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Orbitron:wght@500;700&display=swap');
-
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: var(--bg);
-            background-image: 
-                radial-gradient(circle at 0% 0%, rgba(99, 102, 241, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 100% 100%, rgba(14, 165, 233, 0.05) 0%, transparent 40%);
-            color: var(--text);
-            padding: 40px 60px 180px 60px;
-            margin: 0;
-            min-height: 100vh;
-            overflow-y: auto;
-        }
-        
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 48px;
-            background: rgba(17, 24, 39, 0.7);
-            backdrop-filter: blur(20px);
-            padding: 24px 40px;
-            border-radius: 24px;
-            border: 1px solid var(--border);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-        }
-
-        .header h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
-            color: white;
-            letter-spacing: 2px;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .header h1::before {
-            content: '';
-            width: 8px;
-            height: 32px;
-            background: var(--primary);
-            border-radius: 4px;
-        }
-        
-        .nav-buttons { display: flex; gap: 12px; }
-        
-        .btn {
-            padding: 12px 20px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 600;
-            text-decoration: none;
-            font-size: 0.85rem;
-            transition: 0.2s;
-            border: 1px solid var(--border);
-            display: flex; 
-            align-items: center; 
-            gap: 8px;
-        }
-        
-        .btn-back { background: rgba(255, 255, 255, 0.05); color: var(--text-muted); }
-        .btn-back:hover { 
-            background: rgba(255, 255, 255, 0.1); 
-            color: white;
-            transform: translateY(-2px);
-        }
-        .btn-back:active { transform: scale(0.95); }
-        
-        .btn-mov { background: var(--primary); color: white; border: none; }
-        .btn-mov:hover { 
-            background: var(--primary-light); 
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px var(--primary-glow);
-        }
-        .btn-mov:active { transform: scale(0.95); }
-
-        .btn-excel { background: var(--success); color: white; border: none; }
-        .btn-excel:hover { 
-            opacity: 0.9; 
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(16, 185, 129, 0.3);
-        }
-        .btn-excel:active { transform: scale(0.95); }
-
-        .search-container { position: relative; margin-bottom: 40px; }
-        .search-box {
-            width: 100%;
-            padding: 18px 24px 18px 56px;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            color: white;
-            outline: none;
-            font-size: 1rem;
-            box-sizing: border-box;
-            transition: 0.3s;
-        }
-        .search-box:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-glow); }
-        .search-container::before { 
-            content: '🔍'; 
-            position: absolute; 
-            left: 20px; 
-            top: 50%; 
-            transform: translateY(-50%); 
-            font-size: 1.2rem; 
-            opacity: 0.5;
-        }
-
-        .inventory-table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            background: var(--card-bg);
-            border-radius: 20px;
-            overflow: hidden;
-            margin-bottom: 120px;
-            border: 1px solid var(--border);
-        }
-        .inventory-table th {
-            background: rgba(255, 255, 255, 0.02);
-            color: var(--text-muted);
-            padding: 20px 24px;
-            text-align: left;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-weight: 700;
-            border-bottom: 1px solid var(--border);
-        }
-        .inventory-table td { 
-            padding: 20px 24px; 
-            border-bottom: 1px solid var(--border); 
-            font-size: 0.9rem;
-            color: var(--text);
-        }
-        .inventory-table tr:last-child td { border-bottom: none; }
-        .inventory-table tr:hover { background: rgba(255, 255, 255, 0.02); }
-
-        .stock-badge {
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 0.8rem;
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--success);
-        }
-        .low-stock { 
-            background: rgba(239, 68, 68, 0.1); 
-            color: var(--danger); 
-        }
-        
+        .main { padding: 30px; flex: 1; overflow-y: auto; background: var(--bg); padding-bottom: 120px; }
         .summary-bar { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 24px; 
-            background: var(--sidebar-bg); 
-            padding: 32px 48px; 
-            border-radius: 24px; 
-            border: 1px solid var(--border);
-            backdrop-filter: blur(20px);
-            position: fixed;
-            bottom: 40px;
-            left: 60px;
-            right: 60px;
-            box-shadow: 0 -20px 50px rgba(0,0,0,0.4);
-            z-index: 1000;
+            position: fixed; bottom: 0; left: 0; right: 0; 
+            background: var(--card-bg); border-top: 2px solid var(--accent); 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
+            gap: 15px; padding: 20px 30px; backdrop-filter: blur(15px); z-index: 100;
         }
+        .summary-item h4 { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; margin: 0 0 5px 0; }
+        .summary-item p { font-size: 1.3rem; font-weight: 800; color: var(--accent); margin: 0; font-family: 'Orbitron', sans-serif; }
         
-        .summary-item { text-align: left; border-right: 1px solid var(--border); }
-        .summary-item:last-child { border-right: none; }
-        
-        .summary-item label {
-            display: block;
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            margin-bottom: 8px;
-            letter-spacing: 1.5px;
-            font-weight: 700;
+        @media (max-width: 768px) {
+            .main { padding: 15px; padding-bottom: 220px; }
+            .summary-bar { grid-template-columns: 1fr; padding: 15px; gap: 8px; }
+            .summary-item p { font-size: 1.1rem; }
         }
-        .summary-item span { font-size: 1.75rem; font-weight: 700; font-family: 'Orbitron', sans-serif; }
-        
-        .val-compra { color: var(--secondary); text-shadow: 0 0 10px rgba(14, 165, 233, 0.3); }
-        .val-venta { color: var(--primary-light); text-shadow: 0 0 10px var(--primary-glow); }
-        .val-utilidad { color: var(--success); text-shadow: 0 0 10px rgba(16, 185, 129, 0.3); }
-
-        .btn:active { transform: scale(0.96); }
-        .inventory-table tr { transition: 0.2s; }
-        .inventory-table tr:hover td { background: rgba(255, 255, 255, 0.04); transform: scale(1.002); }
-
-        .empty-msg { text-align: center; padding: 60px; color: var(--text-muted); font-size: 1rem; }
-
-        /* SCROLLBAR */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
     </style>
 </head>
 <body>
+    <div class="menu-toggle" onclick="UI.toggleSidebar()">☰</div>
 
-    <div class="header">
-        <div>
-            <h1 style="margin: 0;">📦 Inventario Global</h1>
-            <p style="margin: 5px 0 0 0; color: #94a3b8; font-size: 0.9rem;">Consulta de existencias y valoración de activos</p>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">📦</div>
+            <div class="brand-name">SISCONTED</div>
         </div>
-        <div class="nav-buttons">
-            <button onclick="exportarExcel()" class="btn btn-excel">📊 EXPORTAR A EXCEL</button>
-            <a href="ingresos.html" class="btn btn-mov">🔄 INGRESOS Y SALIDAS</a>
-            <a href="index.html" class="btn btn-back">⬅ REGRESAR</a>
-        </div>
+        <nav>
+            <a href="index.html">🏠 Inventario Local</a>
+            <a href="admin.html">📊 Dashboard Ventas</a>
+            <a href="inventario.html" class="active">📦 Inventario Global</a>
+            <a href="reportes.html">📂 Reportes</a>
+            <a href="config.html">⚙️ Configuración</a>
+            <a href="#" onclick="cerrarSesion()" class="btn-logout" style="margin-top:20px; border:1px solid rgba(239,68,68,0.3); color:#f87171;">🚪 Salir</a>
+        </nav>
     </div>
 
-    <div class="search-container">
-        <i class="search-icon">🔍</i>
-        <input type="text" id="filtro" class="search-box" placeholder="Escanee código de barras o busque producto..." onkeyup="filtrarTabla()" autofocus>
-    </div>
+    <div class="main">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 15px;">
+            <div>
+                <h1 style="font-family: 'Orbitron', sans-serif; font-size: 1.4rem; margin: 0; color:var(--accent);">INVENTARIO GLOBAL</h1>
+                <p style="margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.8rem;">Valoración y existencias consolidadas</p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="exportarExcel()" class="btn btn-secondary btn-sm">📊 Excel</button>
+                <a href="ingresos.html" class="btn btn-primary btn-sm">🔄 Movimientos</a>
+            </div>
+        </div>
 
-    <table class="inventory-table" id="tabla-datos">
-        <thead>
-            <tr>
-                <th>REF / CÓDIGO</th>
-                <th>PRODUCTO</th>
-                <th style="text-align: center;">CANT.</th>
-                <th>U.M.</th>
-                <th style="color: var(--info);">COSTO UND</th>
-                <th style="color: var(--info);">TOTAL COSTO</th>
-                <th style="color: var(--accent);">VENTA UND</th>
-                <th style="color: var(--accent);">TOTAL VENTA</th>
-            </tr>
-        </thead>
-        <tbody id="lista-inventario"></tbody>
-    </table>
+        <div style="margin-bottom: 25px;">
+            <input type="text" id="filtro" class="form-control" placeholder="🔍 Buscar por nombre o referencia..." onkeyup="filtrarTabla()" autofocus>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>REF</th>
+                        <th>Producto</th>
+                        <th align="center">Stock</th>
+                        <th>UM</th>
+                        <th>Costo Und</th>
+                        <th>Total Costo</th>
+                        <th>Venta Und</th>
+                        <th>Total Venta</th>
+                    </tr>
+                </thead>
+                <tbody id="lista-inventario"></tbody>
+            </table>
+        </div>
+    </div>
 
     <div class="summary-bar">
         <div class="summary-item">
-            <label>Inversión Total (Costo)</label>
-            <span id="total-costo-global" class="val-compra">$ 0</span>
+            <h4>Inversión (Costo)</h4>
+            <p id="total-costo-global">$ 0</p>
         </div>
         <div class="summary-item">
-            <label>Valor Total Venta</label>
-            <span id="total-venta-global" class="val-venta">$ 0</span>
+            <h4>Valor Venta</h4>
+            <p id="total-venta-global">$ 0</p>
         </div>
         <div class="summary-item">
-            <label>Utilidad Proyectada</label>
-            <span id="total-utilidad-global" class="val-utilidad">$ 0</span>
+            <h4>Utilidad Bruta</h4>
+            <p id="total-utilidad-global" style="color:var(--success);">$ 0</p>
         </div>
     </div>
 
     <script src="api.js"></script>
+    <script src="ui-helpers.js"></script>
     <script>
-        let dataActual = []; // Para guardar los productos cargados
+        let dataActual = [];
+
+        async function init() {
+            await cargarInventario();
+            document.getElementById('filtro').focus();
+        }
 
         async function cargarInventario() {
-            const tbody = document.getElementById('lista-inventario');
             try {
                 const productos = await API.getProductos();
                 if (!productos || productos.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="8" class="empty-msg">El inventario está vacío.</td></tr>';
+                    document.getElementById('lista-inventario').innerHTML = '<tr><td colspan="8" style="text-align:center; padding:40px; color:var(--text-muted);">No hay productos registrados.</td></tr>';
                     return;
                 }
-                productos.sort((a, b) => a.nombre.localeCompare(b.nombre));
-                dataActual = productos;
-                renderTable(productos);
-            } catch (err) {
-                console.error(err);
-                tbody.innerHTML = '<tr><td colspan="8" class="empty-msg">Error al cargar productos del servidor.</td></tr>';
-            }
+                dataActual = productos.sort((a, b) => (a.nombre||"").localeCompare(b.nombre||""));
+                renderTable(dataActual);
+            } catch (err) { UI.showToast("Error al cargar inventario", "error"); }
         }
 
         function renderTable(data) {
             const tbody = document.getElementById('lista-inventario');
-            tbody.innerHTML = "";
-            let globalCosto = 0;
-            let globalVenta = 0;
-
-            data.forEach(p => {
+            let cost = 0, sale = 0;
+            
+            tbody.innerHTML = data.map(p => {
                 const stock = parseInt(p.existencia) || 0;
-                const costoUnd = parseFloat(p.precioCompra) || 0;
-                const ventaUnd = parseFloat(p.precio) || 0;
-                const totalCostoProd = stock * costoUnd;
-                const totalVentaProd = stock * ventaUnd;
+                const cUnd = parseFloat(p.precioCompra) || 0;
+                const vUnd = parseFloat(p.precio) || 0;
+                const tC = stock * cUnd;
+                const tV = stock * vUnd;
+                cost += tC; sale += tV;
 
-                globalCosto += totalCostoProd;
-                globalVenta += totalVentaProd;
+                return `<tr>
+                    <td style="font-family:monospace; color:var(--accent); font-weight:700;">${p.codigo}</td>
+                    <td style="text-transform:uppercase;">${p.nombre}</td>
+                    <td align="center"><span class="badge ${stock <= 5 ? 'badge-danger' : 'badge-success'}">${stock}</span></td>
+                    <td style="color:var(--text-muted); font-size:0.75rem;">${p.unidad || 'UND'}</td>
+                    <td>$${cUnd.toLocaleString()}</td>
+                    <td style="font-weight:700; color:var(--secondary);">$${tC.toLocaleString()}</td>
+                    <td>$${vUnd.toLocaleString()}</td>
+                    <td style="font-weight:700; color:var(--accent);">$${tV.toLocaleString()}</td>
+                </tr>`;
+            }).join('');
 
-                const alertaClase = stock <= 5 ? 'low-stock' : '';
-                const unidad = p.unidad || 'UND';
+            document.getElementById('total-costo-global').innerText = `$ ${cost.toLocaleString()}`;
+            document.getElementById('total-venta-global').innerText = `$ ${sale.toLocaleString()}`;
+            document.getElementById('total-utilidad-global').innerText = `$ ${(sale - cost).toLocaleString()}`;
+        }
 
-                tbody.innerHTML += `
-                    <tr>
-                        <td style="font-family: monospace; font-weight: bold; color: var(--accent);">${p.codigo}</td>
-                        <td style="font-weight: 500;">${p.nombre.toUpperCase()}</td>
-                        <td style="text-align: center;">
-                            <span class="stock-badge ${alertaClase}">${stock}</span>
-                        </td>
-                        <td style="color: #94a3b8; font-size: 0.8rem;">${unidad}</td>
-                        <td>$ ${costoUnd.toLocaleString()}</td>
-                        <td style="font-weight: bold; color: var(--info);">$ ${totalCostoProd.toLocaleString()}</td>
-                        <td>$ ${ventaUnd.toLocaleString()}</td>
-                        <td style="font-weight: bold; color: var(--accent);">$ ${totalVentaProd.toLocaleString()}</td>
-                    </tr>
-                `;
-            });
-
-            document.getElementById('total-costo-global').innerText = `$ ${globalCosto.toLocaleString()}`;
-            document.getElementById('total-venta-global').innerText = `$ ${globalVenta.toLocaleString()}`;
-            document.getElementById('total-utilidad-global').innerText = `$ ${(globalVenta - globalCosto).toLocaleString()}`;
+        function filtrarTabla() {
+            const query = document.getElementById('filtro').value.toLowerCase();
+            const filtered = dataActual.filter(p => (p.nombre||"").toLowerCase().includes(query) || (p.codigo||"").toLowerCase().includes(query));
+            renderTable(filtered);
         }
 
         async function exportarExcel() {
-            const fecha = new Date().toLocaleDateString();
-            const tCosto = document.getElementById('total-costo-global').innerText;
-            const tVenta = document.getElementById('total-venta-global').innerText;
-            const tUtilidad = document.getElementById('total-utilidad-global').innerText;
-
-            let emp = { nombre: 'MI EMPRESA', nit: '', direccion: '', telefono: '', logoBase64: '' };
             try {
-                const config = await API.getConfig();
-                if (config && config.empresa) emp = { ...emp, ...config.empresa };
-            } catch(e) { console.error("Error al cargar config para excel:", e); }
-            
-            let logoHtml = '';
-            let cols = 8;
-            if (emp.logoBase64) {
-                // Usamos cid:logo para que MHT lo reconozca
-                // Ajustamos tamaño para que no se desborde
-                logoHtml = `<th rowspan="3" width="80" style="text-align:center; vertical-align:middle; background:white; border:1px solid #ccc; height:60px;"><img src="cid:logo" width="60" height="60" style="display:block; margin:auto;"></th>`;
-                cols = cols - 1;
-            }
-
-            // Construcción del HTML para Excel con diseño
-            let excelHtml = `
-                <table border="1">
-                    <tr height="20">${logoHtml}<th colspan="${cols}" style="font-size: 15px; font-weight: bold; color: #0f172a; text-align: center; height: 20px;">${emp.nombre.toUpperCase()}</th></tr>
-                    <tr height="20"><th colspan="${cols}" style="font-size: 14px; color: #334155; text-align: center; height: 20px;">NIT: ${emp.nit} | TEL: ${emp.telefono}</th></tr>
-                    <tr height="20"><th colspan="${cols}" style="font-size: 14px; color: #334155; text-align: center; border-bottom: 2px solid #94a3b8; height: 20px;">${emp.direccion}</th></tr>
-                    <tr>
-                        <th colspan="8" style="background-color: #1e293b; color: #ffffff; font-size: 20px; height: 50px;">REPORTE DE INVENTARIO GLOBAL - SISCONTED</th>
-                    </tr>
-                    <tr>
-                        <th colspan="8" style="background-color: #f1f5f9;">Fecha de Generacion: ${fecha}</th>
-                    </tr>
-                    <tr></tr>
-                    <tr style="font-weight: bold;">
-                        <th style="background-color: #00f2ff;">REF / CODIGO</th>
-                        <th style="background-color: #00f2ff;">PRODUCTO</th>
-                        <th style="background-color: #00f2ff;">CANTIDAD</th>
-                        <th style="background-color: #00f2ff;">U.M.</th>
-                        <th style="background-color: #00f2ff;">COSTO UND</th>
-                        <th style="background-color: #00f2ff;">TOTAL COSTO</th>
-                        <th style="background-color: #00f2ff;">VENTA UND</th>
-                        <th style="background-color: #00f2ff;">TOTAL VENTA</th>
-                    </tr>
-            `;
-
-            // Filas de datos
-            const filas = document.querySelectorAll("#lista-inventario tr");
-            filas.forEach(fila => {
-                excelHtml += `<tr>${fila.innerHTML}</tr>`;
-            });
-
-            // Fila de Totales al final del Excel
-            excelHtml += `
-                <tr></tr>
-                <tr style="font-weight: bold;">
-                    <td colspan="4" style="text-align: right; background-color: #e2e8f0;">TOTALES GENERALES:</td>
-                    <td style="background-color: #dbeafe; color: #1e40af;">INV. COSTO:</td>
-                    <td style="background-color: #dbeafe; color: #1e40af;">${tCosto}</td>
-                    <td style="background-color: #ccfbf1; color: #0f766e;">TOTAL VENTAS:</td>
-                    <td style="background-color: #ccfbf1; color: #0f766e;">${tVenta}</td>
-                </tr>
-                <tr style="font-weight: bold;">
-                    <td colspan="6"></td>
-                    <td style="background-color: #dcfce7; color: #15803d;">UTILIDAD:</td>
-                    <td style="background-color: #dcfce7; color: #15803d;">${tUtilidad}</td>
-                </tr>
-            </table>
-            `;
-            
-            // Usamos la nueva función de la API que soporta MHT
-            API.descargarExcelMHT(excelHtml, `Reporte_Inventario_${fecha.replace(/\//g, '-')}`, emp.logoBase64);
+                const { headerHtml, logoBase64 } = await API.getExcelHeader(8);
+                let html = `<table border="1">${headerHtml}<tr><th colspan="8" style="background:#0f172a; color:#00f2ff; height:40px; font-size:18px;">INVENTARIO GLOBAL</th></tr>`;
+                html += `<tr><th style="background:#1e293b; color:white;">REF</th><th style="background:#1e293b; color:white;">PRODUCTO</th><th style="background:#1e293b; color:white;">STOCK</th><th style="background:#1e293b; color:white;">UM</th><th style="background:#1e293b; color:white;">COSTO UND</th><th style="background:#1e293b; color:white;">TOTAL COSTO</th><th style="background:#1e293b; color:white;">VENTA UND</th><th style="background:#1e293b; color:white;">TOTAL VENTA</th></tr>`;
+                let tC = 0, tV = 0;
+                dataActual.forEach(p => {
+                    const s = parseInt(p.existencia)||0; const c = parseFloat(p.precioCompra)||0; const v = parseFloat(p.precio)||0;
+                    tC += s * c; tV += s * v;
+                    html += `<tr><td>'${p.codigo}</td><td>${p.nombre}</td><td align="center">${s}</td><td align="center">${p.unidad || 'Und'}</td><td align="right">$ ${c.toLocaleString()}</td><td align="right">$ ${(s*c).toLocaleString()}</td><td align="right">$ ${v.toLocaleString()}</td><td align="right">$ ${(s*v).toLocaleString()}</td></tr>`;
+                });
+                html += `<tr style="font-weight:bold;"><td colspan="5" align="right">TOTALES:</td><td align="right">$ ${tC.toLocaleString()}</td><td></td><td align="right">$ ${tV.toLocaleString()}</td></tr>`;
+                API.descargarExcelMHT(html + '</table>', `Inventario_${API.getFechaLocal()}`, logoBase64);
+                UI.showToast("Reporte generado", "success");
+            } catch (e) { UI.showToast("Error al exportar", "error"); }
         }
 
-        async function filtrarTabla() {
-            const busqueda = document.getElementById('filtro').value.toLowerCase();
-            try {
-                const productos = await API.getProductos();
-                const filtrados = productos.filter(p => 
-                    p.nombre.toLowerCase().includes(busqueda) || 
-                    p.codigo.toLowerCase().includes(busqueda)
-                );
-                renderTable(filtrados);
-            } catch(e) { console.error("Error al filtrar:", e); }
-        }
-
-        window.onload = () => {
-            cargarInventario();
-            document.getElementById('filtro').focus();
-        };
-
-        document.body.addEventListener('click', () => {
-            document.getElementById('filtro').focus();
-        });
+        function cerrarSesion() { localStorage.clear(); window.location.href = 'login.html'; }
+        window.onload = init;
     </script>
 </body>
 </html>

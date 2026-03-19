@@ -55,19 +55,16 @@ const API = {
 
     descargarExcelMHT: (html, nombre, logoBase64 = null) => {
         const boundary = "----=_NextPart_POS_SYSTEM";
-        // Usamos CRLF (\r\n) para mejor compatibilidad con el estándar MIME
         let mht = `MIME-Version: 1.0\r\n`;
         mht += `Content-Type: multipart/related; boundary="${boundary}"\r\n\r\n`;
         
-        // Parte HTML
+        let htmlContent = `<html><head><meta charset="UTF-8"></head><body>${html}</body></html>`;
+        
         mht += `--${boundary}\r\n`;
         mht += `Content-Type: text/html; charset="utf-8"\r\n`;
         mht += `Content-Transfer-Encoding: 8bit\r\n\r\n`;
-        
-        const template = `<html><head><meta charset="UTF-8"></head><body>${html}</body></html>`;
-        mht += template + `\r\n\r\n`;
+        mht += htmlContent + `\r\n\r\n`;
 
-        // Parte Imagen (si existe)
         if (logoBase64 && logoBase64.includes(',')) {
             const parts = logoBase64.split(',');
             const mime = parts[0].match(/:(.*?);/)[1];
@@ -79,17 +76,41 @@ const API = {
             mht += `Content-ID: <logo>\r\n\r\n`;
             mht += base64Data + `\r\n\r\n`;
         }
-
         mht += `--${boundary}--`;
 
         const blob = new Blob([mht], { type: "application/vnd.ms-excel" });
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = `${nombre}_${API.getFechaLocal()}.xls`;
+        a.download = `${nombre}.xls`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
+    },
+
+    getExcelHeader: async (cols) => {
+        try {
+            const config = await API.getConfig();
+            let emp = { nombre: 'MI EMPRESA', nit: '', direccion: '', telefono: '', logoBase64: '' };
+            if (config && config.empresa) emp = { ...emp, ...config.empresa };
+            
+            let logoHtml = '';
+            let contentCols = cols;
+            if (emp.logoBase64) {
+                logoHtml = `<th rowspan="3" width="80" style="text-align:center; vertical-align:middle; background:white; border:1px solid #ccc;"><img src="cid:logo" width="60" height="60"></th>`;
+                contentCols = cols - 1;
+            }
+
+            const headerHtml = `
+                <tr height="25">${logoHtml}<th colspan="${contentCols}" style="font-size: 16px; font-weight: bold; background:#f8fafc; color: #0f172a; text-align: center;">${emp.nombre.toUpperCase()}</th></tr>
+                <tr height="20"><th colspan="${contentCols}" style="font-size: 13px; background:#f8fafc; color: #475569; text-align: center;">NIT: ${emp.nit} | TEL: ${emp.telefono}</th></tr>
+                <tr height="20"><th colspan="${contentCols}" style="font-size: 13px; background:#f8fafc; color: #475569; text-align: center; border-bottom: 2px solid #cbd5e1;">${emp.direccion}</th></tr>
+            `;
+            return { headerHtml, logoBase64: emp.logoBase64 };
+        } catch(e) {
+            console.error("Error generating Excel header:", e);
+            return { headerHtml: `<tr><th colspan="${cols}">REPORTE</th></tr>`, logoBase64: null };
+        }
     }
 };

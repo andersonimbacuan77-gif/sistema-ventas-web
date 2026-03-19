@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 const path = require('path');
 const fs = require('fs');
 require('dotenv').config();
@@ -8,16 +9,19 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Middleware
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
+// Redirigir la raíz al login
 app.get('/', (req, res) => {
     res.redirect('/login.html');
 });
 
 app.use(express.static(path.join(__dirname)));
 
+// Conexión a MongoDB (Opcional por ahora para que no falle si no hay URI)
 const MONGO_URI = process.env.MONGO_URI;
 if (MONGO_URI) {
     mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -27,270 +31,315 @@ if (MONGO_URI) {
     console.log('ADVERTENCIA: No hay MONGO_URI en .env. Usando archivos JSON locales como respaldo.');
 }
 
-// Modelos Dinámicos Mongoose (strict: false permite guardar cualquier objeto sin schema rígido)
-const genSchema = new mongoose.Schema({}, { strict: false, id: false });
-const Producto = mongoose.models.Producto || mongoose.model('Producto', genSchema, 'productos');
-const Configuracion = mongoose.models.Configuracion || mongoose.model('Configuracion', genSchema, 'configuracion');
-const Usuario = mongoose.models.Usuario || mongoose.model('Usuario', genSchema, 'usuarios');
-const Pedido = mongoose.models.Pedido || mongoose.model('Pedido', genSchema, 'pedidos');
-const Reporte = mongoose.models.Reporte || mongoose.model('Reporte', genSchema, 'reportes');
-const Ingreso = mongoose.models.Ingreso || mongoose.model('Ingreso', genSchema, 'ingresos');
-const Egreso = mongoose.models.Egreso || mongoose.model('Egreso', genSchema, 'egresos');
+// Modelos (Placeholder para esquemas de Mongoose)
+const productoSchema = new mongoose.Schema({
+    nombre: String,
+    categoria: String,
+    unidad: String,
+    codigo: { type: String, unique: true },
+    precioCompra: Number,
+    margen: Number,
+    precio: Number,
+    existencia: { type: Number, default: 0 },
+    imagen: String
+});
+
+const Producto = mongoose.models.Producto || mongoose.model('Producto', productoSchema);
 
 // --- RUTAS API ---
 
-// 1. Productos
+// 1. Productos - Obtener todos
 app.get('/api/productos', async (req, res) => {
     try {
         if (mongoose.connection.readyState === 1) {
-            const data = await Producto.find().lean();
-            res.json(data);
+            const productos = await Producto.find();
+            res.json(productos);
         } else {
             const dbPath = path.join(__dirname, 'database.json');
-            res.json(fs.existsSync(dbPath) ? JSON.parse(fs.readFileSync(dbPath, 'utf8')) : []);
+            const data = JSON.parse(fs.readFileSync(dbPath, 'utf8'));
+            res.json(data);
         }
-    } catch (e) { res.status(500).json({ error: 'Error' }); }
+    } catch (error) {
+        res.status(500).json({ error: 'Error al obtener productos' });
+    }
 });
 
+// 2. Productos - Guardar/Actualizar
 app.post('/api/productos', async (req, res) => {
     const p = req.body;
     try {
         if (mongoose.connection.readyState === 1) {
-            if (p._id) await Producto.findByIdAndUpdate(p._id, p);
-            else await Producto.create(p);
+            if (p._id) {
+                await Producto.findByIdAndUpdate(p._id, p);
+            } else {
+                const nuevo = new Producto(p);
+                await nuevo.save();
+            }
             res.json({ success: true });
         } else {
             const dbPath = path.join(__dirname, 'database.json');
-            let prod = fs.existsSync(dbPath) ? JSON.parse(fs.readFileSync(dbPath, 'utf8')) : [];
-            const idx = prod.findIndex(x => x.codigo === p.codigo);
-            if (idx !== -1) prod[idx] = p; else prod.push(p);
-            fs.writeFileSync(dbPath, JSON.stringify(prod, null, 2));
+            let productos = JSON.parse(fs.readFileSync(dbPath, 'utf8'));
+            // Lógica simple de actualización para JSON
+            const idx = productos.findIndex(prod => prod.codigo === p.codigo);
+            if (idx !== -1) productos[idx] = p;
+            else productos.push(p);
+            
+            fs.writeFileSync(dbPath, JSON.stringify(productos, null, 2));
             res.json({ success: true });
         }
-    } catch (e) { res.status(500).json({ error: 'Error' }); }
+    } catch (error) {
+        res.status(500).json({ error: 'Error al guardar producto' });
+    }
 });
 
+// 3. Configuración
+app.get('/api/config', (req, res) => {
+    try {
+        const configPath = path.join(__dirname, 'config.json');
+        let config = { categorias: [], unidades: [], empresa: {} };
+        if (fs.existsSync(configPath)) {
+            const data = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+            config = { ...config, ...data };
+        }
+        res.json(config);
+    } catch (error) {
+        res.status(500).json({ error: 'Error al obtener configuración' });
+    }
+});
+
+app.post('/api/config', (req, res) => {
+    try {
+        const configPath = path.join(__dirname, 'config.json');
+        fs.writeFileSync(configPath, JSON.stringify(req.body, null, 2));
+        res.json({ success: true });
+    } catch (error) {
+        res.status(500).json({ error: 'Error al guardar configuración' });
+    }
+});
+
+// 4. Usuarios / Login
+app.get('/api/usuarios', (req, res) => {
+    try {
+        const usersPath = path.join(__dirname, 'usuarios.json');
+        if (fs.existsSync(usersPath)) {
+            const data = JSON.parse(fs.readFileSync(usersPath, 'utf8'));
+            res.json(Array.isArray(data) ? data : []);
+        } else {
+            res.json([]);
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'Error al obtener usuarios' });
+    }
+});
+
+app.post('/api/usuarios', (req, res) => {
+    try {
+        const usersPath = path.join(__dirname, 'usuarios.json');
+        fs.writeFileSync(usersPath, JSON.stringify(req.body, null, 2));
+        res.json({ success: true });
+    } catch (error) {
+        res.status(500).json({ error: 'Error al guardar usuarios' });
+    }
+});
+
+app.post('/api/login', async (req, res) => {
+    const { user, pass } = req.body;
+    try {
+        const pathUsuarios = path.join(__dirname, 'usuarios.json');
+        const usuarios = JSON.parse(fs.readFileSync(pathUsuarios, 'utf8'));
+        const cuenta = usuarios.find(u => u.user === user && u.pass === pass);
+        
+        if (cuenta) {
+            res.json({ success: true, user: cuenta });
+        } else {
+            res.status(401).json({ success: false, message: 'Usuario o clave incorrectos' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'Error en el servidor' });
+    }
+});
+
+// 5. Eliminar Producto
 app.delete('/api/productos/:id', async (req, res) => {
     try {
         if (mongoose.connection.readyState === 1) {
             await Producto.findByIdAndDelete(req.params.id);
         } else {
             const dbPath = path.join(__dirname, 'database.json');
-            let p = fs.existsSync(dbPath) ? JSON.parse(fs.readFileSync(dbPath, 'utf8')) : [];
-            p = p.filter(x => x.codigo !== req.params.id);
-            fs.writeFileSync(dbPath, JSON.stringify(p, null, 2));
+            let productos = JSON.parse(fs.readFileSync(dbPath, 'utf8'));
+            // En JSON usamos el índice como ID temporal o el código
+            productos = productos.filter(p => p.codigo !== req.params.id);
+            fs.writeFileSync(dbPath, JSON.stringify(productos, null, 2));
         }
         res.json({ success: true });
-    } catch (e) { res.status(500).json({ error: 'Error' }); }
+    } catch (error) {
+        res.status(500).json({ error: 'Error al eliminar' });
+    }
 });
 
-// 2. Configuración
-app.get('/api/config', async (req, res) => {
+// 6. Pedidos - Obtener todos
+app.get('/api/pedidos', (req, res) => {
     try {
-        let config = { categorias: [], unidades: [], empresa: {} };
-        if (mongoose.connection.readyState === 1) {
-            const data = await Configuracion.findOne().lean();
-            if (data) config = { ...config, ...data };
+        const pedidosPath = path.join(__dirname, 'pedidos.json');
+        if (fs.existsSync(pedidosPath)) {
+            const data = JSON.parse(fs.readFileSync(pedidosPath, 'utf8'));
+            res.json(data);
         } else {
-            const p = path.join(__dirname, 'config.json');
-            if (fs.existsSync(p)) config = { ...config, ...JSON.parse(fs.readFileSync(p, 'utf8')) };
+            res.json([]);
         }
-        res.json(config);
-    } catch (e) { res.status(500).json({ error: 'Error' }); }
+    } catch (error) {
+        res.status(500).json({ error: 'Error al obtener pedidos' });
+    }
 });
 
-app.post('/api/config', async (req, res) => {
-    try {
-        if (mongoose.connection.readyState === 1) {
-            await Configuracion.deleteMany({});
-            await Configuracion.create(req.body);
-        } else {
-            fs.writeFileSync(path.join(__dirname, 'config.json'), JSON.stringify(req.body, null, 2));
-        }
-        res.json({ success: true });
-    } catch (e) { res.status(500).json({ error: 'Error' }); }
-});
-
-// 3. Usuarios
-app.get('/api/usuarios', async (req, res) => {
-    try {
-        if (mongoose.connection.readyState === 1) {
-            res.json(await Usuario.find().lean());
-        } else {
-            const p = path.join(__dirname, 'usuarios.json');
-            res.json(fs.existsSync(p) ? JSON.parse(fs.readFileSync(p, 'utf8')) : []);
-        }
-    } catch (e) { res.status(500).json({ error: 'Error' }); }
-});
-
-app.post('/api/usuarios', async (req, res) => {
-    try {
-        if (mongoose.connection.readyState === 1) {
-            await Usuario.deleteMany({});
-            await Usuario.insertMany(req.body);
-        } else {
-            fs.writeFileSync(path.join(__dirname, 'usuarios.json'), JSON.stringify(req.body, null, 2));
-        }
-        res.json({ success: true });
-    } catch (e) { res.status(500).json({ error: 'Error' }); }
-});
-
-app.post('/api/login', async (req, res) => {
-    const { user, pass } = req.body;
-    try {
-        let cuenta;
-        if (mongoose.connection.readyState === 1) {
-            cuenta = await Usuario.findOne({ user, pass }).lean();
-        } else {
-            const p = path.join(__dirname, 'usuarios.json');
-            const data = fs.existsSync(p) ? JSON.parse(fs.readFileSync(p, 'utf8')) : [];
-            cuenta = data.find(u => u.user === user && u.pass === pass);
-        }
-        if (cuenta) res.json({ success: true, user: cuenta });
-        else res.status(401).json({ success: false, message: 'Usuario o clave incorrectos' });
-    } catch (e) { res.status(500).json({ error: 'Error' }); }
-});
-
-// 4. Pedidos
-app.get('/api/pedidos', async (req, res) => {
-    try {
-        if (mongoose.connection.readyState === 1) res.json(await Pedido.find().lean());
-        else {
-            const p = path.join(__dirname, 'pedidos.json');
-            res.json(fs.existsSync(p) ? JSON.parse(fs.readFileSync(p, 'utf8')) : []);
-        }
-    } catch (e) { res.status(500).json({ error: 'Error' }); }
-});
-
+// 7. Pedidos - Guardar uno nuevo
 app.post('/api/pedidos', async (req, res) => {
     const pedido = req.body;
     try {
+        const pedidosPath = path.join(__dirname, 'pedidos.json');
+        let pedidos = [];
+        if (fs.existsSync(pedidosPath)) {
+            pedidos = JSON.parse(fs.readFileSync(pedidosPath, 'utf8'));
+        }
+        pedidos.push(pedido);
+        fs.writeFileSync(pedidosPath, JSON.stringify(pedidos, null, 2));
+
+        // Actualizar existencias de productos si es necesario
+        const dbPath = path.join(__dirname, 'database.json');
+        if (fs.existsSync(dbPath)) {
+            let productos = JSON.parse(fs.readFileSync(dbPath, 'utf8'));
+            pedido.items.forEach(item => {
+                const prod = productos.find(p => p.codigo === item.referencia);
+                if (prod) {
+                    prod.existencia = (parseInt(prod.existencia) || 0) - (parseInt(item.cantidad) || 0);
+                }
+            });
+            fs.writeFileSync(dbPath, JSON.stringify(productos, null, 2));
+        }
+
+        // Si se usa MongoDB, también actualizar allí
         if (mongoose.connection.readyState === 1) {
-            await Pedido.create(pedido);
             for (const item of pedido.items) {
-                await Producto.findOneAndUpdate({ codigo: item.referencia }, { $inc: { existencia: -(parseInt(item.cantidad) || 0) } });
-            }
-        } else {
-            const p = path.join(__dirname, 'pedidos.json');
-            let data = fs.existsSync(p) ? JSON.parse(fs.readFileSync(p, 'utf8')) : [];
-            data.push(pedido);
-            fs.writeFileSync(p, JSON.stringify(data, null, 2));
-            const dbPath = path.join(__dirname, 'database.json');
-            if (fs.existsSync(dbPath)) {
-                let pList = JSON.parse(fs.readFileSync(dbPath, 'utf8'));
-                pedido.items.forEach(i => {
-                    const found = pList.find(x => x.codigo === i.referencia);
-                    if (found) found.existencia = (parseInt(found.existencia)||0) - (parseInt(i.cantidad)||0);
-                });
-                fs.writeFileSync(dbPath, JSON.stringify(pList, null, 2));
+                await Producto.findOneAndUpdate(
+                    { codigo: item.referencia },
+                    { $inc: { existencia: -(parseInt(item.cantidad) || 0) } }
+                );
             }
         }
+
         res.json({ success: true });
-    } catch (e) { res.status(500).json({ error: 'Error' }); }
+    } catch (error) {
+        res.status(500).json({ error: 'Error al guardar pedido' });
+    }
 });
 
-// 5. Reportes
-app.get('/api/reportes', async (req, res) => {
+// 8. Historial de Reportes
+app.get('/api/reportes', (req, res) => {
     try {
-        if (mongoose.connection.readyState === 1) res.json(await Reporte.find().lean());
-        else {
-            const p = path.join(__dirname, 'reportes.json');
-            res.json(fs.existsSync(p) ? JSON.parse(fs.readFileSync(p, 'utf8')) : []);
-        }
-    } catch (e) { res.status(500).json({ error: 'Error' }); }
-});
-
-app.post('/api/reportes', async (req, res) => {
-    try {
-        if (mongoose.connection.readyState === 1) {
-            await Reporte.deleteMany({});
-            await Reporte.insertMany(req.body);
+        const repoPath = path.join(__dirname, 'reportes.json');
+        if (fs.existsSync(repoPath)) {
+            const data = JSON.parse(fs.readFileSync(repoPath, 'utf8'));
+            res.json(data);
         } else {
-            fs.writeFileSync(path.join(__dirname, 'reportes.json'), JSON.stringify(req.body, null, 2));
+            res.json([]);
         }
-        res.json({ success: true });
-    } catch (e) { res.status(500).json({ error: 'Error' }); }
+    } catch (error) {
+        res.status(500).json({ error: 'Error al obtener reportes' });
+    }
 });
 
-app.delete('/api/reportes/:id', async (req, res) => {
+app.post('/api/reportes', (req, res) => {
     try {
-        const idToRemove = parseInt(req.params.id);
-        if (mongoose.connection.readyState === 1) {
-            await Reporte.deleteOne({ idReporte: idToRemove });
+        const repoPath = path.join(__dirname, 'reportes.json');
+        fs.writeFileSync(repoPath, JSON.stringify(req.body, null, 2));
+        res.json({ success: true });
+    } catch (error) {
+        res.status(500).json({ error: 'Error al guardar reportes' });
+    }
+});
+
+app.delete('/api/reportes/:id', (req, res) => {
+    try {
+        const repoPath = path.join(__dirname, 'reportes.json');
+        if (fs.existsSync(repoPath)) {
+            let data = JSON.parse(fs.readFileSync(repoPath, 'utf8'));
+            const idToRemove = parseInt(req.params.id);
+            data = data.filter(r => r.idReporte !== idToRemove);
+            fs.writeFileSync(repoPath, JSON.stringify(data, null, 2));
+            res.json({ success: true });
         } else {
-            const p = path.join(__dirname, 'reportes.json');
-            let data = fs.existsSync(p) ? JSON.parse(fs.readFileSync(p, 'utf8')) : [];
-            fs.writeFileSync(p, JSON.stringify(data.filter(r => r.idReporte !== idToRemove), null, 2));
+            res.status(404).json({ error: 'No hay reportes' });
         }
-        res.json({ success: true });
-    } catch (e) { res.status(500).json({ error: 'Error' }); }
+    } catch (error) {
+        res.status(500).json({ error: 'Error al eliminar reporte' });
+    }
 });
 
-// 6. Ingresos
-app.get('/api/ingresos', async (req, res) => {
+// 9. Ingresos
+app.get('/api/ingresos', (req, res) => {
     try {
-        if (mongoose.connection.readyState === 1) res.json(await Ingreso.find().lean());
-        else {
-            const p = path.join(__dirname, 'ingresos.json');
-            res.json(fs.existsSync(p) ? JSON.parse(fs.readFileSync(p, 'utf8')) : []);
-        }
-    } catch (e) { res.status(500).json({ error: 'Error' }); }
-});
-
-app.post('/api/ingresos', async (req, res) => {
-    try {
-        if (mongoose.connection.readyState === 1) {
-            await Ingreso.deleteMany({});
-            await Ingreso.insertMany(req.body);
+        const p = path.join(__dirname, 'ingresos.json');
+        if (fs.existsSync(p)) {
+            res.json(JSON.parse(fs.readFileSync(p, 'utf8')));
         } else {
-            fs.writeFileSync(path.join(__dirname, 'ingresos.json'), JSON.stringify(req.body, null, 2));
+            res.json([]);
         }
+    } catch (error) {
+        res.status(500).json({ error: 'Error al obtener ingresos' });
+    }
+});
+
+app.post('/api/ingresos', (req, res) => {
+    try {
+        const p = path.join(__dirname, 'ingresos.json');
+        fs.writeFileSync(p, JSON.stringify(req.body, null, 2));
         res.json({ success: true });
-    } catch (e) { res.status(500).json({ error: 'Error' }); }
+    } catch (error) {
+        res.status(500).json({ error: 'Error al guardar ingresos' });
+    }
 });
 
-// 7. Egresos
-app.get('/api/egresos', async (req, res) => {
+// 10. Egresos
+app.get('/api/egresos', (req, res) => {
     try {
-        if (mongoose.connection.readyState === 1) res.json(await Egreso.find().lean());
-        else {
-            const p = path.join(__dirname, 'egresos.json');
-            res.json(fs.existsSync(p) ? JSON.parse(fs.readFileSync(p, 'utf8')) : []);
-        }
-    } catch (e) { res.status(500).json({ error: 'Error' }); }
-});
-
-app.post('/api/egresos', async (req, res) => {
-    try {
-        if (mongoose.connection.readyState === 1) {
-            await Egreso.deleteMany({});
-            await Egreso.insertMany(req.body);
+        const p = path.join(__dirname, 'egresos.json');
+        if (fs.existsSync(p)) {
+            res.json(JSON.parse(fs.readFileSync(p, 'utf8')));
         } else {
-            fs.writeFileSync(path.join(__dirname, 'egresos.json'), JSON.stringify(req.body, null, 2));
+            res.json([]);
         }
-        res.json({ success: true });
-    } catch (e) { res.status(500).json({ error: 'Error' }); }
+    } catch (error) {
+        res.status(500).json({ error: 'Error al obtener egresos' });
+    }
 });
 
-// Reiniciar Sistema
-app.post('/api/reset-system', async (req, res) => {
+app.post('/api/egresos', (req, res) => {
     try {
-        if (mongoose.connection.readyState === 1) {
-            await Promise.all([
-                Producto.deleteMany({}),
-                Pedido.deleteMany({}),
-                Reporte.deleteMany({}),
-                Ingreso.deleteMany({}),
-                Egreso.deleteMany({})
-            ]);
-        }
+        const p = path.join(__dirname, 'egresos.json');
+        fs.writeFileSync(p, JSON.stringify(req.body, null, 2));
+        res.json({ success: true });
+    } catch (error) {
+        res.status(500).json({ error: 'Error al guardar egresos' });
+    }
+});
+
+// 11. Reiniciar Sistema (Borrar Todo)
+app.post('/api/reset-system', (req, res) => {
+    try {
         const files = ['database.json', 'ingresos.json', 'egresos.json', 'pedidos.json', 'reportes.json'];
         files.forEach(f => {
             const p = path.join(__dirname, f);
-            if (fs.existsSync(p)) fs.writeFileSync(p, JSON.stringify([], null, 2));
+            if (fs.existsSync(p)) {
+                fs.writeFileSync(p, JSON.stringify([], null, 2));
+            }
         });
         res.json({ success: true });
-    } catch (e) { res.status(500).json({ error: 'Error' }); }
+    } catch (error) {
+        res.status(500).json({ error: 'Error al reiniciar sistema' });
+    }
 });
 
-app.listen(PORT, () => console.log(`Servidor corriendo en el puerto ${PORT}`));
+// Iniciamos el servidor
+app.listen(PORT, () => {
+    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+});

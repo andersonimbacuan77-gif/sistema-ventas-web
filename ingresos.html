@@ -8,724 +8,231 @@
     </script>
 
     <meta charset="UTF-8">
-    <title>SISCONTED - Gestión de Ingresos y Salidas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movimientos - SISCONTED</title>
+    
+    <link rel="stylesheet" href="global.css">
     <style>
-        :root {
-            --primary: #6366f1;
-            --primary-light: #818cf8;
-            --primary-glow: rgba(99, 102, 241, 0.2);
-            --secondary: #0ea5e9;
-            --accent: #38bdf8;
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-            --bg: #0a0b14;
-            --sidebar-bg: #111827;
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --card-hover: rgba(255, 255, 255, 0.06);
-            --border: rgba(255, 255, 255, 0.08);
-            --text: #f3f4f6;
-            --text-muted: #94a3b8;
-        }
-
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Orbitron:wght@500;700&display=swap');
-
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: var(--bg);
-            background-image: 
-                radial-gradient(circle at 10% 10%, rgba(99, 102, 241, 0.05) 0%, transparent 40%),
-                radial-gradient(circle at 90% 90%, rgba(14, 165, 233, 0.03) 0%, transparent 40%);
-            color: var(--text);
-            padding: 40px 60px;
-            margin: 0;
-            min-height: 100vh;
-            overflow-y: auto;
-        }
-
-        h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
-            color: white;
-            letter-spacing: 2px;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+        .main-content { padding: 30px; flex: 1; overflow-y: auto; background: var(--bg); padding-bottom: 50px; }
+        .section-title { font-family: 'Orbitron', sans-serif; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 10px; margin: 40px 0 20px 0; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; }
         
-        h1::before {
-            content: '';
-            width: 8px;
-            height: 32px;
-            background: var(--primary);
-            border-radius: 4px;
-        }
-
-        .section-title {
-            font-family: 'Orbitron', sans-serif;
-            color: var(--primary-light);
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 16px;
-            margin-top: 48px;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            letter-spacing: 1.5px;
-        }
-
-        .search-box {
-            width: 100%;
-            padding: 18px 24px 18px 56px;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            color: white;
-            outline: none;
-            margin-bottom: 24px;
-            box-sizing: border-box;
-            font-size: 1rem;
-            transition: 0.3s;
-        }
+        /* Modal specific styling for this page since it has many fields */
+        .modal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .modal-full { grid-column: 1 / -1; }
         
-        .search-wrapper { position: relative; margin-top: 24px; }
-        .search-wrapper::before {
-            content: '🔍';
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            opacity: 0.5;
-            font-size: 1.2rem;
-            z-index: 1;
+        @media (max-width: 768px) {
+            .main-content { padding: 15px; }
+            .filter-grid { grid-template-columns: 1fr !important; }
         }
-
-        .search-box:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px var(--primary-glow);
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .product-card {
-            background: var(--card-bg);
-            padding: 16px 24px;
-            border-radius: 16px;
-            margin: 12px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid var(--border);
-            transition: 0.2s;
-        }
-        .btn-action {
-            padding: 12px 24px;
-            border-radius: 14px;
-            cursor: pointer;
-            font-weight: 700;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-action::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(255,255,255,0.1), transparent);
-            opacity: 0;
-            transition: 0.3s;
-        }
-
-        .btn-action:hover::after { opacity: 1; }
-
-        .btn-action:hover {
-            transform: translateY(-3px);
-            filter: brightness(1.2);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-        }
-
-        .btn-action:active {
-            transform: translateY(-1px) scale(0.96);
-        }
-
-        .btn-ing { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); border-color: rgba(255, 255, 255, 0.2); }
-        .btn-egr { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3); border-color: rgba(255, 255, 255, 0.2); }
-        .btn-danger { background: rgba(239, 68, 68, 0.05); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); padding: 8px 12px; font-size: 0.65rem; }
-        .btn-finish { background: rgba(255, 255, 255, 0.03); color: var(--text-muted); border: 1px solid var(--border); padding: 8px 12px; font-size: 0.65rem; }
-        
-        .btn-reset {
-            background: rgba(239, 68, 68, 0.03);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            color: var(--danger);
-            padding: 8px 16px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 700;
-            transition: 0.3s;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .btn-reset:hover { 
-            background: var(--danger); 
-            color: white;
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
-        }
-
-        .btn-excel { 
-            background: linear-gradient(135deg, #1D6F42 0%, #165231 100%); 
-            color: white;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .btn-vence { 
-            background: linear-gradient(135deg, var(--primary) 0%, #4f46e5 100%); 
-            color: white;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .btn {
-            padding: 10px 20px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.8rem;
-            transition: 0.3s;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border: 1px solid transparent;
-        }
-        .btn:hover {
-            transform: translateY(-2px);
-            filter: brightness(1.1);
-        }
-        .btn:active {
-            transform: scale(0.95);
-        }
-
-        .btn-back {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-muted);
-            border: 1px solid var(--border);
-        }
-        .btn-back:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border-color: rgba(255,255,255,0.3);
-        }
-        
-        .filter-bar {
-            background: var(--sidebar-bg);
-            padding: 32px;
-            border-radius: 20px;
-            border: 1px solid var(--border);
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-            align-items: end;
-            margin-top: 32px;
-        }
-
-        .filter-bar > div { display: flex; flex-direction: column; gap: 8px; }
-        .filter-bar label {
-            font-size: 0.65rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-        .filter-bar input {
-            background: var(--bg);
-            border: 1px solid var(--border);
-            color: white;
-            padding: 12px;
-            border-radius: 10px;
-            width: 100%;
-            outline: none;
-            transition: 0.2s;
-            box-sizing: border-box;
-        }
-        .filter-bar input:focus { border-color: var(--primary); }
-        
-        .history-table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            background: var(--card-bg);
-            border-radius: 16px;
-            overflow: hidden;
-            margin: 32px auto;
-            border: 1px solid var(--border);
-            max-width: 1400px;
-        }
-        .history-table th {
-            background: rgba(255, 255, 255, 0.02);
-            color: var(--text-muted);
-            padding: 12px 16px;
-            text-align: left;
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 700;
-            border-bottom: 1px solid var(--border);
-        }
-        .history-table td {
-            padding: 10px 16px;
-            border-bottom: 1px solid var(--border);
-            font-size: 0.75rem;
-            color: var(--text);
-        }
-        .history-table tr:last-child td { border-bottom: none; }
-        .history-table tr:hover { background: rgba(255, 255, 255, 0.02); }
-        
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(12px);
-            z-index: 2000;
-        }
-        .modal-content {
-            background: var(--sidebar-bg);
-            width: 95%;
-            max-width: 1100px;
-            margin: 1vh auto;
-            padding: 10px 25px;
-            border-radius: 16px;
-            border: 1px solid var(--border);
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 6px;
-            max-height: 98vh;
-            overflow-y: auto;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.5);
-        }
-
-        .modal-header-title {
-            grid-column: span 3;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1rem;
-            margin-bottom: 5px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .form-group { display: flex; flex-direction: column; gap: 4px; }
-        .form-group label {
-            font-size: 0.65rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            font-weight: 600;
-            margin-bottom: 2px;
-        }
-        .form-group input, .form-group select {
-            padding: 6px 12px;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            color: white;
-            border-radius: 8px;
-            outline: none;
-            transition: 0.2s;
-            width: 100%;
-            box-sizing: border-box;
-            font-size: 0.82rem;
-        }
-        .form-group input:focus { border-color: var(--primary); }
-
-        .total-box {
-            grid-column: span 2;
-            background: rgba(99, 102, 241, 0.05);
-            padding: 10px 32px;
-            text-align: center;
-            border: 1px dashed var(--primary);
-            border-radius: 16px;
-            margin: 5px 0;
-        }
-
-        .span-2 { grid-column: span 2; }
-        .span-3 { grid-column: span 3; }
-
-        /* Estilos específicos para Modal Vencimiento */
-        #modalVencimiento .modal-content {
-            background: linear-gradient(180deg, var(--sidebar-bg) 0%, #0a0b14 100%);
-        }
-        #tabla-vencimiento th {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.65rem;
-            letter-spacing: 1px;
-            background: rgba(255, 255, 255, 0.02);
-            border-bottom: 2px solid var(--border);
-        }
-        #tabla-vencimiento td {
-            font-size: 0.8rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-        }
-        #tabla-vencimiento tr:hover {
-            background: rgba(99, 102, 241, 0.05);
-        }
-
-        /* UTILS */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
-
-        /* --- TOAST NOTIFICATIONS --- */
-        #toast-container {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 20000;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            pointer-events: none;
-        }
-        .toast {
-            background: rgba(15, 23, 42, 0.9);
-            color: white;
-            padding: 12px 20px;
-            border-radius: 12px;
-            border-left: 5px solid var(--primary);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            animation: slideIn 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
-            min-width: 250px;
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border);
-            pointer-events: auto;
-        }
-        .toast.success { border-left-color: var(--success); border-left-width: 6px; }
-        .toast.error { border-left-color: var(--danger); border-left-width: 6px; }
-        .toast.warning { border-left-color: var(--warning); border-left-width: 6px; }
-        
-        @keyframes slideIn {
-            from { transform: translateX(120%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        @keyframes fadeOut {
-            from { transform: translateX(0); opacity: 1; }
-            to { transform: translateX(120%); opacity: 0; }
-        }
-
-        /* --- MODAL CONFIRM --- */
-        #modalConfirm {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(8px);
-            z-index: 10000;
-            justify-content: center;
-            align-items: center;
-        }
-        .confirm-content {
-            background: var(--sidebar-bg);
-            border: 1px solid var(--primary);
-            padding: 30px;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 400px;
-            text-align: center;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 20px var(--primary-glow);
-            animation: zoomIn 0.3s ease;
-        }
-        .confirm-content h3 { font-family: 'Orbitron', sans-serif; margin-bottom: 15px; color: white; }
-        .confirm-content p { color: var(--text-muted); margin-bottom: 25px; font-size: 0.9rem; }
-        .confirm-btns { display: flex; gap: 15px; justify-content: center; }
-        .btn-confirm { padding: 10px 20px; border-radius: 10px; border: none; font-weight: 700; cursor: pointer; transition: 0.3s; text-transform: uppercase; font-size: 0.75rem; }
-        .btn-yes { background: var(--primary); color: white; flex: 1; }
-        .btn-no { background: rgba(255,255,255,0.05); color: white; border: 1px solid var(--border); flex: 1; }
-        .btn-yes:hover { filter: brightness(1.2); transform: scale(1.05); }
-        .btn-no:hover { background: rgba(255,255,255,0.1); }
-        @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     </style>
 </head>
 <body>
+    <div class="menu-toggle" onclick="UI.toggleSidebar()">☰</div>
 
-<div id="modalConfirm">
-    <div class="confirm-content">
-        <h3 id="confirm-title">¿ESTÁS SEGURO?</h3>
-        <p id="confirm-msg">Esta acción no se puede deshacer.</p>
-        <div class="confirm-btns">
-            <button id="confirm-btn-yes" class="btn-confirm btn-yes">SÍ, CONTINUAR</button>
-            <button onclick="cerrarConfirmacion()" class="btn-confirm btn-no">CANCELAR</button>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">🔄</div>
+            <div class="brand-name">SISCONTED</div>
         </div>
-    </div>
-</div>
-
-    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px;">
-        <div>
-            <h1>Gestión de Movimientos</h1>
-            <p style="color: var(--text-muted); margin: 8px 0 24px 0; font-size: 0.9rem;">Entradas (Recepción Técnica) y Salidas de inventario</p>
-            <button onclick="reiniciarExistencias()" class="btn-reset">⚠️ REINICIAR SISTEMA (BORRADO TOTAL)</button>
-        </div>
-        <div style="display: flex; gap: 12px; align-items: center;">
-            <button onclick="abrirAlertaVencimiento()" class="btn-action btn-vence"><span>📅</span> ALERTAS VENCIMIENTO</button>
-            <a href="inventario.html" class="btn" style="background: rgba(99, 102, 241, 0.1); color: var(--primary-light); border-color: rgba(99, 102, 241, 0.2);">📦 VER INVENTARIO</a>
-            <a href="index.html" class="btn-back btn">← INICIO</a>
-        </div>
+        <nav>
+            <a href="index.html">🏠 Inventario Local</a>
+            <a href="admin.html">📊 Dashboard Ventas</a>
+            <a href="inventario.html">📦 Inventario Global</a>
+            <a href="reportes.html">📂 Reportes</a>
+            <a href="config.html">⚙️ Configuración</a>
+            <a href="#" onclick="cerrarSesion()" class="btn-logout" style="margin-top:20px; border:1px solid rgba(239,68,68,0.3); color:#f87171;">🚪 Salir</a>
+        </nav>
     </div>
 
-    <h2 class="section-title">1. Operación de Stock</h2>
-    <div class="search-wrapper">
-        <input type="text" id="buscador" class="search-box" placeholder="Escanee código de barras o busque nombre del producto..." onkeyup="buscar()" autofocus>
-    </div>
-    <div id="resultados"></div>
+    <div class="main-content">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; flex-wrap: wrap; gap: 20px;">
+            <div>
+                <h1 style="font-family: 'Orbitron', sans-serif; font-size: 1.5rem; margin: 0; color:var(--accent);">GESTIÓN DE MOVIMIENTOS</h1>
+                <p style="margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.85rem;">Entradas técnicas y salidas de almacén</p>
+            </div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <button onclick="abrirAlertaVencimiento()" class="btn btn-secondary btn-sm">📅 Alertas Vence</button>
+                <button onclick="reiniciarExistencias()" class="btn btn-danger btn-sm">⚠️ Borrado Total</button>
+            </div>
+        </div>
 
+    <div style="margin-bottom: 25px;">
+        <input type="text" id="buscador" class="form-control" placeholder="🔍 Escanee código o busque por nombre..." onkeyup="buscar()" autofocus>
+    </div>
+    <div id="resultados" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px;"></div>
+
+    <!-- Modal Vencimientos -->
     <div id="modalVencimiento" class="modal">
-        <div class="modal-content" style="max-width: 1100px;">
-            <div class="modal-header-title" style="color: var(--primary-light);">
-                <span>📅</span> PRODUCTOS PRÓXIMOS A VENCER
+        <div class="modal-content" style="max-width: 1000px;">
+            <h3 style="font-family:'Orbitron'; color:var(--accent); margin-bottom:20px;">📅 ALERTAS DE VENCIMIENTO</h3>
+            
+            <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px;">
+                <div style="flex: 1; min-width: 120px;">
+                    <label class="label-small">Meses Máx.</label>
+                    <input type="number" id="v-meses" class="form-control" value="3">
+                </div>
+                <div style="flex: 1; min-width: 120px;">
+                    <label class="label-small">Días Máx.</label>
+                    <input type="number" id="v-dias" class="form-control" value="0">
+                </div>
+                <div style="display: flex; gap: 10px; align-items: flex-end;">
+                    <button onclick="calcularVencimientos()" class="btn btn-primary btn-sm">🔍 Consultar</button>
+                    <button onclick="exportarExcelVencimiento()" class="btn btn-secondary btn-sm">📊 Excel</button>
+                </div>
             </div>
             
-            <div class="filter-bar span-3" style="margin-top: 0; padding: 20px; background: rgba(0,0,0,0.2); border-radius: 16px; border: 1px solid var(--border); display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); align-items: end; gap: 20px;">
-                <div class="form-group">
-                    <label style="color: var(--primary-light); font-weight: 700;">Meses Máximos</label>
-                    <input type="number" id="v-meses" value="3" style="font-family: 'Orbitron', sans-serif; text-align: center;">
-                </div>
-                <div class="form-group">
-                    <label style="color: var(--primary-light); font-weight: 700;">Días Máximos</label>
-                    <input type="number" id="v-dias" value="0" style="font-family: 'Orbitron', sans-serif; text-align: center;">
-                </div>
-                <div style="display: flex; gap: 10px; grid-column: span 1;">
-                    <button onclick="calcularVencimientos()" class="btn-action btn-vence" style="flex: 1; height: 42px;">🔍 CONSULTAR</button>
-                    <button onclick="exportarExcelVencimiento()" class="btn-action btn-excel" style="flex: 1; height: 42px;">📊 REPORTE</button>
-                </div>
-            </div>
-            
-            <div class="span-3">
-                <table class="history-table" id="tabla-vencimiento" style="margin-top: 15px; border-radius: 12px;">
-                    <thead style="background: rgba(255,255,255,0.03);">
+            <div class="table-container" style="max-height: 400px;">
+                <table>
+                    <thead>
                         <tr>
-                            <th style="color: var(--primary-light);">REF/CÓDIGO</th>
-                            <th>PRODUCTO</th>
-                            <th>LOTE</th>
-                            <th>PROVEEDOR</th>
-                            <th>STOCK</th>
-                            <th>VENCIMIENTO</th>
-                            <th>MESES</th>
-                            <th>DÍAS</th>
+                            <th>REF</th>
+                            <th>Producto</th>
+                            <th>Lote</th>
+                            <th>Proveedor</th>
+                            <th align="center">Stock</th>
+                            <th>Vence</th>
+                            <th align="center">M</th>
+                            <th align="center">D</th>
                         </tr>
                     </thead>
                     <tbody id="vencimiento-body">
-                        <tr><td colspan="8" style="text-align:center; padding:40px; color:var(--text-muted);">Ingrese el rango y presione Consultar</td></tr>
+                        <tr><td colspan="8" align="center" style="padding:20px; color:var(--text-muted);">Sin datos</td></tr>
                     </tbody>
                 </table>
             </div>
 
-            <div class="span-3" style="display: flex; justify-content: flex-end; margin-top: 15px;">
-                <button onclick="cerrar()" class="btn-action btn-finish" style="padding: 10px 25px; border-radius: 10px; font-weight: 600;">CERRAR VENTANA</button>
+            <div style="margin-top: 20px; text-align: right;">
+                <button onclick="cerrar()" class="btn btn-secondary">Cerrar</button>
             </div>
         </div>
     </div>
 
+    <!-- Modal Recepción Técnica (Ingreso) -->
     <div id="modalIngreso" class="modal">
-        <div class="modal-content">
-            <div class="modal-header-title" style="color: var(--success);">
-                <span>🟢</span> ACTA DE RECEPCIÓN TÉCNICA
+        <div class="modal-content" style="max-width: 900px; padding: 25px;">
+            <h3 style="font-family:'Orbitron'; color:var(--success); margin-bottom:20px;">🟢 ACTA DE RECEPCIÓN TÉCNICA</h3>
+            
+            <div class="modal-grid">
+                <div class="modal-full">
+                    <label class="label-small">Producto</label>
+                    <input type="text" id="m-nombre" class="form-control" readonly style="background:rgba(255,255,255,0.05);">
+                </div>
+                
+                <div><label class="label-small">Proveedor</label><input type="text" id="m-proveedor" class="form-control"></div>
+                <div><label class="label-small">Laboratorio</label><input type="text" id="m-laboratorio" class="form-control"></div>
+                <div><label class="label-small">Registro INVIMA</label><input type="text" id="m-invima" class="form-control"></div>
+                
+                <div><label class="label-small">Concentración</label><input type="text" id="m-concentracion" class="form-control"></div>
+                <div><label class="label-small">Forma Farmacéutica</label><input type="text" id="m-forma" class="form-control"></div>
+                <div><label class="label-small">Presentación</label><input type="text" id="m-presentacion" class="form-control"></div>
+                
+                <div><label class="label-small">Estado INVIMA</label><input type="text" id="m-est-invima" class="form-control"></div>
+                <div><label class="label-small">Lote</label><input type="text" id="m-lote" class="form-control"></div>
+                <div><label class="label-small">Vencimiento</label><input type="date" id="m-vence" class="form-control"></div>
+                
+                <div><label class="label-small">Cant. Empaques</label><input type="number" id="m-cant-emp" class="form-control"></div>
+                <div><label class="label-small">Cond. Almacen.</label><input type="text" id="m-cond" class="form-control"></div>
+                <div><label class="label-small">N° Muestra</label><input type="text" id="m-muestra" class="form-control"></div>
+                
+                <div><label class="label-small">Cumple Acepta</label><select id="m-acepta" class="form-control"><option>SI</option><option>NO</option></select></div>
+                <div><label class="label-small">Cumple Rechaza</label><select id="m-rechaza" class="form-control"><option>NO</option><option>SI</option></select></div>
+                <div><label class="label-small">Observaciones</label><input type="text" id="m-obs" class="form-control"></div>
+
+                <div class="modal-full" style="background:rgba(99,102,241,0.05); padding:20px; border-radius:15px; border:1px dashed var(--accent); text-align:center; margin-top:10px;">
+                    <label style="color:var(--accent); font-weight:800; display:block; margin-bottom:10px; font-size:0.7rem; text-transform:uppercase;">CANTIDAD TOTAL A SUMAR (UNIDADES)</label>
+                    <input type="number" id="m-total-suma" class="form-control" style="max-width:200px; margin:0 auto; font-size:1.8rem; font-family:'Orbitron'; text-align:center; border-color:var(--accent);">
+                </div>
             </div>
             
-            <div class="form-group span-3">
-                <label>Nombre del Producto</label>
-                <input type="text" id="m-nombre" readonly style="background: rgba(255,255,255,0.02); font-weight: 600;">
-            </div>
-            
-            <div class="form-group"><label>Proveedor</label><input type="text" id="m-proveedor"></div>
-            <div class="form-group"><label>Laboratorio</label><input type="text" id="m-laboratorio"></div>
-            <div class="form-group"><label>Registro INVIMA</label><input type="text" id="m-invima"></div>
-            
-            <div class="form-group"><label>Concentración</label><input type="text" id="m-concentracion"></div>
-            <div class="form-group"><label>Forma Farmacéutica</label><input type="text" id="m-forma"></div>
-            <div class="form-group"><label>Presentación Comercial</label><input type="text" id="m-presentacion"></div>
-            
-            <div class="form-group"><label>Estado Reg. INVIMA</label><input type="text" id="m-est-invima"></div>
-            <div class="form-group"><label>Número Lote</label><input type="text" id="m-lote"></div>
-            <div class="form-group"><label>Fecha Vencimiento</label><input type="date" id="m-vence"></div>
-            
-            <div class="form-group"><label>Cant. Empaques</label><input type="number" id="m-cant-emp"></div>
-            <div class="form-group"><label>Cond. Almacenamiento</label><input type="text" id="m-cond"></div>
-            <div class="form-group"><label>N° Muestra</label><input type="text" id="m-muestra"></div>
-            
-            <div class="form-group"><label>Def. Críticos</label><input type="text" id="m-crit"></div>
-            <div class="form-group"><label>Def. Mayores</label><input type="text" id="m-may"></div>
-            <div class="form-group"><label>Def. Menores</label><input type="text" id="m-men"></div>
-            
-            <div class="form-group">
-                <label>Cumple Acepta</label>
-                <select id="m-acepta"><option value="SI">SI</option><option value="NO">NO</option></select>
-            </div>
-            <div class="form-group">
-                <label>Cumple Rechaza</label>
-                <select id="m-rechaza"><option value="NO">NO</option><option value="SI">SI</option></select>
-            </div>
-            <div class="form-group">
-                <label>Observaciones</label>
-                <input type="text" id="m-obs">
-            </div>
-            
-            <div class="total-box span-3">
-                <label style="color: var(--primary-light); font-weight: 700; display: block; margin-bottom: 5px; font-size: 0.65rem; text-transform: uppercase;">CANTIDAD TOTAL A SUMAR (UNIDADES)</label>
-                <input type="number" id="m-total-suma" style="width: 180px; font-size: 1.8rem; text-align: center; border: 2px solid var(--primary); background: var(--bg); color: white; border-radius: 10px; font-family: 'Orbitron', sans-serif; padding: 2px;">
-            </div>
-            
-            <div class="span-3" style="display: flex; gap: 16px; margin-top: 5px;">
-                <button onclick="guardarIngreso()" class="btn-action btn-ing" style="flex: 2; height: 45px;">💾 GUARDAR RECEPCIÓN TÉCNICA</button>
-                <button onclick="cerrar()" class="btn-action btn-finish" style="flex: 1; height: 45px;">CANCELAR</button>
+            <div style="margin-top:25px; display:flex; gap:15px;">
+                <button onclick="guardarIngreso()" class="btn btn-primary" style="flex:2;">💾 GUARDAR RECEPCIÓN</button>
+                <button onclick="cerrar()" class="btn btn-secondary" style="flex:1;">CANCELAR</button>
             </div>
         </div>
     </div>
 
+    <!-- Modal Salida (Egreso) -->
     <div id="modalEgreso" class="modal">
-        <div class="modal-content" style="max-width: 500px;">
-            <div class="modal-header-title" style="color: var(--warning);">
-                <span>🔴</span> REGISTRAR SALIDA
+        <div class="modal-content" style="max-width: 450px; padding: 30px;">
+            <h3 style="font-family:'Orbitron'; color:var(--danger); margin-bottom:20px;">🔴 REGISTRAR SALIDA</h3>
+            
+            <div style="margin-bottom:15px;">
+                <label class="label-small">Producto</label>
+                <input type="text" id="e-nombre" class="form-control" readonly style="background:rgba(255,255,255,0.05);">
             </div>
-            <div class="form-group span-2">
-                <label>Producto</label>
-                <input type="text" id="e-nombre" readonly style="background: rgba(255,255,255,0.02);">
+            
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-bottom:15px;">
+                <div>
+                    <label class="label-small">Stock Actual</label>
+                    <input type="text" id="e-stock-act" class="form-control" readonly style="color:var(--accent); font-weight:800; text-align:center; font-size:1.2rem;">
+                </div>
+                <div>
+                    <label class="label-small">Cantidad a Salir</label>
+                    <input type="number" id="e-cantidad" class="form-control" style="border-color:var(--danger); text-align:center; font-size:1.2rem;">
+                </div>
             </div>
-            <div class="form-group">
-                <label>Stock Actual</label>
-                <input type="text" id="e-stock-act" readonly style="color: var(--primary-light); font-weight: 700; text-align: center; font-size: 1.2rem;">
-            </div>
-            <div class="form-group">
-                <label>Cantidad a Egresar</label>
-                <input type="number" id="e-cantidad" style="border-color: var(--warning); text-align: center; font-size: 1.2rem;">
-            </div>
-            <div class="form-group span-2">
-                <label>Motivo de la Salida</label>
-                <select id="e-motivo">
+
+            <div style="margin-bottom:25px;">
+                <label class="label-small">Motivo</label>
+                <select id="e-motivo" class="form-control">
                     <option>Avería / Daño</option>
                     <option>Vencimiento</option>
                     <option>Uso Interno</option>
                     <option>Ajuste de Inventario</option>
                 </select>
             </div>
-            <div class="span-2" style="display: flex; gap: 12px; margin-top: 16px;">
-                <button onclick="guardarEgreso()" class="btn-action btn-egr" style="flex: 2; padding: 16px;">CONFIRMAR SALIDA</button>
-                <button onclick="cerrar()" class="btn-action" style="flex: 1; background: var(--card-bg); color: white; border: 1px solid var(--border);">CANCELAR</button>
+
+            <div style="display:flex; gap:12px;">
+                <button onclick="guardarEgreso()" class="btn btn-danger" style="flex:2;">CONFIRMAR SALIDA</button>
+                <button onclick="cerrar()" class="btn btn-secondary" style="flex:1;">CANCELAR</button>
             </div>
         </div>
     </div>
 
-    <h2 class="section-title">2. Historial de Movimientos y Filtros</h2>
+    <h2 class="section-title">2. Historial de Movimientos</h2>
     
-    <div class="filter-bar" id="contenedor-filtros">
-        <div><label>Fecha Inicial:</label><input type="date" id="f-inicio"></div>
-        <div><label>Fecha Final:</label><input type="date" id="f-fin"></div>
-        <div><label>Referencia (REF):</label><input type="text" id="f-ref" placeholder="Filtrar por REF..."></div>
-        <div><label>Proveedor:</label><input type="text" id="f-prov" placeholder="Buscar por proveedor..."></div>
-        <div><label>Lote:</label><input type="text" id="f-lote" placeholder="Buscar por lote..."></div>
-        <div style="display: flex; flex-direction: row; gap: 12px; height: 48px;">
-            <button onclick="filtrarHistorial()" class="btn-action btn-vence" style="flex: 1; font-size:0.75rem;">APLICAR FILTROS</button>
-            <button onclick="generarExcel()" class="btn-action btn-excel" style="flex: 1; font-size:0.75rem;">📊 EXCEL INGRESOS</button>
-            <button onclick="generarExcelEgresos()" class="btn-action btn-del" style="flex: 1; background:var(--danger); color:white; font-size:0.75rem;">📊 EXCEL EGRESOS</button>
+    <div style="background: var(--card-bg); padding: 25px; border-radius: 15px; border: 1px solid var(--border); margin-bottom: 30px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; align-items: end;">
+            <div><label class="label-small">Desde</label><input type="date" id="f-inicio" class="form-control"></div>
+            <div><label class="label-small">Hasta</label><input type="date" id="f-fin" class="form-control"></div>
+            <div><label class="label-small">Referencia</label><input type="text" id="f-ref" class="form-control" placeholder="Buscar REF..."></div>
+            <div><label class="label-small">Proveedor</label><input type="text" id="f-prov" class="form-control" placeholder="Buscar Proveedor..."></div>
+            <div><label class="label-small">Lote</label><input type="text" id="f-lote" class="form-control" placeholder="Buscar Lote..."></div>
+            <div style="display: flex; gap: 8px;">
+                <button onclick="filtrarHistorial()" class="btn btn-primary btn-sm" style="flex:1;">🔍 Filtrar</button>
+            </div>
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: 15px; justify-content: flex-end; flex-wrap: wrap;">
+            <button onclick="generarExcel()" class="btn btn-secondary btn-sm">📊 Excel Ingresos</button>
+            <button onclick="generarExcelEgresos()" class="btn btn-danger btn-sm">📊 Excel Salidas</button>
         </div>
     </div>
 
-    <div style="overflow-x: auto;">
-        <table class="history-table">
+    <div class="table-container">
+        <table>
             <thead>
                 <tr>
                     <th>Operación</th>
                     <th>Fecha y Hora</th>
                     <th>REF</th>
                     <th>Producto</th>
-                    <th>U. Medida</th> 
+                    <th>UM</th> 
                     <th>Proveedor</th>
                     <th>Lote</th>
-                    <th>Vencimiento</th>
-                    <th>Cant.</th>
-                    <th style="text-align: right;">Acciones</th>
+                    <th>Vence</th>
+                    <th align="center">Cant.</th>
+                    <th align="right">Acciones</th>
                 </tr>
             </thead>
             <tbody id="historial-body"></tbody>
         </table>
     </div>
+</div>
 
     <script src="api.js"></script>
+    <script src="ui-helpers.js"></script>
     <script>
-        async function obtenerHeaderEmpresa(cols) {
-            const config = await API.getConfig();
-            let emp = { nombre: 'MI EMPRESA', nit: '', direccion: '', telefono: '', logoBase64: '' };
-            if (config && config.empresa) emp = { ...emp, ...config.empresa };
-            
-            let logoHtml = '';
-            if (emp.logoBase64) {
-                // Usamos cid:logo para que MHT lo reconozca
-                // Reducimos tamaño para que encuadre perfectamente en 3 filas
-                logoHtml = `<th rowspan="3" width="80" style="text-align:center; vertical-align:middle; background:white; border:1px solid #ccc; height:60px;"><img src="cid:logo" width="60" height="60" style="display:block; margin:auto;"></th>`;
-                cols = cols - 1;
-            }
-
-            const headerHtml = `
-                <tr height="20">${logoHtml}<th colspan="${cols}" style="font-size: 15px; font-weight: bold; color: #0f172a; text-align: center; height: 20px;">${emp.nombre.toUpperCase()}</th></tr>
-                <tr height="20"><th colspan="${cols}" style="font-size: 14px; color: #334155; text-align: center; height: 20px;">NIT: ${emp.nit} | TEL: ${emp.telefono}</th></tr>
-                <tr height="20"><th colspan="${cols}" style="font-size: 14px; color: #334155; text-align: center; border-bottom: 2px solid #94a3b8; height: 20px;">${emp.direccion}</th></tr>
-            `;
-            return { headerHtml, logoBase64: emp.logoBase64 };
-        }
-
-        let selIdx = null;
         let pActual = null;
-
-        function showToast(msg, type = 'info') {
-            let container = document.getElementById('toast-container');
-            if (!container) {
-                container = document.createElement('div');
-                container.id = 'toast-container';
-                document.body.appendChild(container);
-            }
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            
-            let icon = 'ℹ️';
-            if(type === 'success') icon = '✅';
-            if(type === 'error') icon = '❌';
-            if(type === 'warning') icon = '⚠️';
-
-            toast.innerHTML = `<div>${icon}</div> <div>${msg}</div>`;
-            container.appendChild(toast);
-
-            setTimeout(() => {
-                toast.style.animation = 'fadeOut 0.4s ease forwards';
-                setTimeout(() => toast.remove(), 400);
-            }, 3500);
-        }
-
-        let confirmCallback = null;
-        function abrirConfirmacion(titulo, msj, callback) {
-            document.getElementById('confirm-title').innerText = titulo;
-            document.getElementById('confirm-msg').innerText = msj;
-            confirmCallback = callback;
-            document.getElementById('modalConfirm').style.display = 'flex';
-        }
-        function cerrarConfirmacion() {
-            document.getElementById('modalConfirm').style.display = 'none';
-            confirmCallback = null;
-        }
-        document.getElementById('confirm-btn-yes').onclick = function() {
-            if(confirmCallback) confirmCallback();
-            cerrarConfirmacion();
-        };
 
         function abrirAlertaVencimiento() {
             document.getElementById('modalVencimiento').style.display = 'block';
@@ -733,109 +240,78 @@
         }
 
         async function calcularVencimientos() {
-            const tbody = document.getElementById('vencimiento-body');
-            const mesesMax = parseInt(document.getElementById('v-meses').value) || 0;
-            const diasMax = parseInt(document.getElementById('v-dias').value) || 0;
-            const totalDiasFiltro = (mesesMax * 30) + diasMax;
-
             try {
-                const ingresos = await API.getIngresos();
+                const mesesMax = parseInt(document.getElementById('v-meses').value) || 0;
+                const diasMax = parseInt(document.getElementById('v-dias').value) || 0;
+                const ings = await API.getIngresos();
                 const productos = await API.getProductos();
+                const body = document.getElementById('vencimiento-body');
+                body.innerHTML = "";
+
                 const hoy = new Date();
+                let results = [];
 
-                tbody.innerHTML = "";
-                let resultados = [];
-
-                ingresos.forEach(m => {
+                ings.forEach(m => {
                     if (m.tipo === 'INGRESO' && m.vencimiento && m.estado !== 'agotado') {
-                        const fVence = new Date(m.vencimiento);
-                        const diffTime = fVence - hoy;
+                        const vDate = new Date(m.vencimiento);
+                        const diffTime = vDate - hoy;
                         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                        const diffMonths = (vDate.getFullYear() - hoy.getFullYear()) * 12 + (vDate.getMonth() - hoy.getMonth());
 
-                        if (diffDays <= totalDiasFiltro && diffDays > -365) {
-                            const pInfo = productos.find(p => p.codigo === m.ref);
-                            const stockActual = pInfo ? pInfo.existencia : 0;
+                        if ((mesesMax > 0 && diffMonths <= mesesMax) || (diasMax > 0 && diffDays <= diasMax)) {
+                            const p = productos.find(x => x.codigo === m.ref);
                             
-                            if(stockActual > 0) {
-                                resultados.push({
+                            // Solo mostrar si hay stock (o si es un registro de entrada relevante)
+                            if (p && (p.existencia > 0)) {
+                                results.push({
                                     ref: m.ref,
                                     nombre: m.nombre,
+                                    unidad: p.unidad,
                                     lote: m.lote,
                                     proveedor: m.proveedor,
-                                    stock: stockActual,
+                                    stock: p.existencia, 
                                     vence: m.vencimiento,
-                                    meses: Math.floor(diffDays / 30),
-                                    dias: diffDays % 30,
-                                    diasTotales: diffDays,
-                                    unidad: pInfo ? pInfo.unidad : '-'
+                                    meses: diffMonths,
+                                    dias: diffDays
                                 });
                             }
                         }
                     }
                 });
 
-                if (resultados.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:20px;">No hay productos pendientes de vencer en este rango.</td></tr>';
+                window.datosVencimientoUltimos = results;
+                if (results.length === 0) {
+                    body.innerHTML = '<tr><td colspan="8" align="center" style="padding:20px; color:var(--text-muted);">No hay productos próximos a vencer</td></tr>';
                     return;
                 }
 
-                resultados.sort((a,b) => a.diasTotales - b.diasTotales);
-
-                resultados.forEach(r => {
-                    const color = r.diasTotales < 30 ? 'var(--danger)' : (r.diasTotales < 90 ? 'var(--warning)' : 'var(--success)');
-                    tbody.innerHTML += `
-                        <tr>
-                            <td>'${r.ref}</td>
-                            <td>${r.nombre}</td>
-                            <td>${r.lote}</td>
-                            <td>${r.proveedor}</td>
-                            <td style="text-align:center"><b>${r.stock}</b></td>
-                            <td style="color:${color}; font-weight:bold">${r.vence}</td>
-                            <td style="text-align:center">${r.meses}</td>
-                            <td style="text-align:center">${r.dias}</td>
-                        </tr>`;
+                results.sort((a,b) => a.dias - b.dias).forEach(r => {
+                    const color = r.dias < 30 ? '#f87171' : (r.dias < 90 ? '#fbbf24' : '#34d399');
+                    body.innerHTML += `<tr>
+                        <td><code>${r.ref}</code></td>
+                        <td>${r.nombre}</td>
+                        <td><span style="border:1px solid var(--border); padding:2px 6px; border-radius:4px; font-size:0.7rem;">${r.lote}</span></td>
+                        <td style="font-size:0.75rem;">${r.proveedor}</td>
+                        <td align="center"><b>${r.stock}</b></td>
+                        <td style="color:${color}; font-weight:600;">${r.vence}</td>
+                        <td align="center">${r.meses}</td>
+                        <td align="center">${r.dias}</td>
+                    </tr>`;
                 });
-                window.datosVencimientoUltimos = resultados;
-            } catch (e) { console.error(e); }
+            } catch(e) { console.error(e); UI.showToast("Error al calcular vencimientos", "error"); }
         }
 
         async function exportarExcelVencimiento() {
-            if (!window.datosVencimientoUltimos || window.datosVencimientoUltimos.length === 0) return alert("Consulte primero para exportar.");
+            if (!window.datosVencimientoUltimos || window.datosVencimientoUltimos.length === 0) return UI.showToast("Consulte primero", "warning");
             
-            const { headerHtml, logoBase64 } = await obtenerHeaderEmpresa(9);
-
-            let html = `<table border="1">
-                ${headerHtml}
-                <tr>
-                    <th colspan="9" style="background-color: #7c3aed; color: white; height:30px;">REPORTE DE PRODUCTOS PRÓXIMOS A VENCER - SISCONTED</th>
-                </tr>
-                <tr>
-                    <th style="background-color: #1e293b; color: white;">REF/CÓDIGO</th>
-                    <th style="background-color: #1e293b; color: white;">PRODUCTO</th>
-                    <th style="background-color: #1e293b; color: white;">UNIDAD DE MEDIDA</th>
-                    <th style="background-color: #1e293b; color: white;">LOTE</th>
-                    <th style="background-color: #1e293b; color: white;">PROVEEDOR</th>
-                    <th style="background-color: #1e293b; color: white;">STOCK ACTUAL</th>
-                    <th style="background-color: #1e293b; color: white;">FECHA VENCIMIENTO</th>
-                    <th style="background-color: #1e293b; color: white;">MESES REST.</th>
-                    <th style="background-color: #1e293b; color: white;">DÍAS REST.</th>
-                </tr>`;
+            const { headerHtml, logoBase64 } = await API.getExcelHeader(9);
+            let html = `<table border="1">${headerHtml}<tr><th colspan="9" style="background-color: #7c3aed; color: white;">REPORTE DE VENCIMIENTOS</th></tr>
+                <tr><th>REF</th><th>PRODUCTO</th><th>UM</th><th>LOTE</th><th>PROVEEDOR</th><th>STOCK</th><th>VENCE</th><th>MESES</th><th>DIAS</th></tr>`;
             
             window.datosVencimientoUltimos.forEach(r => {
-                html += `<tr style="height:20px;">
-                    <td>'${r.ref}</td>
-                    <td>${r.nombre}</td>
-                    <td>${r.unidad}</td>
-                    <td>${r.lote}</td>
-                    <td>${r.proveedor}</td>
-                    <td align="center">${r.stock}</td>
-                    <td>${r.vence}</td>
-                    <td align="center">${r.meses}</td>
-                    <td align="center">${r.dias}</td>
-                </tr>`;
+                html += `<tr><td>'${r.ref}</td><td>${r.nombre}</td><td>${r.unidad}</td><td>${r.lote}</td><td>${r.proveedor}</td><td align="center">${r.stock}</td><td>${r.vence}</td><td align="center">${r.meses}</td><td align="center">${r.dias}</td></tr>`;
             });
             html += `</table>`;
-            
             API.descargarExcelMHT(html, `Alerta_Vencimientos_${API.getFechaLocal()}`, logoBase64);
         }
 
@@ -847,9 +323,19 @@
                 res.innerHTML = "";
                 if(!txt) return;
 
-                prods.forEach((p, i) => {
+                prods.forEach(p => {
                     if(p.nombre.toLowerCase().includes(txt) || p.codigo.toLowerCase().includes(txt)) {
-                        res.innerHTML += `<div class="product-card"><div><b>${p.nombre}</b><br><small>REF: ${p.codigo} | Stock: ${p.existencia || 0}</small></div><div><button class="btn-action btn-ing" onclick="abrirIngreso('${p.codigo}')">INGRESAR</button><button class="btn-action btn-egr" onclick="abrirEgreso('${p.codigo}')">EGRESAR</button></div></div>`;
+                        res.innerHTML += `
+                            <div style="background:var(--card-bg); padding:15px; border-radius:12px; border:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+                                <div>
+                                    <b style="color:var(--accent);">${p.name || p.nombre}</b><br>
+                                    <small style="color:var(--text-muted);">REF: ${p.codigo} | Stock: ${p.existencia || 0}</small>
+                                </div>
+                                <div style="display:flex; gap:8px;">
+                                    <button class="btn btn-success btn-sm" onclick="abrirIngreso('${p.codigo}')">INGRESAR</button>
+                                    <button class="btn btn-warning btn-sm" onclick="abrirEgreso('${p.codigo}')">EGRESAR</button>
+                                </div>
+                            </div>`;
                         if(p.codigo.toLowerCase() === txt) {
                             abrirIngreso(p.codigo);
                             document.getElementById('buscador').value = ""; 
@@ -868,8 +354,11 @@
 
                 const campos = ['m-proveedor', 'm-laboratorio', 'm-invima', 'm-cant-emp', 'm-concentracion', 'm-forma', 
                               'm-presentacion', 'm-est-invima', 'm-lote', 'm-vence', 'm-cond', 'm-muestra', 
-                              'm-crit', 'm-may', 'm-men', 'm-obs', 'm-total-suma'];
-                campos.forEach(id => document.getElementById(id).value = "");
+                              'm-obs', 'm-total-suma'];
+                campos.forEach(id => {
+                    const el = document.getElementById(id);
+                    if(el) el.value = "";
+                });
                 document.getElementById('m-acepta').value = "SI";
                 document.getElementById('m-rechaza').value = "NO";
                 document.getElementById('m-nombre').value = p.nombre;
@@ -877,14 +366,15 @@
                 const ings = await API.getIngresos();
                 const ultimoIngreso = [...ings].reverse().find(reg => reg.ref === p.codigo);
                 if (ultimoIngreso) {
-                    document.getElementById('m-proveedor').value = ultimoIngreso.proveedor || "";
-                    document.getElementById('m-laboratorio').value = ultimoIngreso.laboratorio || "";
-                    document.getElementById('m-invima').value = ultimoIngreso.invima || "";
-                    document.getElementById('m-concentracion').value = ultimoIngreso.concentracion || "";
-                    document.getElementById('m-forma').value = ultimoIngreso.forma || "";
-                    document.getElementById('m-presentacion').value = ultimoIngreso.presentacion || "";
-                    document.getElementById('m-est-invima').value = ultimoIngreso.estado_invima || "";
-                    document.getElementById('m-cond').value = ultimoIngreso.cond_almacen || "";
+                    const mapping = {
+                        'm-proveedor': 'proveedor', 'm-laboratorio': 'laboratorio', 'm-invima': 'invima',
+                        'm-concentracion': 'concentracion', 'm-forma': 'forma', 'm-presentacion': 'presentacion',
+                        'm-est-invima': 'estado_invima', 'm-cond': 'cond_almacen'
+                    };
+                    for(let id in mapping) {
+                        const el = document.getElementById(id);
+                        if(el) el.value = ultimoIngreso[mapping[id]] || "";
+                    }
                 }
 
                 document.getElementById('modalIngreso').style.display = 'block';
@@ -913,38 +403,52 @@
 
         async function guardarIngreso() {
             try {
-                const ings = await API.getIngresos();
-                const cant = parseInt(document.getElementById('m-total-suma').value) || 0;
+                const cantField = document.getElementById('m-total-suma');
+                const cant = parseInt(cantField.value) || 0;
+                if(cant <= 0) return UI.showToast("Ingrese una cantidad válida", "warning");
+
                 const registro = {
                     id: Date.now(), tipo: 'INGRESO', fecha_registro: API.getFechaLocal(),
                     fecha_hora: new Date().toLocaleString(), ref: pActual.codigo, nombre: pActual.nombre,
-                    proveedor: document.getElementById('m-proveedor').value, laboratorio: document.getElementById('m-laboratorio').value,
-                    invima: document.getElementById('m-invima').value, cant_empaque: document.getElementById('m-cant-emp').value,
-                    concentracion: document.getElementById('m-concentracion').value, forma: document.getElementById('m-forma').value,
-                    presentacion: document.getElementById('m-presentacion').value, estado_invima: document.getElementById('m-est-invima').value,
-                    lote: document.getElementById('m-lote').value, vencimiento: document.getElementById('m-vence').value,
-                    cond_almacen: document.getElementById('m-cond').value, n_muestra: document.getElementById('m-muestra').value,
-                    def_criticos: document.getElementById('m-crit').value, def_mayores: document.getElementById('m-may').value,
-                    def_menores: document.getElementById('m-men').value, cumple_acepta: document.getElementById('m-acepta').value,
-                    cumple_rechaza: document.getElementById('m-rechaza').value, observaciones: document.getElementById('m-obs').value,
-                    cantidad: cant,
-                    estado: 'activo'
+                    proveedor: document.getElementById('m-proveedor').value,
+                    laboratorio: document.getElementById('m-laboratorio').value,
+                    invima: document.getElementById('m-invima').value,
+                    cant_empaque: document.getElementById('m-cant-emp').value,
+                    concentracion: document.getElementById('m-concentracion').value,
+                    forma: document.getElementById('m-forma').value,
+                    presentacion: document.getElementById('m-presentacion').value,
+                    estado_invima: document.getElementById('m-est-invima').value,
+                    lote: document.getElementById('m-lote').value,
+                    vencimiento: document.getElementById('m-vence').value,
+                    cond_almacen: document.getElementById('m-cond').value,
+                    n_muestra: document.getElementById('m-muestra').value,
+                    cumple_acepta: document.getElementById('m-acepta').value,
+                    cumple_rechaza: document.getElementById('m-rechaza').value,
+                    observaciones: document.getElementById('m-obs').value,
+                    cantidad: cant, estado: 'activo'
                 };
+
+                const ings = await API.getIngresos();
                 ings.push(registro);
                 pActual.existencia = (parseInt(pActual.existencia) || 0) + cant;
                 
                 await API.saveIngresos(ings);
                 await API.saveProducto(pActual);
-                location.reload();
-            } catch(e) { console.error(e); alert("Error al guardar ingreso: " + e.message); }
+                
+                UI.showToast("Recepción técnica guardada", "success");
+                cerrar();
+                filtrarHistorial();
+            } catch(e) { console.error(e); UI.showToast("Error: " + e.message, "error"); }
         }
 
         async function guardarEgreso() {
             try {
-                const egrs = await API.getEgresos();
-                const cant = parseInt(document.getElementById('e-cantidad').value) || 0;
-                if(cant > (pActual.existencia || 0)) return showToast("Stock insuficiente", "error");
+                const cantField = document.getElementById('e-cantidad');
+                const cant = parseInt(cantField.value) || 0;
+                if(cant <= 0) return UI.showToast("Ingrese cantidad válida", "warning");
+                if(cant > (pActual.existencia || 0)) return UI.showToast("Stock insuficiente", "error");
                 
+                const egrs = await API.getEgresos();
                 egrs.push({
                     id: Date.now(), tipo: 'EGRESO', fecha_registro: API.getFechaLocal(),
                     fecha_hora: new Date().toLocaleString(), ref: pActual.codigo, nombre: pActual.nombre,
@@ -954,8 +458,11 @@
                 
                 await API.saveEgresos(egrs);
                 await API.saveProducto(pActual);
-                location.reload();
-            } catch(e) { console.error(e); alert("Error al guardar egreso: " + e.message); }
+                
+                UI.showToast("Salida registrada", "success");
+                cerrar();
+                filtrarHistorial();
+            } catch(e) { console.error(e); UI.showToast("Error: " + e.message, "error"); }
         }
 
         async function filtrarHistorial() {
@@ -983,29 +490,32 @@
                 });
 
                 filtrados.sort((a,b) => b.id - a.id);
+                if(filtrados.length === 0) {
+                    body.innerHTML = '<tr><td colspan="10" align="center" style="padding:40px; color:var(--text-muted);">No se encontraron movimientos con los filtros seleccionados</td></tr>';
+                    return [];
+                }
+
                 filtrados.forEach(m => {
                     const esIng = m.tipo === 'INGRESO';
                     const esAgotado = m.estado === 'agotado';
                     const pInfo = productos.find(p => p.codigo === m.ref);
-                    const unidadMedida = pInfo ? pInfo.unidad : '-';
+                    const unidad = pInfo ? pInfo.unidad : '-';
 
                     body.innerHTML += `<tr>
-                        <td style="color:${esIng?'var(--success)':'var(--warning)'}; font-weight:700; font-size: 0.7rem;">
-                            ${esIng ? '<span>🟢</span> INGRESO' : '<span>🔴</span> EGRESO'}
-                        </td>
-                        <td style="color: var(--text-muted); font-size: 0.7rem;">${m.fecha_hora}</td>
-                        <td><code style="background: rgba(255,255,255,0.05); padding: 2px 4px; border-radius: 4px; font-size: 0.7rem;">${m.ref}</code></td>
-                        <td style="font-weight: 500;">${m.nombre}</td>
-                        <td style="color: var(--text-muted); font-size: 0.7rem;">${unidadMedida}</td> 
-                        <td style="color: var(--text-muted); font-size: 0.7rem;">${m.proveedor || '-'}</td>
-                        <td><span style="border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; font-size: 0.7rem;">${m.lote || '-'}</span></td>
-                        <td style="color:var(--accent); font-weight: 600;">${m.vencimiento || '-'}</td>
-                        <td><b style="font-size: 0.85rem;">${m.cantidad}</b></td>
-                        <td style="text-align: right;">
-                            <div style="display:flex; gap:6px; justify-content: flex-end;">
-                                ${esIng && !esAgotado ? `<button class="btn-action btn-finish" onclick="marcarAgotado(${m.id})" title="Marcar como agotado" style="padding: 6px 10px; font-size: 0.6rem;">TERMINAR</button>` : ''}
-                                ${esIng && esAgotado ? `<span style="font-size:0.6rem; color:var(--text-muted); background: var(--border); padding: 2px 6px; border-radius: 4px; font-weight: 700;">AGOTADO</span>` : ''}
-                                <button class="btn-action btn-danger" onclick="eliminarMovimiento(${m.id}, '${m.tipo}', '${m.ref}', ${m.cantidad})" title="Eliminar registro" style="padding: 6px 10px; font-size: 0.6rem;">ELIMINAR</button>
+                        <td><span class="badge ${esIng ? 'badge-success' : 'badge-warning'}">${esIng ? '🟢 INGRESO' : '🔴 EGRESO'}</span></td>
+                        <td style="color:var(--text-muted); font-size:0.75rem;">${m.fecha_hora}</td>
+                        <td><code>${m.ref}</code></td>
+                        <td style="font-weight:600;">${m.nombre}</td>
+                        <td align="center">${unidad}</td> 
+                        <td><small>${m.proveedor || '-'}</small></td>
+                        <td><span class="badge badge-outline">${m.lote || '-'}</span></td>
+                        <td style="color:var(--accent); font-weight:600;">${m.vencimiento || '-'}</td>
+                        <td align="center"><b>${m.cantidad}</b></td>
+                        <td align="right">
+                            <div style="display:flex; gap:6px; justify-content:flex-end;">
+                                ${esIng && !esAgotado ? `<button class="btn btn-secondary btn-sm" onclick="marcarAgotado(${m.id})">TERMINAR</button>` : ''}
+                                ${esIng && esAgotado ? `<span class="badge">AGOTADO</span>` : ''}
+                                <button class="btn btn-danger btn-sm" onclick="eliminarMovimiento(${m.id}, '${m.tipo}', '${m.ref}', ${m.cantidad})">ELIMINAR</button>
                             </div>
                         </td>
                     </tr>`;
@@ -1015,21 +525,22 @@
         }
 
         async function marcarAgotado(id) {
-            abrirConfirmacion("¿MARCAR COMO AGOTADO?", "¿Desea marcar este lote como AGOTADO?", async () => {
+            UI.confirm("¿MARCAR COMO AGOTADO?", "¿Desea marcar este lote como AGOTADO? Ya no aparecerá en alertas de vencimiento.", async () => {
                 try {
                     const ings = await API.getIngresos();
                     const idx = ings.findIndex(i => i.id === id);
                     if(idx !== -1) {
                         ings[idx].estado = 'agotado';
                         await API.saveIngresos(ings);
-                        location.reload();
+                        UI.showToast("Lote marcado como agotado", "success");
+                        filtrarHistorial();
                     }
                 } catch(e) { console.error(e); }
             });
         }
 
         async function eliminarMovimiento(id, tipo, ref, cant) {
-            abrirConfirmacion("¿ELIMINAR MOVIMIENTO?", "¿Desea eliminar este movimiento del historial?", async () => {
+            UI.confirm("¿ELIMINAR MOVIMIENTO?", "Se borrará este registro y se ajustará el stock automáticamente. ¿Continuar?", async () => {
                 try {
                     const prods = await API.getProductos();
                     const p = prods.find(prod => prod.codigo === ref);
@@ -1047,18 +558,19 @@
                         p.existencia = (parseInt(p.existencia) || 0) + cant;
                     }
                     await API.saveProducto(p);
-                    location.reload();
+                    UI.showToast("Movimiento eliminado con éxito", "success");
+                    filtrarHistorial();
                 } catch(e) { console.error(e); }
             });
         }
 
         function reiniciarExistencias() {
-            abrirConfirmacion("⚠️ ADVERTENCIA CRÍTICA ⚠️", "¿Desea reiniciar TODO? Stock a 0 e historial borrado.", () => {
-                abrirConfirmacion("CONFIRMACIÓN FINAL", "¿REALMENTE desea proceder con el borrado total?", async () => {
+            UI.confirm("⚠️ BORRADO TOTAL ⚠️", "¿Desea borrar TODO el historial y poner el stock a cero? Esta acción no se puede deshacer.", () => {
+                UI.confirm("CONFIRMACIÓN FINAL", "¿REALMENTE desea proceder con el reinicio del sistema?", async () => {
                     try {
                         await API.resetSystem();
-                        showToast("Sistema reiniciado correctamente", "success");
-                        setTimeout(() => location.reload(), 1500);
+                        UI.showToast("Sistema reiniciado correctamente", "success");
+                        setTimeout(() => location.reload(), 1000);
                     } catch(e) { console.error(e); }
                 });
             });
@@ -1067,82 +579,44 @@
         async function generarExcel() {
             try {
                 const results = await filtrarHistorial();
-                if(!results || results.length === 0) return showToast("No hay registros para exportar", "warning");
+                if(!results || results.length === 0) return UI.showToast("Sin datos para exportar", "warning");
 
                 const dataActual = results.filter(m => m.tipo === 'INGRESO');
-                if(dataActual.length === 0) return showToast("No hay registros de ingresos para exportar en este filtro", "warning");
+                if(dataActual.length === 0) return UI.showToast("Sin ingresos en el filtro actual", "warning");
 
-                const fInicio = document.getElementById('f-inicio').value || "Inicio";
-                const fFin = document.getElementById('f-fin').value || "Fin";
-
-                const { headerHtml, logoBase64 } = await obtenerHeaderEmpresa(23);
-
-                let tablaHtml = `<table border="1">
-                    ${headerHtml}
-                    <tr><th colspan="23" style="background-color: #f8fafc; color: #334155; font-size:14px; text-align:center; height:20px;">PERIODO CONSULTADO: ${fInicio} AL ${fFin}</th></tr>
-                    <tr>
-                        <th colspan="23" style="background-color: #020617; color: #00f2ff; font-size:1.4rem; height:50px;">ACTA DE RECEPCIÓN TÉCNICA DE MEDICAMENTOS Y DISPOSITIVOS</th>
-                    </tr>
-                    <tr>
-                        <th style="background-color: #1e293b; color: white; font-size: 0.7rem;">FECHA/HORA REGISTRO</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">REF/CÓDIGO</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">PRODUCTO</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">UNIDAD DE MEDIDA</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">PROVEEDOR</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">LABORATORIO</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">REG. INVIMA</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">CANT. EMPAQUES</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">CONCENTRACIÓN</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">FORMA FARM.</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">PRES. COMERCIAL</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">ESTADO INVIMA</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">LOTE</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">VENCIMIENTO</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">COND. ALMACEN.</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">N° MUESTRA</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">DEF. CRÍTICOS</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">DEF. MAYORES</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">DEF. MENORES</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">ACEPTA</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">RECHAZA</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">CANT. UNITARIA</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">OBSERVACIONES</th>
-                    </tr>`;
+                const { headerHtml, logoBase64 } = await API.getExcelHeader(23);
+                let html = `<table border="1">${headerHtml}
+                    <tr><th colspan="23" style="background-color: #0f172a; color: #38bdf8; height:40px;">ACTA DE RECEPCIÓN TÉCNICA</th></tr>
+                    <tr><th>FECHA/HORA</th><th>CÓDIGO</th><th>PRODUCTO</th><th>UM</th><th>PROVEEDOR</th><th>LABORATORIO</th><th>INVIMA</th><th>CANT. EMPAQUE</th><th>CONC.</th><th>FORMA</th><th>PRES.</th><th>ESTADO INVIMA</th><th>LOTE</th><th>VENCE</th><th>COND.</th><th>MUESTRA</th><th>CRIT</th><th>MAY</th><th>MEN</th><th>ACEPTA</th><th>RECHAZA</th><th>TOTAL</th><th>OBS</th></tr>`;
                 
-                const productos = await API.getProductos();
                 dataActual.forEach(m => {
-                    const pInfo = productos.find(p => p.codigo === m.ref);
-                    const unidad = pInfo ? pInfo.unidad : "-";
-                    tablaHtml += `<tr style="height:20px;"><td>${m.fecha_hora}</td><td>'${m.ref}</td><td>${m.nombre}</td><td align="center">${unidad}</td><td>${m.proveedor || ""}</td><td>${m.laboratorio || ""}</td><td>${m.invima || ""}</td><td align="center">${m.cant_empaque || 0}</td><td>${m.concentracion || ""}</td><td>${m.forma || ""}</td><td>${m.presentacion || ""}</td><td>${m.estado_invima || ""}</td><td>${m.lote || ""}</td><td>${m.vencimiento || ""}</td><td>${m.cond_almacen || ""}</td><td>${m.n_muestra || ""}</td><td>${m.def_criticos || ""}</td><td>${m.def_mayores || ""}</td><td>${m.def_menores || ""}</td><td align="center">${m.cumple_acepta}</td><td align="center">${m.cumple_rechaza}</td><td align="center"><b>${m.cantidad}</b></td><td>${m.observaciones || ""}</td></tr>`;
+                    html += `<tr><td>${m.fecha_hora}</td><td>'${m.ref}</td><td>${m.nombre}</td><td>UM</td><td>${m.proveedor || ""}</td><td>${m.laboratorio || ""}</td><td>${m.invima || ""}</td><td align="center">${m.cant_empaque || 0}</td><td>${m.concentracion || ""}</td><td>${m.forma || ""}</td><td>${m.presentacion || ""}</td><td>${m.estado_invima || ""}</td><td>${m.lote || ""}</td><td>${m.vencimiento || ""}</td><td>${m.cond_almacen || ""}</td><td>${m.n_muestra || ""}</td><td></td><td></td><td></td><td align="center">${m.cumple_acepta}</td><td align="center">${m.cumple_rechaza}</td><td align="center"><b>${m.cantidad}</b></td><td>${m.observaciones || ""}</td></tr>`;
                 });
-                tablaHtml += `</table>`;
-                
-                API.descargarExcelMHT(tablaHtml, `Recepcion_Tecnica_${API.getFechaLocal()}`, logoBase64);
-            } catch(e) { console.error(e); showToast("Error al exportar", "error");}
+                html += `</table>`;
+                API.descargarExcelMHT(html, `Recepcion_Tecnica_${API.getFechaLocal()}`, logoBase64);
+            } catch(e) { console.error(e); }
         }
 
         async function generarExcelEgresos() {
             try {
                 const results = await filtrarHistorial();
-                if(!results || results.length === 0) return showToast("No hay registros para exportar", "warning");
-
                 const dataEgresos = results.filter(m => m.tipo === 'EGRESO');
-                if(dataEgresos.length === 0) return showToast("No hay registros de salidas para exportar en este filtro", "warning");
+                if(dataEgresos.length === 0) return UI.showToast("Sin salidas en el filtro actual", "warning");
 
-                const fInicio = document.getElementById('f-inicio').value || "Inicio";
-                const fFin = document.getElementById('f-fin').value || "Fin";
-
-                const { headerHtml, logoBase64 } = await obtenerHeaderEmpresa(6);
-
-                let tablaHtml = `<table border="1">
-                    ${headerHtml}
-                    <tr><th colspan="6" style="background-color: #f8fafc; color: #334155; font-size:14px; text-align:center; height:20px;">PERIODO CONSULTADO: ${fInicio} AL ${fFin}</th></tr>
-                    <tr>
-                        <th colspan="6" style="background-color: #7f1d1d; color: #fca5a5; font-size:1.4rem; height:50px;">ACTA DE REPORTERÍA DEFINITIVA DE EGRESOS Y SALIDAS</th>
-                    </tr>
-                    <tr>
-                        <th style="background-color: #1e293b; color: white; font-size: 0.8rem; width:150px;">FECHA/HORA REGISTRO</th><th style="background-color: #1e293b; color: white; font-size: 0.8rem; width:100px;">REF/CÓDIGO</th><th style="background-color: #1e293b; color: white; font-size: 0.8rem; width:250px;">PRODUCTO</th><th style="background-color: #1e293b; color: white; font-size: 0.8rem; width:120px;">UNIDAD DE MEDIDA</th><th style="background-color: #1e293b; color: white; font-size: 0.8rem; width:100px;">CANTIDAD SALIDA</th><th style="background-color: #1e293b; color: white; font-size: 0.8rem; width:250px;">MOTIVO DE SALIDA</th>
-                    </tr>`;
+                const { headerHtml, logoBase64 } = await API.getExcelHeader(6);
+                let html = `<table border="1">${headerHtml}
+                    <tr><th colspan="6" style="background-color: #7f1d1d; color: #fca5a5; height:40px;">REPORTE DE EGRESOS / SALIDAS</th></tr>
+                    <tr><th>FECHA/HORA</th><th>CÓDIGO</th><th>PRODUCTO</th><th>UM</th><th>CANTIDAD</th><th>MOTIVO</th></tr>`;
                 
-                const productos = await API.getProductos();
                 dataEgresos.forEach(m => {
-                    const pInfo = productos.find(p => p.codigo === m.ref);
-                    const unidad = pInfo ? pInfo.unidad : "-";
-                    tablaHtml += `<tr style="height:20px;">
-                        <td align="center">${m.fecha_hora}</td>
-                        <td align="center">'${m.ref}</td>
-                        <td>${m.nombre}</td>
-                        <td align="center">${unidad}</td>
-                        <td align="center" style="color:#b91c1c;"><b>${m.cantidad}</b></td>
-                        <td>${m.detalle || "-"}</td>
-                    </tr>`;
+                    html += `<tr><td>${m.fecha_hora}</td><td>'${m.ref}</td><td>${m.nombre}</td><td>UM</td><td align="center" style="color:red;"><b>${m.cantidad}</b></td><td>${m.detalle || "-"}</td></tr>`;
                 });
-                tablaHtml += `</table>`;
-                
-                API.descargarExcelMHT(tablaHtml, `Reporte_Egresos_${API.getFechaLocal()}`, logoBase64);
-            } catch(e) { console.error(e); showToast("Error al exportar egresos", "error");}
+                html += `</table>`;
+                API.descargarExcelMHT(html, `Reporte_Egresos_${API.getFechaLocal()}`, logoBase64);
+            } catch(e) { console.error(e); }
         }
 
         window.onload = filtrarHistorial;
-    </script>
     </script>
 </body>
 </html>
