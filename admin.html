@@ -576,8 +576,12 @@
     const ADMIN_NAME = localStorage.getItem('adminLogueado') || "Eduar Anderson Imbacuan";
     document.getElementById('admin-badge').innerText = "👤 " + ADMIN_NAME;
 
-    document.getElementById('f-inicio').value = API.getFechaLocal();
-    document.getElementById('f-fin').value = API.getFechaLocal();
+    const today = new Date();
+    const lastWeek = new Date();
+    lastWeek.setDate(today.getDate() - 7);
+    
+    document.getElementById('f-inicio').value = API.getFechaLocal(lastWeek.getTime());
+    document.getElementById('f-fin').value = API.getFechaLocal(today.getTime());
 
     function obtenerPrecioCompraHistorico(item) {
         if (item.precioCompra !== undefined && item.precioCompra !== null) {
