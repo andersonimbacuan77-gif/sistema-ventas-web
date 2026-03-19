@@ -53,35 +53,29 @@ const productoSchema = new mongoose.Schema({
     imagen: String
 });
 
-const Producto = mongoose.models.Producto || mongoose.model('Producto', productoSchema);
+const Producto = mongoose.models.Producto || mongoose.model('Producto', productoSchema, 'productos');
 
 const usuarioSchema = new mongoose.Schema({
     nombre: String,
     user: { type: String, unique: true },
     pass: String,
-    rol: { type: String, default: 'cliente' },
-    canEditPrice: { type: Boolean, default: false },
-    permExcel: { type: Boolean, default: false },
-    permPrint: { type: Boolean, default: false },
-    permTicket: { type: Boolean, default: false },
-    permWA: { type: Boolean, default: false }
-});
-
-const Usuario = mongoose.models.Usuario || mongoose.model('Usuario', usuarioSchema);
+    rol: { type: String, default: 'cliente' }
+}, { strict: false });
+const Usuario = mongoose.models.Usuario || mongoose.model('Usuario', usuarioSchema, 'usuarios');
 
 const pedidoSchema = new mongoose.Schema({
-    id: Number,
+    id: { type: Number, unique: true },
     fecha: String,
     hora: String,
     cliente: String,
     items: Array,
     total: Number,
     ganancia: Number
-});
-const Pedido = mongoose.models.Pedido || mongoose.model('Pedido', pedidoSchema);
+}, { strict: false });
+const Pedido = mongoose.models.Pedido || mongoose.model('Pedido', pedidoSchema, 'pedidos');
 
 const reporteSchema = new mongoose.Schema({
-    idReporte: Number,
+    idReporte: { type: Number, unique: true },
     fechaCreacion: String,
     admin: String,
     rango: Object,
@@ -89,28 +83,32 @@ const reporteSchema = new mongoose.Schema({
     gananciaRaw: Number,
     cantidadPedidos: Number,
     pedidos: Array
-});
-const Reporte = mongoose.models.Reporte || mongoose.model('Reporte', reporteSchema);
+}, { strict: false });
+const Reporte = mongoose.models.Reporte || mongoose.model('Reporte', reporteSchema, 'reportes');
 
 const ingresoSchema = new mongoose.Schema({
-    fecha: String,
-    registros: Array
-});
-const Ingreso = mongoose.models.Ingreso || mongoose.model('Ingreso', ingresoSchema);
+    id: { type: Number, unique: true },
+    ref: String,
+    fecha_registro: String,
+    cantidad: Number
+}, { strict: false });
+const Ingreso = mongoose.models.Ingreso || mongoose.model('Ingreso', ingresoSchema, 'ingresos');
 
 const egresoSchema = new mongoose.Schema({
-    fecha: String,
-    registros: Array
-});
-const Egreso = mongoose.models.Egreso || mongoose.model('Egreso', egresoSchema);
+    id: { type: Number, unique: true },
+    ref: String,
+    fecha_registro: String,
+    cantidad: Number
+}, { strict: false });
+const Egreso = mongoose.models.Egreso || mongoose.model('Egreso', egresoSchema, 'egresos');
 
 const configSchema = new mongoose.Schema({
     id: { type: String, default: 'main' },
     categorias: Array,
     unidades: Array,
     empresa: Object
-});
-const Config = mongoose.models.Config || mongoose.model('Config', configSchema);
+}, { strict: false });
+const Config = mongoose.models.Config || mongoose.model('Config', configSchema, 'configuracion');
 
 // --- RUTAS API ---
 
@@ -306,18 +304,19 @@ app.get('/api/ingresos', async (req, res) => {
 
 app.post('/api/ingresos', async (req, res) => {
     try {
-        const data = req.body; // Array de registros por día
+        const data = req.body;
         if (Array.isArray(data)) {
+            // Sincronización masiva basada en 'id'
             for (const r of data) {
-                await Ingreso.findOneAndUpdate(
-                    { fecha: r.fecha },
-                    r,
-                    { upsert: true }
-                );
+                if (!r.id) continue;
+                await Ingreso.findOneAndUpdate({ id: r.id }, r, { upsert: true });
             }
+        } else if (data.id) {
+            await Ingreso.findOneAndUpdate({ id: data.id }, data, { upsert: true });
         }
         res.json({ success: true });
     } catch (error) {
+        console.error('Error saving ingresos:', error);
         res.status(500).json({ error: 'Error al guardar ingresos' });
     }
 });
@@ -337,15 +336,15 @@ app.post('/api/egresos', async (req, res) => {
         const data = req.body;
         if (Array.isArray(data)) {
             for (const r of data) {
-                await Egreso.findOneAndUpdate(
-                    { fecha: r.fecha },
-                    r,
-                    { upsert: true }
-                );
+                if (!r.id) continue;
+                await Egreso.findOneAndUpdate({ id: r.id }, r, { upsert: true });
             }
+        } else if (data.id) {
+            await Egreso.findOneAndUpdate({ id: data.id }, data, { upsert: true });
         }
         res.json({ success: true });
     } catch (error) {
+        console.error('Error saving egresos:', error);
         res.status(500).json({ error: 'Error al guardar egresos' });
     }
 });
