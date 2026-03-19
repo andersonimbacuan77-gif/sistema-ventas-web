@@ -8,6 +8,7 @@
     </script>
 
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel Administrativo v2.0 - Edición Premium</title>
     <style>
         :root {
@@ -408,7 +409,12 @@
             from { transform: translateX(0); opacity: 1; }
             to { transform: translateX(120%); opacity: 0; }
         }
-    </style>>
+        @media (max-width: 768px) {
+            .admin-container { padding: 10px; }
+            .sidebar { position: static; width: 100%; height: auto; }
+            .main-content { margin-left: 0; }
+        }
+    </style>
 </head>
 <body>
 

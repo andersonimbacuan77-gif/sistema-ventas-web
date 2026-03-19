@@ -8,6 +8,7 @@
     </script>
 
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Configuración Pro - Dark Mode</title>
     <style>
         :root {
@@ -316,6 +317,10 @@
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+        @media (max-width: 768px) {
+            .config-container { padding: 1.5rem; }
+            .config-section { padding: 1rem; }
+        }
     </style>
 </head>
 <body>

@@ -8,6 +8,7 @@
     </script>
 
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo Digital - Pedidos Directos</title>
     <style>
         :root { 
@@ -404,6 +405,11 @@
                 color: black;
                 font-family: 'Courier New', Courier, monospace;
             }
+        }
+        @media (max-width: 768px) {
+            .client-header { flex-direction: column; text-align: center; }
+            .grid-products { grid-template-columns: 1fr; }
+            .cart-panel { position: fixed; bottom: 0; right: 0; width: 100%; height: 50%; z-index: 1000; }
         }
     </style>
 </head>

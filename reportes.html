@@ -8,6 +8,7 @@
     </script>
 
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Historial de Reportes - Sistema Administrativo</title>
     <style>
         :root { 
@@ -262,6 +263,10 @@
         ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--primary-glow); }
+        @media (max-width: 768px) {
+            .report-header { flex-direction: column; }
+            .table-container { overflow-x: auto; }
+        }
     </style>
 </head>
 <body>
