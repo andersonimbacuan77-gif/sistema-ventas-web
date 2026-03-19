@@ -62,17 +62,21 @@ const Usuario = mongoose.models.Usuario || mongoose.model('Usuario', usuarioSche
 
 // --- RUTAS API ---
 
+// Middleware para verificar conexión a BD
+const checkDB = (req, res, next) => {
+    if (mongoose.connection.readyState !== 1) {
+        return res.status(503).json({ error: 'Base de datos no conectada. Reintente en unos momentos.' });
+    }
+    next();
+};
+
+app.use('/api', checkDB);
+
 // 1. Productos - Obtener todos
 app.get('/api/productos', async (req, res) => {
     try {
-        if (mongoose.connection.readyState === 1) {
-            const productos = await Producto.find();
-            res.json(productos);
-        } else {
-            const dbPath = path.join(__dirname, 'database.json');
-            const data = JSON.parse(fs.readFileSync(dbPath, 'utf8'));
-            res.json(data);
-        }
+        const productos = await Producto.find();
+        res.json(productos);
     } catch (error) {
         res.status(500).json({ error: 'Error al obtener productos' });
     }
@@ -82,25 +86,13 @@ app.get('/api/productos', async (req, res) => {
 app.post('/api/productos', async (req, res) => {
     const p = req.body;
     try {
-        if (mongoose.connection.readyState === 1) {
-            if (p._id) {
-                await Producto.findByIdAndUpdate(p._id, p);
-            } else {
-                const nuevo = new Producto(p);
-                await nuevo.save();
-            }
-            res.json({ success: true });
+        if (p._id) {
+            await Producto.findByIdAndUpdate(p._id, p);
         } else {
-            const dbPath = path.join(__dirname, 'database.json');
-            let productos = JSON.parse(fs.readFileSync(dbPath, 'utf8'));
-            // Lógica simple de actualización para JSON
-            const idx = productos.findIndex(prod => prod.codigo === p.codigo);
-            if (idx !== -1) productos[idx] = p;
-            else productos.push(p);
-            
-            fs.writeFileSync(dbPath, JSON.stringify(productos, null, 2));
-            res.json({ success: true });
+            const nuevo = new Producto(p);
+            await nuevo.save();
         }
+        res.json({ success: true });
     } catch (error) {
         res.status(500).json({ error: 'Error al guardar producto' });
     }
@@ -134,18 +126,8 @@ app.post('/api/config', (req, res) => {
 // 4. Usuarios / Login
 app.get('/api/usuarios', async (req, res) => {
     try {
-        if (mongoose.connection.readyState === 1) {
-            const users = await Usuario.find();
-            res.json(users);
-        } else {
-            const usersPath = path.join(__dirname, 'usuarios.json');
-            if (fs.existsSync(usersPath)) {
-                const data = JSON.parse(fs.readFileSync(usersPath, 'utf8'));
-                res.json(Array.isArray(data) ? data : []);
-            } else {
-                res.json([]);
-            }
-        }
+        const users = await Usuario.find();
+        res.json(users);
     } catch (error) {
         res.status(500).json({ error: 'Error al obtener usuarios' });
     }
@@ -153,18 +135,11 @@ app.get('/api/usuarios', async (req, res) => {
 
 app.post('/api/usuarios', async (req, res) => {
     try {
-        if (mongoose.connection.readyState === 1) {
-            // Sincronizar array de usuarios con MongoDB
-            const users = req.body;
-            for (const u of users) {
-                await Usuario.findOneAndUpdate({ user: u.user }, u, { upsert: true });
-            }
-            res.json({ success: true });
-        } else {
-            const usersPath = path.join(__dirname, 'usuarios.json');
-            fs.writeFileSync(usersPath, JSON.stringify(req.body, null, 2));
-            res.json({ success: true });
+        const users = req.body;
+        for (const u of users) {
+            await Usuario.findOneAndUpdate({ user: u.user }, u, { upsert: true });
         }
+        res.json({ success: true });
     } catch (error) {
         res.status(500).json({ error: 'Error al guardar usuarios' });
     }
@@ -173,19 +148,7 @@ app.post('/api/usuarios', async (req, res) => {
 app.post('/api/login', async (req, res) => {
     const { user, pass } = req.body;
     try {
-        let cuenta = null;
-        if (mongoose.connection.readyState === 1) {
-            cuenta = await Usuario.findOne({ user, pass });
-        }
-        
-        if (!cuenta) {
-            const pathUsuarios = path.join(__dirname, 'usuarios.json');
-            if (fs.existsSync(pathUsuarios)) {
-                const usuarios = JSON.parse(fs.readFileSync(pathUsuarios, 'utf8'));
-                cuenta = usuarios.find(u => u.user === user && u.pass === pass);
-            }
-        }
-        
+        const cuenta = await Usuario.findOne({ user, pass });
         if (cuenta) {
             res.json({ success: true, user: cuenta });
         } else {
