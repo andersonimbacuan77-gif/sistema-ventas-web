@@ -6,11 +6,16 @@ const path = require('path');
 const fs = require('fs');
 require('dotenv').config();
 
-const app = express();
-const PORT = process.env.PORT || 10000; // Render suele preferir el 10000 por defecto
+const PORT = process.env.PORT || 10000;
 
 app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Servidor funcionando en el puerto ${PORT}`);
+    console.log(`Servidor iniciado`);
+}).on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+        console.log('El puerto estaba ocupado, reintentando...');
+    } else {
+        console.error(err);
+    }
 });
 
 // Middleware
