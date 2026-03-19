@@ -8,7 +8,8 @@
     </script>
 
     <meta charset="UTF-8">
-    <title>SISCONTED - Inventario Global</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario Global - SISCONTED</title>
     <style>
         :root {
             --primary: #6366f1;
@@ -225,6 +226,17 @@
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+        @media (max-width: 768px) {
+            body { flex-direction: column; overflow-y: auto; height: auto; }
+            .sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border); padding: 20px; box-sizing: border-box; }
+            .main { padding: 20px; overflow-y: visible; }
+            .controls > div { flex-direction: column; align-items: stretch; }
+            .controls div > div { width: 100%; margin-bottom: 10px; }
+            .table-container { overflow-x: auto; }
+            .modal-content { width: 95%; padding: 20px; }
+            .form-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>

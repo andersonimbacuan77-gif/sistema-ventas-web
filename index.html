@@ -7,6 +7,7 @@
         }
     </script>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pro Inventory Control v2.0 - Dark Mode</title>
     <style>
         :root {
@@ -585,6 +586,19 @@
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+        @media (max-width: 768px) {
+            body { flex-direction: column; overflow-y: auto; height: auto; }
+            .sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border); padding: 20px; box-sizing: border-box; }
+            .sidebar h2 { margin-bottom: 24px; }
+            .main { padding: 20px; overflow-y: visible; }
+            .header-controls { padding: 20px; margin: -20px -20px 20px -20px; position: relative; backdrop-filter: none; }
+            .search-area { flex-direction: column; align-items: stretch; }
+            .grid { grid-template-columns: 1fr; }
+            .modal-content { width: 95%; padding: 20px; }
+            .form-grid { grid-template-columns: 1fr; }
+            .category-filters { width: 100%; overflow-x: auto; white-space: nowrap; border-radius: 12px; }
+        }
 
     </style>
 </head>

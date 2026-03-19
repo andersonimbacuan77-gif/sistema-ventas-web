@@ -1,0 +1,6930 @@
+[
+  {
+    "idReporte": 1773715853525,
+    "fechaCreacion": "16/3/2026, 9:50:53 p. m.",
+    "admin": "ANDERSON IMBACUAN CUARAN",
+    "rango": {
+      "desde": "2026-03-16",
+      "hasta": "2026-03-16"
+    },
+    "filtroCliente": "Todos",
+    "totalVentas": "$ 2.152.400",
+    "totalUtilidad": "$ 466.400",
+    "ventasRaw": 2152400,
+    "gananciaRaw": 466400,
+    "fechaGenerado": "2026-03-17T02:50:53.529Z",
+    "cantidadPedidos": 8,
+    "pedidos": [
+      {
+        "id": 1773701406487,
+        "fecha": "2026-03-16",
+        "hora": "5:50:06 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 91000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 41000,
+            "gananciaTotal": 41000
+          },
+          {
+            "nombre": "ATUN",
+            "precio": 24000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 4000,
+            "gananciaTotal": 4000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 5000,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 2000
+          },
+          {
+            "nombre": "TALADRO",
+            "precio": 138000,
+            "cantidad": 2,
+            "referencia": "2026004",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 18000,
+            "gananciaTotal": 36000
+          },
+          {
+            "nombre": "casa",
+            "precio": 81600,
+            "cantidad": 1,
+            "referencia": "2026005",
+            "unidad": "caja",
+            "gananciaUnit": 1600,
+            "gananciaTotal": 1600
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          }
+        ],
+        "total": 542600,
+        "ganancia": 99600
+      },
+      {
+        "id": 1773702925616,
+        "fecha": "2026-03-16",
+        "hora": "6:15:25 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 5000,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 2000
+          },
+          {
+            "nombre": "casa",
+            "precio": 81600,
+            "cantidad": 1,
+            "referencia": "2026005",
+            "unidad": "caja",
+            "gananciaUnit": 1600,
+            "gananciaTotal": 1600
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          }
+        ],
+        "total": 151600,
+        "ganancia": 18600
+      },
+      {
+        "id": 1773703069307,
+        "fecha": "2026-03-16",
+        "hora": "6:17:49 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "TALADRO",
+            "precio": 130000,
+            "cantidad": 2,
+            "referencia": "2026004",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 10000,
+            "gananciaTotal": 20000
+          }
+        ],
+        "total": 260000,
+        "ganancia": 20000
+      },
+      {
+        "id": 1773703119946,
+        "fecha": "2026-03-16",
+        "hora": "6:18:39 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 91000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 41000,
+            "gananciaTotal": 41000
+          },
+          {
+            "nombre": "ATUN",
+            "precio": 24000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 4000,
+            "gananciaTotal": 4000
+          },
+          {
+            "nombre": "TALADRO",
+            "precio": 138000,
+            "cantidad": 1,
+            "referencia": "2026004",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 18000,
+            "gananciaTotal": 18000
+          },
+          {
+            "nombre": "casa",
+            "precio": 81600,
+            "cantidad": 1,
+            "referencia": "2026005",
+            "unidad": "caja",
+            "gananciaUnit": 1600,
+            "gananciaTotal": 1600
+          }
+        ],
+        "total": 334600,
+        "ganancia": 64600
+      },
+      {
+        "id": 1773709694640,
+        "fecha": "2026-03-16",
+        "hora": "8:08:14 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 91000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 41000,
+            "gananciaTotal": 41000
+          },
+          {
+            "nombre": "ATUN",
+            "precio": 24000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 4000,
+            "gananciaTotal": 4000
+          },
+          {
+            "nombre": "casa",
+            "precio": 81600,
+            "cantidad": 1,
+            "referencia": "2026005",
+            "unidad": "caja",
+            "gananciaUnit": 1600,
+            "gananciaTotal": 1600
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          }
+        ],
+        "total": 261600,
+        "ganancia": 61600
+      },
+      {
+        "id": 1773709875081,
+        "fecha": "2026-03-16",
+        "hora": "8:11:15 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 91000,
+            "cantidad": 2,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 41000,
+            "gananciaTotal": 82000
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          }
+        ],
+        "total": 247000,
+        "ganancia": 97000
+      },
+      {
+        "id": 1773714947563,
+        "fecha": "2026-03-16",
+        "hora": "9:35:47 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "pera",
+            "precio": 75000,
+            "cantidad": 4,
+            "referencia": "2026009",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 100000
+          }
+        ],
+        "total": 300000,
+        "ganancia": 100000
+      },
+      {
+        "id": 1773715001374,
+        "fecha": "2026-03-16",
+        "hora": "9:36:41 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "pera",
+            "precio": 55000,
+            "cantidad": 1,
+            "referencia": "2026009",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 5000,
+            "gananciaTotal": 5000
+          }
+        ],
+        "total": 55000,
+        "ganancia": 5000
+      }
+    ]
+  },
+  {
+    "idReporte": 1773717599038,
+    "fechaCreacion": "16/3/2026, 10:19:59 p. m.",
+    "admin": "ANDERSON IMBACUAN CUARAN",
+    "rango": {
+      "desde": "2026-03-16",
+      "hasta": "2026-03-16"
+    },
+    "filtroCliente": "Todos",
+    "totalVentas": "$ 2.243.400",
+    "totalUtilidad": "$ 507.400",
+    "ventasRaw": 2243400,
+    "gananciaRaw": 507400,
+    "fechaGenerado": "2026-03-17T03:19:59.040Z",
+    "cantidadPedidos": 9,
+    "pedidos": [
+      {
+        "id": 1773701406487,
+        "fecha": "2026-03-16",
+        "hora": "5:50:06 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 91000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 41000,
+            "gananciaTotal": 41000
+          },
+          {
+            "nombre": "ATUN",
+            "precio": 24000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 4000,
+            "gananciaTotal": 4000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 5000,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 2000
+          },
+          {
+            "nombre": "TALADRO",
+            "precio": 138000,
+            "cantidad": 2,
+            "referencia": "2026004",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 18000,
+            "gananciaTotal": 36000
+          },
+          {
+            "nombre": "casa",
+            "precio": 81600,
+            "cantidad": 1,
+            "referencia": "2026005",
+            "unidad": "caja",
+            "gananciaUnit": 1600,
+            "gananciaTotal": 1600
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          }
+        ],
+        "total": 542600,
+        "ganancia": 99600
+      },
+      {
+        "id": 1773702925616,
+        "fecha": "2026-03-16",
+        "hora": "6:15:25 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 5000,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 2000
+          },
+          {
+            "nombre": "casa",
+            "precio": 81600,
+            "cantidad": 1,
+            "referencia": "2026005",
+            "unidad": "caja",
+            "gananciaUnit": 1600,
+            "gananciaTotal": 1600
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          }
+        ],
+        "total": 151600,
+        "ganancia": 18600
+      },
+      {
+        "id": 1773703069307,
+        "fecha": "2026-03-16",
+        "hora": "6:17:49 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "TALADRO",
+            "precio": 130000,
+            "cantidad": 2,
+            "referencia": "2026004",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 10000,
+            "gananciaTotal": 20000
+          }
+        ],
+        "total": 260000,
+        "ganancia": 20000
+      },
+      {
+        "id": 1773703119946,
+        "fecha": "2026-03-16",
+        "hora": "6:18:39 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 91000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 41000,
+            "gananciaTotal": 41000
+          },
+          {
+            "nombre": "ATUN",
+            "precio": 24000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 4000,
+            "gananciaTotal": 4000
+          },
+          {
+            "nombre": "TALADRO",
+            "precio": 138000,
+            "cantidad": 1,
+            "referencia": "2026004",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 18000,
+            "gananciaTotal": 18000
+          },
+          {
+            "nombre": "casa",
+            "precio": 81600,
+            "cantidad": 1,
+            "referencia": "2026005",
+            "unidad": "caja",
+            "gananciaUnit": 1600,
+            "gananciaTotal": 1600
+          }
+        ],
+        "total": 334600,
+        "ganancia": 64600
+      },
+      {
+        "id": 1773709694640,
+        "fecha": "2026-03-16",
+        "hora": "8:08:14 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 91000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 41000,
+            "gananciaTotal": 41000
+          },
+          {
+            "nombre": "ATUN",
+            "precio": 24000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 4000,
+            "gananciaTotal": 4000
+          },
+          {
+            "nombre": "casa",
+            "precio": 81600,
+            "cantidad": 1,
+            "referencia": "2026005",
+            "unidad": "caja",
+            "gananciaUnit": 1600,
+            "gananciaTotal": 1600
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          }
+        ],
+        "total": 261600,
+        "ganancia": 61600
+      },
+      {
+        "id": 1773709875081,
+        "fecha": "2026-03-16",
+        "hora": "8:11:15 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 91000,
+            "cantidad": 2,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 41000,
+            "gananciaTotal": 82000
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          }
+        ],
+        "total": 247000,
+        "ganancia": 97000
+      },
+      {
+        "id": 1773714947563,
+        "fecha": "2026-03-16",
+        "hora": "9:35:47 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "pera",
+            "precio": 75000,
+            "cantidad": 4,
+            "referencia": "2026009",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 100000
+          }
+        ],
+        "total": 300000,
+        "ganancia": 100000
+      },
+      {
+        "id": 1773715001374,
+        "fecha": "2026-03-16",
+        "hora": "9:36:41 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "pera",
+            "precio": 55000,
+            "cantidad": 1,
+            "referencia": "2026009",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 5000,
+            "gananciaTotal": 5000
+          }
+        ],
+        "total": 55000,
+        "ganancia": 5000
+      },
+      {
+        "id": 1773717562394,
+        "fecha": "2026-03-16",
+        "hora": "10:19:22 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 91000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 41000,
+            "gananciaTotal": 41000
+          }
+        ],
+        "total": 91000,
+        "ganancia": 41000
+      }
+    ]
+  },
+  {
+    "idReporte": 1773763912439,
+    "fechaCreacion": "17/3/2026, 11:11:52 a. m.",
+    "admin": "ANDERSON IMBACUAN CUARAN",
+    "rango": {
+      "desde": "2026-03-17",
+      "hasta": "2026-03-17"
+    },
+    "filtroCliente": "Todos",
+    "totalVentas": "$ 251.000",
+    "totalUtilidad": "$ 61.000",
+    "ventasRaw": 251000,
+    "gananciaRaw": 61000,
+    "fechaGenerado": "2026-03-17T16:11:52.440Z",
+    "cantidadPedidos": 1,
+    "pedidos": [
+      {
+        "id": 1773763176932,
+        "fecha": "2026-03-17",
+        "hora": "10:59:36 a. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 91000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 41000,
+            "gananciaTotal": 41000
+          },
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 2000
+          },
+          {
+            "nombre": "TALADRO",
+            "precio": "138000.00",
+            "cantidad": 1,
+            "referencia": "2026004",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 18000,
+            "gananciaTotal": 18000
+          }
+        ],
+        "total": 251000,
+        "ganancia": 61000
+      }
+    ]
+  },
+  {
+    "idReporte": 1773765652492,
+    "fechaCreacion": "17/3/2026, 11:40:52 a. m.",
+    "admin": "ANDERSON IMBACUAN CUARAN",
+    "rango": {
+      "desde": "2026-03-17",
+      "hasta": "2026-03-17"
+    },
+    "filtroCliente": "Todos",
+    "totalVentas": "$ 251.000",
+    "totalUtilidad": "$ 61.000",
+    "ventasRaw": 251000,
+    "gananciaRaw": 61000,
+    "fechaGenerado": "2026-03-17T16:40:52.493Z",
+    "cantidadPedidos": 1,
+    "pedidos": [
+      {
+        "id": 1773763176932,
+        "fecha": "2026-03-17",
+        "hora": "10:59:36 a. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 91000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 41000,
+            "gananciaTotal": 41000
+          },
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 2000
+          },
+          {
+            "nombre": "TALADRO",
+            "precio": "138000.00",
+            "cantidad": 1,
+            "referencia": "2026004",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 18000,
+            "gananciaTotal": 18000
+          }
+        ],
+        "total": 251000,
+        "ganancia": 61000
+      }
+    ]
+  },
+  {
+    "idReporte": 1773771943046,
+    "fechaCreacion": "17/3/2026, 1:25:43 p. m.",
+    "admin": "ANDERSON IMBACUAN CUARAN",
+    "rango": {
+      "desde": "2026-03-17",
+      "hasta": "2026-03-17"
+    },
+    "filtroCliente": "Todos",
+    "totalVentas": "$ 3.433.008",
+    "totalUtilidad": "$ 863.008",
+    "ventasRaw": 3433008,
+    "gananciaRaw": 863008,
+    "fechaGenerado": "2026-03-17T18:25:43.046Z",
+    "cantidadPedidos": 17,
+    "pedidos": [
+      {
+        "id": 1773763176932,
+        "fecha": "2026-03-17",
+        "hora": "10:59:36 a. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 91000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 41000,
+            "gananciaTotal": 41000
+          },
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 2000
+          },
+          {
+            "nombre": "TALADRO",
+            "precio": "138000.00",
+            "cantidad": 1,
+            "referencia": "2026004",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 18000,
+            "gananciaTotal": 18000
+          }
+        ],
+        "total": 251000,
+        "ganancia": 61000
+      },
+      {
+        "id": 1773767817429,
+        "fecha": "2026-03-17",
+        "hora": "12:16:57 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 2000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "TALADRO",
+            "precio": "138000.00",
+            "cantidad": 1,
+            "referencia": "2026004",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 18000,
+            "gananciaTotal": 18000
+          }
+        ],
+        "total": 248600,
+        "ganancia": 50600
+      },
+      {
+        "id": 1773767849225,
+        "fecha": "2026-03-17",
+        "hora": "12:17:29 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          }
+        ],
+        "total": 65000,
+        "ganancia": 15000
+      },
+      {
+        "id": 1773768910411,
+        "fecha": "2026-03-17",
+        "hora": "12:35:10 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 2000
+          }
+        ],
+        "total": 22000,
+        "ganancia": 2000
+      },
+      {
+        "id": 1773768966889,
+        "fecha": "2026-03-17",
+        "hora": "12:36:06 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 4,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 22400
+          },
+          {
+            "nombre": "TALADRO",
+            "precio": 138000,
+            "cantidad": 1,
+            "referencia": "2026004",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 18000,
+            "gananciaTotal": 18000
+          }
+        ],
+        "total": 192400,
+        "ganancia": 40400
+      },
+      {
+        "id": 1773769052683,
+        "fecha": "2026-03-17",
+        "hora": "12:37:32 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "TALADRO",
+            "precio": 138000,
+            "cantidad": 1,
+            "referencia": "2026004",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 18000,
+            "gananciaTotal": 18000
+          }
+        ],
+        "total": 138000,
+        "ganancia": 18000
+      },
+      {
+        "id": 1773769138083,
+        "fecha": "2026-03-17",
+        "hora": "12:38:58 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "TALADRO",
+            "precio": 138000,
+            "cantidad": 1,
+            "referencia": "2026004",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 18000,
+            "gananciaTotal": 18000
+          }
+        ],
+        "total": 151600,
+        "ganancia": 23600
+      },
+      {
+        "id": 1773769342520,
+        "fecha": "2026-03-17",
+        "hora": "12:42:22 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "TALADRO",
+            "precio": 138000,
+            "cantidad": 1,
+            "referencia": "2026004",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 18000,
+            "gananciaTotal": 18000
+          }
+        ],
+        "total": 138000,
+        "ganancia": 18000
+      },
+      {
+        "id": 1773769521077,
+        "fecha": "2026-03-17",
+        "hora": "12:45:21 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 70000,
+            "cantidad": 10,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 20000,
+            "gananciaTotal": 200000
+          }
+        ],
+        "total": 700000,
+        "ganancia": 200000
+      },
+      {
+        "id": 1773769669198,
+        "fecha": "2026-03-17",
+        "hora": "12:47:49 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 70000,
+            "cantidad": 10,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 20000,
+            "gananciaTotal": 200000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "TALADRO",
+            "precio": 138000,
+            "cantidad": 1,
+            "referencia": "2026004",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 18000,
+            "gananciaTotal": 18000
+          }
+        ],
+        "total": 851600,
+        "ganancia": 223600
+      },
+      {
+        "id": 1773769764607,
+        "fecha": "2026-03-17",
+        "hora": "12:49:24 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 2000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 2,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 11200
+          }
+        ],
+        "total": 124200,
+        "ganancia": 38200
+      },
+      {
+        "id": 1773769997549,
+        "fecha": "2026-03-17",
+        "hora": "12:53:17 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          }
+        ],
+        "total": 65000,
+        "ganancia": 15000
+      },
+      {
+        "id": 1773770093154,
+        "fecha": "2026-03-17",
+        "hora": "12:54:53 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773770176640,
+        "fecha": "2026-03-17",
+        "hora": "12:56:16 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "pera",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026009",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773770770249,
+        "fecha": "2026-03-17",
+        "hora": "1:06:10 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "pera",
+            "precio": 75000,
+            "cantidad": 2,
+            "referencia": "2026009",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 50000
+          }
+        ],
+        "total": 150000,
+        "ganancia": 50000
+      },
+      {
+        "id": 1773770936249,
+        "fecha": "2026-03-17",
+        "hora": "1:08:56 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "ATUN",
+            "precio": 22008,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2008,
+            "gananciaTotal": 2008
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 35608,
+        "ganancia": 7608
+      },
+      {
+        "id": 1773771858360,
+        "fecha": "2026-03-17",
+        "hora": "1:24:18 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 2,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 50000
+          }
+        ],
+        "total": 150000,
+        "ganancia": 50000
+      }
+    ]
+  },
+  {
+    "idReporte": 1773773384093,
+    "fechaCreacion": "17/3/2026, 1:49:44 p. m.",
+    "admin": "ANDERSON IMBACUAN CUARAN",
+    "rango": {
+      "desde": "2026-03-17",
+      "hasta": "2026-03-17"
+    },
+    "filtroCliente": "Todos",
+    "totalVentas": "$ 266.200",
+    "totalUtilidad": "$ 84.200",
+    "ventasRaw": 266200,
+    "gananciaRaw": 84200,
+    "fechaGenerado": "2026-03-17T18:49:44.095Z",
+    "cantidadPedidos": 3,
+    "pedidos": [
+      {
+        "id": 1773772380848,
+        "fecha": "2026-03-17",
+        "hora": "1:33:00 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773772811526,
+        "fecha": "2026-03-17",
+        "hora": "1:40:11 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 2,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 11200
+          }
+        ],
+        "total": 27200,
+        "ganancia": 11200
+      },
+      {
+        "id": 1773773096989,
+        "fecha": "2026-03-17",
+        "hora": "1:44:56 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          },
+          {
+            "nombre": "acetaminofen",
+            "precio": 10400,
+            "cantidad": 1,
+            "referencia": "2026010",
+            "unidad": "500 G",
+            "gananciaUnit": 2400,
+            "gananciaTotal": 2400
+          }
+        ],
+        "total": 164000,
+        "ganancia": 48000
+      }
+    ]
+  },
+  {
+    "idReporte": 1773776841927,
+    "fechaCreacion": "17/3/2026, 2:47:21 p. m.",
+    "admin": "ANDERSON IMBACUAN CUARAN",
+    "rango": {
+      "desde": "2026-03-17",
+      "hasta": "2026-03-17"
+    },
+    "filtroCliente": "Todos",
+    "totalVentas": "$ 583.400",
+    "totalUtilidad": "$ 185.400",
+    "ventasRaw": 583400,
+    "gananciaRaw": 185400,
+    "fechaGenerado": "2026-03-17T19:47:21.942Z",
+    "cantidadPedidos": 6,
+    "pedidos": [
+      {
+        "id": 1773772380848,
+        "fecha": "2026-03-17",
+        "hora": "1:33:00 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773772811526,
+        "fecha": "2026-03-17",
+        "hora": "1:40:11 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 2,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 11200
+          }
+        ],
+        "total": 27200,
+        "ganancia": 11200
+      },
+      {
+        "id": 1773773096989,
+        "fecha": "2026-03-17",
+        "hora": "1:44:56 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          },
+          {
+            "nombre": "acetaminofen",
+            "precio": 10400,
+            "cantidad": 1,
+            "referencia": "2026010",
+            "unidad": "500 G",
+            "gananciaUnit": 2400,
+            "gananciaTotal": 2400
+          }
+        ],
+        "total": 164000,
+        "ganancia": 48000
+      },
+      {
+        "id": 1773773449293,
+        "fecha": "2026-03-17",
+        "hora": "1:50:49 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          }
+        ],
+        "total": 153600,
+        "ganancia": 45600
+      },
+      {
+        "id": 1773774262494,
+        "fecha": "2026-03-17",
+        "hora": "2:04:22 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 88600,
+        "ganancia": 30600
+      },
+      {
+        "id": 1773774423406,
+        "fecha": "2026-03-17",
+        "hora": "2:07:03 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      }
+    ]
+  },
+  {
+    "idReporte": 1773794786998,
+    "fechaCreacion": "17/3/2026, 7:46:26 p. m.",
+    "admin": "ANDERSON IMBACUAN CUARAN",
+    "rango": {
+      "desde": "2026-03-17",
+      "hasta": "2026-03-17"
+    },
+    "filtroCliente": "Todos",
+    "totalVentas": "$ 61.529.400",
+    "totalUtilidad": "$ 20.371.400",
+    "ventasRaw": 61529400,
+    "gananciaRaw": 20371400,
+    "fechaGenerado": "2026-03-18T00:46:27.010Z",
+    "cantidadPedidos": 45,
+    "pedidos": [
+      {
+        "id": 1773772380848,
+        "fecha": "2026-03-17",
+        "hora": "1:33:00 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773772811526,
+        "fecha": "2026-03-17",
+        "hora": "1:40:11 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 2,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 11200
+          }
+        ],
+        "total": 27200,
+        "ganancia": 11200
+      },
+      {
+        "id": 1773773096989,
+        "fecha": "2026-03-17",
+        "hora": "1:44:56 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          },
+          {
+            "nombre": "acetaminofen",
+            "precio": 10400,
+            "cantidad": 1,
+            "referencia": "2026010",
+            "unidad": "500 G",
+            "gananciaUnit": 2400,
+            "gananciaTotal": 2400
+          }
+        ],
+        "total": 164000,
+        "ganancia": 48000
+      },
+      {
+        "id": 1773773449293,
+        "fecha": "2026-03-17",
+        "hora": "1:50:49 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          }
+        ],
+        "total": 153600,
+        "ganancia": 45600
+      },
+      {
+        "id": 1773774262494,
+        "fecha": "2026-03-17",
+        "hora": "2:04:22 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 88600,
+        "ganancia": 30600
+      },
+      {
+        "id": 1773774423406,
+        "fecha": "2026-03-17",
+        "hora": "2:07:03 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773789905540,
+        "fecha": "2026-03-17",
+        "hora": "6:25:05 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 2,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 50000
+          },
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 2,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 4000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          },
+          {
+            "nombre": "pera",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026009",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "acetaminofen",
+            "precio": 10400,
+            "cantidad": 2,
+            "referencia": "2026010",
+            "unidad": "500 G",
+            "gananciaUnit": 2400,
+            "gananciaTotal": 4800
+          }
+        ],
+        "total": 368400,
+        "ganancia": 104400
+      },
+      {
+        "id": 1773789996535,
+        "fecha": "2026-03-17",
+        "hora": "6:26:36 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 2000
+          }
+        ],
+        "total": 22000,
+        "ganancia": 2000
+      },
+      {
+        "id": 1773790057875,
+        "fecha": "2026-03-17",
+        "hora": "6:27:37 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 3,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 75000
+          },
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 2,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 4000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 282600,
+        "ganancia": 84600
+      },
+      {
+        "id": 1773790327871,
+        "fecha": "2026-03-17",
+        "hora": "6:32:07 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773790330557,
+        "fecha": "2026-03-17",
+        "hora": "6:32:10 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773790331703,
+        "fecha": "2026-03-17",
+        "hora": "6:32:11 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773790332790,
+        "fecha": "2026-03-17",
+        "hora": "6:32:12 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773790333922,
+        "fecha": "2026-03-17",
+        "hora": "6:32:13 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773790335095,
+        "fecha": "2026-03-17",
+        "hora": "6:32:15 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773790336681,
+        "fecha": "2026-03-17",
+        "hora": "6:32:16 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773790337787,
+        "fecha": "2026-03-17",
+        "hora": "6:32:17 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773790338981,
+        "fecha": "2026-03-17",
+        "hora": "6:32:18 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773790340315,
+        "fecha": "2026-03-17",
+        "hora": "6:32:20 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773790341508,
+        "fecha": "2026-03-17",
+        "hora": "6:32:21 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773790398418,
+        "fecha": "2026-03-17",
+        "hora": "6:33:18 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 2000
+          }
+        ],
+        "total": 22000,
+        "ganancia": 2000
+      },
+      {
+        "id": 1773790425794,
+        "fecha": "2026-03-17",
+        "hora": "6:33:45 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 2000
+          }
+        ],
+        "total": 97000,
+        "ganancia": 27000
+      },
+      {
+        "id": 1773790598918,
+        "fecha": "2026-03-17",
+        "hora": "6:36:38 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          },
+          {
+            "nombre": "acetaminofen",
+            "precio": 10400,
+            "cantidad": 1,
+            "referencia": "2026010",
+            "unidad": "500 G",
+            "gananciaUnit": 2400,
+            "gananciaTotal": 2400
+          }
+        ],
+        "total": 164000,
+        "ganancia": 48000
+      },
+      {
+        "id": 1773790663771,
+        "fecha": "2026-03-17",
+        "hora": "6:37:43 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          },
+          {
+            "nombre": "pera",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026009",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "acetaminofen",
+            "precio": 10400,
+            "cantidad": 1,
+            "referencia": "2026010",
+            "unidad": "500 G",
+            "gananciaUnit": 2400,
+            "gananciaTotal": 2400
+          }
+        ],
+        "total": 239000,
+        "ganancia": 73000
+      },
+      {
+        "id": 1773790748795,
+        "fecha": "2026-03-17",
+        "hora": "6:39:08 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773790790684,
+        "fecha": "2026-03-17",
+        "hora": "6:39:50 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 2,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 50000
+          },
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 5,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 10000
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          },
+          {
+            "nombre": "pera",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026009",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "acetaminofen",
+            "precio": 10400,
+            "cantidad": 1,
+            "referencia": "2026010",
+            "unidad": "500 G",
+            "gananciaUnit": 2400,
+            "gananciaTotal": 2400
+          }
+        ],
+        "total": 410400,
+        "ganancia": 102400
+      },
+      {
+        "id": 1773790837849,
+        "fecha": "2026-03-17",
+        "hora": "6:40:37 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 2000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          },
+          {
+            "nombre": "pera",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026009",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 250600,
+        "ganancia": 72600
+      },
+      {
+        "id": 1773791082571,
+        "fecha": "2026-03-17",
+        "hora": "6:44:42 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 4,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 100000
+          },
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 2000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "pera",
+            "precio": 75000,
+            "cantidad": 7,
+            "referencia": "2026009",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 175000
+          }
+        ],
+        "total": 860600,
+        "ganancia": 282600
+      },
+      {
+        "id": 1773791184830,
+        "fecha": "2026-03-17",
+        "hora": "6:46:24 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "pera",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026009",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773791205331,
+        "fecha": "2026-03-17",
+        "hora": "6:46:45 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773791226616,
+        "fecha": "2026-03-17",
+        "hora": "6:47:06 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773791399173,
+        "fecha": "2026-03-17",
+        "hora": "6:49:59 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 2000
+          }
+        ],
+        "total": 97000,
+        "ganancia": 27000
+      },
+      {
+        "id": 1773791439829,
+        "fecha": "2026-03-17",
+        "hora": "6:50:39 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773791894889,
+        "fecha": "2026-03-17",
+        "hora": "6:58:14 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773791935244,
+        "fecha": "2026-03-17",
+        "hora": "6:58:55 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773792063238,
+        "fecha": "2026-03-17",
+        "hora": "7:01:03 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 752,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 18800000
+          }
+        ],
+        "total": 56400000,
+        "ganancia": 18800000
+      },
+      {
+        "id": 1773792190673,
+        "fecha": "2026-03-17",
+        "hora": "7:03:10 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 13600,
+        "ganancia": 5600
+      },
+      {
+        "id": 1773792734958,
+        "fecha": "2026-03-17",
+        "hora": "7:12:14 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 13600,
+        "ganancia": 5600
+      },
+      {
+        "id": 1773792856136,
+        "fecha": "2026-03-17",
+        "hora": "7:14:16 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 13600,
+        "ganancia": 5600
+      },
+      {
+        "id": 1773792905751,
+        "fecha": "2026-03-17",
+        "hora": "7:15:05 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 13600,
+        "ganancia": 5600
+      },
+      {
+        "id": 1773794147377,
+        "fecha": "2026-03-17",
+        "hora": "7:35:47 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 13600,
+        "ganancia": 5600
+      },
+      {
+        "id": 1773794236235,
+        "fecha": "2026-03-17",
+        "hora": "7:37:16 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 2,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 30000
+          }
+        ],
+        "total": 143600,
+        "ganancia": 35600
+      },
+      {
+        "id": 1773794564967,
+        "fecha": "2026-03-17",
+        "hora": "7:42:44 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 13600,
+        "ganancia": 5600
+      },
+      {
+        "id": 1773794643217,
+        "fecha": "2026-03-17",
+        "hora": "7:44:03 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 13600,
+        "ganancia": 5600
+      },
+      {
+        "id": 1773794721543,
+        "fecha": "2026-03-17",
+        "hora": "7:45:21 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 2,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 30000
+          }
+        ],
+        "total": 143600,
+        "ganancia": 35600
+      }
+    ]
+  },
+  {
+    "idReporte": 1773801793525,
+    "fechaCreacion": "17/3/2026, 9:43:13 p. m.",
+    "admin": "ANDERSON IMBACUAN CUARAN",
+    "rango": {
+      "desde": "2026-03-17",
+      "hasta": "2026-03-17"
+    },
+    "filtroCliente": "Todos",
+    "totalVentas": "$ 61.753.600",
+    "totalUtilidad": "$ 20.409.600",
+    "ventasRaw": 61753600,
+    "gananciaRaw": 20409600,
+    "fechaGenerado": "2026-03-18T02:43:13.535Z",
+    "cantidadPedidos": 49,
+    "pedidos": [
+      {
+        "id": 1773772380848,
+        "fecha": "2026-03-17",
+        "hora": "1:33:00 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773772811526,
+        "fecha": "2026-03-17",
+        "hora": "1:40:11 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 2,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 11200
+          }
+        ],
+        "total": 27200,
+        "ganancia": 11200
+      },
+      {
+        "id": 1773773096989,
+        "fecha": "2026-03-17",
+        "hora": "1:44:56 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          },
+          {
+            "nombre": "acetaminofen",
+            "precio": 10400,
+            "cantidad": 1,
+            "referencia": "2026010",
+            "unidad": "500 G",
+            "gananciaUnit": 2400,
+            "gananciaTotal": 2400
+          }
+        ],
+        "total": 164000,
+        "ganancia": 48000
+      },
+      {
+        "id": 1773773449293,
+        "fecha": "2026-03-17",
+        "hora": "1:50:49 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          }
+        ],
+        "total": 153600,
+        "ganancia": 45600
+      },
+      {
+        "id": 1773774262494,
+        "fecha": "2026-03-17",
+        "hora": "2:04:22 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 88600,
+        "ganancia": 30600
+      },
+      {
+        "id": 1773774423406,
+        "fecha": "2026-03-17",
+        "hora": "2:07:03 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773789905540,
+        "fecha": "2026-03-17",
+        "hora": "6:25:05 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 2,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 50000
+          },
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 2,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 4000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          },
+          {
+            "nombre": "pera",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026009",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "acetaminofen",
+            "precio": 10400,
+            "cantidad": 2,
+            "referencia": "2026010",
+            "unidad": "500 G",
+            "gananciaUnit": 2400,
+            "gananciaTotal": 4800
+          }
+        ],
+        "total": 368400,
+        "ganancia": 104400
+      },
+      {
+        "id": 1773789996535,
+        "fecha": "2026-03-17",
+        "hora": "6:26:36 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 2000
+          }
+        ],
+        "total": 22000,
+        "ganancia": 2000
+      },
+      {
+        "id": 1773790057875,
+        "fecha": "2026-03-17",
+        "hora": "6:27:37 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 3,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 75000
+          },
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 2,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 4000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 282600,
+        "ganancia": 84600
+      },
+      {
+        "id": 1773790327871,
+        "fecha": "2026-03-17",
+        "hora": "6:32:07 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773790330557,
+        "fecha": "2026-03-17",
+        "hora": "6:32:10 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773790331703,
+        "fecha": "2026-03-17",
+        "hora": "6:32:11 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773790332790,
+        "fecha": "2026-03-17",
+        "hora": "6:32:12 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773790333922,
+        "fecha": "2026-03-17",
+        "hora": "6:32:13 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773790335095,
+        "fecha": "2026-03-17",
+        "hora": "6:32:15 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773790336681,
+        "fecha": "2026-03-17",
+        "hora": "6:32:16 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773790337787,
+        "fecha": "2026-03-17",
+        "hora": "6:32:17 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773790338981,
+        "fecha": "2026-03-17",
+        "hora": "6:32:18 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773790340315,
+        "fecha": "2026-03-17",
+        "hora": "6:32:20 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773790341508,
+        "fecha": "2026-03-17",
+        "hora": "6:32:21 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773790398418,
+        "fecha": "2026-03-17",
+        "hora": "6:33:18 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 2000
+          }
+        ],
+        "total": 22000,
+        "ganancia": 2000
+      },
+      {
+        "id": 1773790425794,
+        "fecha": "2026-03-17",
+        "hora": "6:33:45 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 2000
+          }
+        ],
+        "total": 97000,
+        "ganancia": 27000
+      },
+      {
+        "id": 1773790598918,
+        "fecha": "2026-03-17",
+        "hora": "6:36:38 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          },
+          {
+            "nombre": "acetaminofen",
+            "precio": 10400,
+            "cantidad": 1,
+            "referencia": "2026010",
+            "unidad": "500 G",
+            "gananciaUnit": 2400,
+            "gananciaTotal": 2400
+          }
+        ],
+        "total": 164000,
+        "ganancia": 48000
+      },
+      {
+        "id": 1773790663771,
+        "fecha": "2026-03-17",
+        "hora": "6:37:43 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          },
+          {
+            "nombre": "pera",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026009",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "acetaminofen",
+            "precio": 10400,
+            "cantidad": 1,
+            "referencia": "2026010",
+            "unidad": "500 G",
+            "gananciaUnit": 2400,
+            "gananciaTotal": 2400
+          }
+        ],
+        "total": 239000,
+        "ganancia": 73000
+      },
+      {
+        "id": 1773790748795,
+        "fecha": "2026-03-17",
+        "hora": "6:39:08 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773790790684,
+        "fecha": "2026-03-17",
+        "hora": "6:39:50 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 2,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 50000
+          },
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 5,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 10000
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          },
+          {
+            "nombre": "pera",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026009",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "acetaminofen",
+            "precio": 10400,
+            "cantidad": 1,
+            "referencia": "2026010",
+            "unidad": "500 G",
+            "gananciaUnit": 2400,
+            "gananciaTotal": 2400
+          }
+        ],
+        "total": 410400,
+        "ganancia": 102400
+      },
+      {
+        "id": 1773790837849,
+        "fecha": "2026-03-17",
+        "hora": "6:40:37 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 2000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          },
+          {
+            "nombre": "pera",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026009",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 250600,
+        "ganancia": 72600
+      },
+      {
+        "id": 1773791082571,
+        "fecha": "2026-03-17",
+        "hora": "6:44:42 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 4,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 100000
+          },
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 2000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "pera",
+            "precio": 75000,
+            "cantidad": 7,
+            "referencia": "2026009",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 175000
+          }
+        ],
+        "total": 860600,
+        "ganancia": 282600
+      },
+      {
+        "id": 1773791184830,
+        "fecha": "2026-03-17",
+        "hora": "6:46:24 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "pera",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026009",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773791205331,
+        "fecha": "2026-03-17",
+        "hora": "6:46:45 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773791226616,
+        "fecha": "2026-03-17",
+        "hora": "6:47:06 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773791399173,
+        "fecha": "2026-03-17",
+        "hora": "6:49:59 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 2000
+          }
+        ],
+        "total": 97000,
+        "ganancia": 27000
+      },
+      {
+        "id": 1773791439829,
+        "fecha": "2026-03-17",
+        "hora": "6:50:39 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773791894889,
+        "fecha": "2026-03-17",
+        "hora": "6:58:14 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773791935244,
+        "fecha": "2026-03-17",
+        "hora": "6:58:55 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773792063238,
+        "fecha": "2026-03-17",
+        "hora": "7:01:03 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 752,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 18800000
+          }
+        ],
+        "total": 56400000,
+        "ganancia": 18800000
+      },
+      {
+        "id": 1773792190673,
+        "fecha": "2026-03-17",
+        "hora": "7:03:10 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 13600,
+        "ganancia": 5600
+      },
+      {
+        "id": 1773792734958,
+        "fecha": "2026-03-17",
+        "hora": "7:12:14 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 13600,
+        "ganancia": 5600
+      },
+      {
+        "id": 1773792856136,
+        "fecha": "2026-03-17",
+        "hora": "7:14:16 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 13600,
+        "ganancia": 5600
+      },
+      {
+        "id": 1773792905751,
+        "fecha": "2026-03-17",
+        "hora": "7:15:05 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 13600,
+        "ganancia": 5600
+      },
+      {
+        "id": 1773794147377,
+        "fecha": "2026-03-17",
+        "hora": "7:35:47 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 13600,
+        "ganancia": 5600
+      },
+      {
+        "id": 1773794236235,
+        "fecha": "2026-03-17",
+        "hora": "7:37:16 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 2,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 30000
+          }
+        ],
+        "total": 143600,
+        "ganancia": 35600
+      },
+      {
+        "id": 1773794564967,
+        "fecha": "2026-03-17",
+        "hora": "7:42:44 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 13600,
+        "ganancia": 5600
+      },
+      {
+        "id": 1773794643217,
+        "fecha": "2026-03-17",
+        "hora": "7:44:03 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 13600,
+        "ganancia": 5600
+      },
+      {
+        "id": 1773794721543,
+        "fecha": "2026-03-17",
+        "hora": "7:45:21 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 2,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 30000
+          }
+        ],
+        "total": 143600,
+        "ganancia": 35600
+      },
+      {
+        "id": 1773800263731,
+        "fecha": "2026-03-17",
+        "hora": "9:17:43 p. m.",
+        "cliente": "LEIDI",
+        "items": [
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 3,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 6000
+          }
+        ],
+        "total": 66000,
+        "ganancia": 6000
+      },
+      {
+        "id": 1773800652042,
+        "fecha": "2026-03-17",
+        "hora": "9:24:12 p. m.",
+        "cliente": "LEIDI",
+        "items": [
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 2000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 35600,
+        "ganancia": 7600
+      },
+      {
+        "id": 1773800783347,
+        "fecha": "2026-03-17",
+        "hora": "9:26:23 p. m.",
+        "cliente": "LEIDI",
+        "items": [
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 2000
+          }
+        ],
+        "total": 22000,
+        "ganancia": 2000
+      },
+      {
+        "id": 1773801701774,
+        "fecha": "2026-03-17",
+        "hora": "9:41:41 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 2000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          }
+        ],
+        "total": 100600,
+        "ganancia": 22600
+      }
+    ]
+  },
+  {
+    "idReporte": 1773802268834,
+    "fechaCreacion": "17/3/2026, 9:51:08 p. m.",
+    "admin": "ANDERSON IMBACUAN CUARAN",
+    "rango": {
+      "desde": "2026-03-12",
+      "hasta": "2026-03-18"
+    },
+    "filtroCliente": "Todos",
+    "totalVentas": "$ 75.000",
+    "totalUtilidad": "$ 25.000",
+    "ventasRaw": 75000,
+    "gananciaRaw": 25000,
+    "fechaGenerado": "2026-03-18T02:51:08.838Z",
+    "cantidadPedidos": 1,
+    "pedidos": [
+      {
+        "id": 1773791894889,
+        "fecha": "2026-03-17",
+        "hora": "6:58:14 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      }
+    ]
+  },
+  {
+    "idReporte": 1773860254093,
+    "fechaCreacion": "18/3/2026, 1:57:34 p. m.",
+    "admin": "ANDERSON IMBACUAN CUARAN",
+    "rango": {
+      "desde": "2026-03-18",
+      "hasta": "2026-03-18"
+    },
+    "ventasRaw": 2365800,
+    "gananciaRaw": 791800,
+    "cantidadPedidos": 4,
+    "pedidos": [
+      {
+        "id": 1773852035390,
+        "cliente": "LEIDI",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 88600,
+        "fecha": "2026-03-18",
+        "hora": "11:40:35 a. m.",
+        "ganancia": 30600
+      },
+      {
+        "id": 1773853065609,
+        "cliente": "LEIDI",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 3,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 75000
+          }
+        ],
+        "total": 225000,
+        "fecha": "2026-03-18",
+        "hora": "11:57:45 a. m.",
+        "ganancia": 75000
+      },
+      {
+        "id": 1773854522418,
+        "cliente": "LEIDI",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 27,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 675000
+          }
+        ],
+        "total": 2025000,
+        "fecha": "2026-03-18",
+        "hora": "12:22:02 p. m.",
+        "ganancia": 675000
+      },
+      {
+        "id": 1773858556193,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 2,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 11200
+          }
+        ],
+        "total": 27200,
+        "fecha": "2026-03-18",
+        "hora": "1:29:16 p. m.",
+        "ganancia": 11200
+      }
+    ]
+  },
+  {
+    "idReporte": 1773864665685,
+    "fechaCreacion": "18/3/2026, 3:11:05 p. m.",
+    "admin": "Eduar Anderson Imbacuan",
+    "rango": {
+      "desde": "2026-03-18",
+      "hasta": "2026-03-18"
+    },
+    "ventasRaw": 2945000,
+    "gananciaRaw": 915000,
+    "cantidadPedidos": 9,
+    "pedidos": [
+      {
+        "id": 1773852035390,
+        "cliente": "LEIDI",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 88600,
+        "fecha": "2026-03-18",
+        "hora": "11:40:35 a. m.",
+        "ganancia": 30600
+      },
+      {
+        "id": 1773853065609,
+        "cliente": "LEIDI",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 3,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 75000
+          }
+        ],
+        "total": 225000,
+        "fecha": "2026-03-18",
+        "hora": "11:57:45 a. m.",
+        "ganancia": 75000
+      },
+      {
+        "id": 1773854522418,
+        "cliente": "LEIDI",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 27,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 675000
+          }
+        ],
+        "total": 2025000,
+        "fecha": "2026-03-18",
+        "hora": "12:22:02 p. m.",
+        "ganancia": 675000
+      },
+      {
+        "id": 1773858556193,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 2,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 11200
+          }
+        ],
+        "total": 27200,
+        "fecha": "2026-03-18",
+        "hora": "1:29:16 p. m.",
+        "ganancia": 11200
+      },
+      {
+        "id": 1773861540017,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "poo",
+            "precio": 84000,
+            "cantidad": 2,
+            "referencia": "yh",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 4000,
+            "gananciaTotal": 8000
+          }
+        ],
+        "total": 168000,
+        "fecha": "2026-03-18",
+        "hora": "2:19:00 p. m.",
+        "ganancia": 8000
+      },
+      {
+        "id": 1773861869720,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 88600,
+        "fecha": "2026-03-18",
+        "hora": "2:24:29 p. m.",
+        "ganancia": 30600
+      },
+      {
+        "id": 1773862285953,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "fecha": "2026-03-18",
+        "hora": "2:31:25 p. m.",
+        "ganancia": 25000
+      },
+      {
+        "id": 1773862721505,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "poo",
+            "precio": 84000,
+            "cantidad": 1,
+            "referencia": "yh",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 4000,
+            "gananciaTotal": 4000
+          }
+        ],
+        "total": 172600,
+        "fecha": "2026-03-18",
+        "hora": "2:38:41 p. m.",
+        "ganancia": 34600
+      },
+      {
+        "id": 1773864371220,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "fecha": "2026-03-18",
+        "hora": "3:06:11 p. m.",
+        "ganancia": 25000
+      }
+    ]
+  },
+  {
+    "idReporte": 1773868657888,
+    "fechaCreacion": "18/3/2026, 4:17:37 p. m.",
+    "admin": "Eduar Anderson Imbacuan",
+    "rango": {
+      "desde": "2026-03-18",
+      "hasta": "2026-03-18"
+    },
+    "ventasRaw": 3183600,
+    "gananciaRaw": 995600,
+    "cantidadPedidos": 11,
+    "pedidos": [
+      {
+        "id": 1773852035390,
+        "cliente": "LEIDI",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 88600,
+        "fecha": "2026-03-18",
+        "hora": "11:40:35 a. m.",
+        "ganancia": 30600
+      },
+      {
+        "id": 1773853065609,
+        "cliente": "LEIDI",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 3,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 75000
+          }
+        ],
+        "total": 225000,
+        "fecha": "2026-03-18",
+        "hora": "11:57:45 a. m.",
+        "ganancia": 75000
+      },
+      {
+        "id": 1773854522418,
+        "cliente": "LEIDI",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 27,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 675000
+          }
+        ],
+        "total": 2025000,
+        "fecha": "2026-03-18",
+        "hora": "12:22:02 p. m.",
+        "ganancia": 675000
+      },
+      {
+        "id": 1773858556193,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 2,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 11200
+          }
+        ],
+        "total": 27200,
+        "fecha": "2026-03-18",
+        "hora": "1:29:16 p. m.",
+        "ganancia": 11200
+      },
+      {
+        "id": 1773861540017,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "poo",
+            "precio": 84000,
+            "cantidad": 2,
+            "referencia": "yh",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 4000,
+            "gananciaTotal": 8000
+          }
+        ],
+        "total": 168000,
+        "fecha": "2026-03-18",
+        "hora": "2:19:00 p. m.",
+        "ganancia": 8000
+      },
+      {
+        "id": 1773861869720,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 88600,
+        "fecha": "2026-03-18",
+        "hora": "2:24:29 p. m.",
+        "ganancia": 30600
+      },
+      {
+        "id": 1773862285953,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "fecha": "2026-03-18",
+        "hora": "2:31:25 p. m.",
+        "ganancia": 25000
+      },
+      {
+        "id": 1773862721505,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "poo",
+            "precio": 84000,
+            "cantidad": 1,
+            "referencia": "yh",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 4000,
+            "gananciaTotal": 4000
+          }
+        ],
+        "total": 172600,
+        "fecha": "2026-03-18",
+        "hora": "2:38:41 p. m.",
+        "ganancia": 34600
+      },
+      {
+        "id": 1773864371220,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "fecha": "2026-03-18",
+        "hora": "3:06:11 p. m.",
+        "ganancia": 25000
+      },
+      {
+        "id": 1773865058104,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "fecha": "2026-03-18",
+        "hora": "3:17:38 p. m.",
+        "ganancia": 25000
+      },
+      {
+        "id": 1773865789349,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 2,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 50000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 163600,
+        "fecha": "2026-03-18",
+        "hora": "3:29:49 p. m.",
+        "ganancia": 55600
+      }
+    ]
+  },
+  {
+    "idReporte": 1773870786536,
+    "fechaCreacion": "18/3/2026, 4:53:06 p. m.",
+    "admin": "Eduar Anderson Imbacuan",
+    "rango": {
+      "desde": "2026-03-18",
+      "hasta": "2026-03-18"
+    },
+    "ventasRaw": 3183600,
+    "gananciaRaw": 995600,
+    "cantidadPedidos": 11,
+    "pedidos": [
+      {
+        "id": 1773852035390,
+        "cliente": "LEIDI",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 88600,
+        "fecha": "2026-03-18",
+        "hora": "11:40:35 a. m.",
+        "ganancia": 30600
+      },
+      {
+        "id": 1773853065609,
+        "cliente": "LEIDI",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 3,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 75000
+          }
+        ],
+        "total": 225000,
+        "fecha": "2026-03-18",
+        "hora": "11:57:45 a. m.",
+        "ganancia": 75000
+      },
+      {
+        "id": 1773854522418,
+        "cliente": "LEIDI",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 27,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 675000
+          }
+        ],
+        "total": 2025000,
+        "fecha": "2026-03-18",
+        "hora": "12:22:02 p. m.",
+        "ganancia": 675000
+      },
+      {
+        "id": 1773858556193,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 2,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 11200
+          }
+        ],
+        "total": 27200,
+        "fecha": "2026-03-18",
+        "hora": "1:29:16 p. m.",
+        "ganancia": 11200
+      },
+      {
+        "id": 1773861540017,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "poo",
+            "precio": 84000,
+            "cantidad": 2,
+            "referencia": "yh",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 4000,
+            "gananciaTotal": 8000
+          }
+        ],
+        "total": 168000,
+        "fecha": "2026-03-18",
+        "hora": "2:19:00 p. m.",
+        "ganancia": 8000
+      },
+      {
+        "id": 1773861869720,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 88600,
+        "fecha": "2026-03-18",
+        "hora": "2:24:29 p. m.",
+        "ganancia": 30600
+      },
+      {
+        "id": 1773862285953,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "fecha": "2026-03-18",
+        "hora": "2:31:25 p. m.",
+        "ganancia": 25000
+      },
+      {
+        "id": 1773862721505,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "poo",
+            "precio": 84000,
+            "cantidad": 1,
+            "referencia": "yh",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 4000,
+            "gananciaTotal": 4000
+          }
+        ],
+        "total": 172600,
+        "fecha": "2026-03-18",
+        "hora": "2:38:41 p. m.",
+        "ganancia": 34600
+      },
+      {
+        "id": 1773864371220,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "fecha": "2026-03-18",
+        "hora": "3:06:11 p. m.",
+        "ganancia": 25000
+      },
+      {
+        "id": 1773865058104,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "fecha": "2026-03-18",
+        "hora": "3:17:38 p. m.",
+        "ganancia": 25000
+      },
+      {
+        "id": 1773865789349,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 2,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 50000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 163600,
+        "fecha": "2026-03-18",
+        "hora": "3:29:49 p. m.",
+        "ganancia": 55600
+      }
+    ]
+  },
+  {
+    "idReporte": 1773872402960,
+    "fechaCreacion": "18/3/2026, 5:20:02 p. m.",
+    "admin": "ANDERSON IMBACUAN CUARAN",
+    "rango": {
+      "desde": "2026-03-18",
+      "hasta": "2026-03-18"
+    },
+    "ventasRaw": 4005800,
+    "gananciaRaw": 1271800,
+    "cantidadPedidos": 14,
+    "pedidos": [
+      {
+        "id": 1773852035390,
+        "cliente": "LEIDI",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 88600,
+        "fecha": "2026-03-18",
+        "hora": "11:40:35 a. m.",
+        "ganancia": 30600
+      },
+      {
+        "id": 1773853065609,
+        "cliente": "LEIDI",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 3,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 75000
+          }
+        ],
+        "total": 225000,
+        "fecha": "2026-03-18",
+        "hora": "11:57:45 a. m.",
+        "ganancia": 75000
+      },
+      {
+        "id": 1773854522418,
+        "cliente": "LEIDI",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 27,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 675000
+          }
+        ],
+        "total": 2025000,
+        "fecha": "2026-03-18",
+        "hora": "12:22:02 p. m.",
+        "ganancia": 675000
+      },
+      {
+        "id": 1773858556193,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 2,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 11200
+          }
+        ],
+        "total": 27200,
+        "fecha": "2026-03-18",
+        "hora": "1:29:16 p. m.",
+        "ganancia": 11200
+      },
+      {
+        "id": 1773861540017,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "poo",
+            "precio": 84000,
+            "cantidad": 2,
+            "referencia": "yh",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 4000,
+            "gananciaTotal": 8000
+          }
+        ],
+        "total": 168000,
+        "fecha": "2026-03-18",
+        "hora": "2:19:00 p. m.",
+        "ganancia": 8000
+      },
+      {
+        "id": 1773861869720,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 88600,
+        "fecha": "2026-03-18",
+        "hora": "2:24:29 p. m.",
+        "ganancia": 30600
+      },
+      {
+        "id": 1773862285953,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "fecha": "2026-03-18",
+        "hora": "2:31:25 p. m.",
+        "ganancia": 25000
+      },
+      {
+        "id": 1773862721505,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "poo",
+            "precio": 84000,
+            "cantidad": 1,
+            "referencia": "yh",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 4000,
+            "gananciaTotal": 4000
+          }
+        ],
+        "total": 172600,
+        "fecha": "2026-03-18",
+        "hora": "2:38:41 p. m.",
+        "ganancia": 34600
+      },
+      {
+        "id": 1773864371220,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "fecha": "2026-03-18",
+        "hora": "3:06:11 p. m.",
+        "ganancia": 25000
+      },
+      {
+        "id": 1773865058104,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "fecha": "2026-03-18",
+        "hora": "3:17:38 p. m.",
+        "ganancia": 25000
+      },
+      {
+        "id": 1773865789349,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 2,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 50000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 163600,
+        "fecha": "2026-03-18",
+        "hora": "3:29:49 p. m.",
+        "ganancia": 55600
+      },
+      {
+        "id": 1773872250540,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 7,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 175000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 4,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 22400
+          },
+          {
+            "nombre": "acetaminofen",
+            "precio": 10400,
+            "cantidad": 5,
+            "referencia": "2026010",
+            "unidad": "500 G",
+            "gananciaUnit": 2400,
+            "gananciaTotal": 12000
+          }
+        ],
+        "total": 631400,
+        "fecha": "2026-03-18",
+        "hora": "5:17:30 p. m.",
+        "ganancia": 209400
+      },
+      {
+        "id": 1773872293720,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 88600,
+        "fecha": "2026-03-18",
+        "hora": "5:18:13 p. m.",
+        "ganancia": 30600
+      },
+      {
+        "id": 1773872331628,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 2,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 11200
+          }
+        ],
+        "total": 102200,
+        "fecha": "2026-03-18",
+        "hora": "5:18:51 p. m.",
+        "ganancia": 36200
+      }
+    ]
+  },
+  {
+    "idReporte": 1773872436016,
+    "fechaCreacion": "18/3/2026, 5:20:36 p. m.",
+    "admin": "ANDERSON IMBACUAN CUARAN",
+    "rango": {
+      "desde": "2026-03-01",
+      "hasta": "2026-03-18"
+    },
+    "ventasRaw": 66586200,
+    "gananciaRaw": 21824200,
+    "cantidadPedidos": 67,
+    "pedidos": [
+      {
+        "id": 1773772380848,
+        "fecha": "2026-03-17",
+        "hora": "1:33:00 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773772811526,
+        "fecha": "2026-03-17",
+        "hora": "1:40:11 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 2,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 11200
+          }
+        ],
+        "total": 27200,
+        "ganancia": 11200
+      },
+      {
+        "id": 1773773096989,
+        "fecha": "2026-03-17",
+        "hora": "1:44:56 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          },
+          {
+            "nombre": "acetaminofen",
+            "precio": 10400,
+            "cantidad": 1,
+            "referencia": "2026010",
+            "unidad": "500 G",
+            "gananciaUnit": 2400,
+            "gananciaTotal": 2400
+          }
+        ],
+        "total": 164000,
+        "ganancia": 48000
+      },
+      {
+        "id": 1773773449293,
+        "fecha": "2026-03-17",
+        "hora": "1:50:49 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          }
+        ],
+        "total": 153600,
+        "ganancia": 45600
+      },
+      {
+        "id": 1773774262494,
+        "fecha": "2026-03-17",
+        "hora": "2:04:22 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 88600,
+        "ganancia": 30600
+      },
+      {
+        "id": 1773774423406,
+        "fecha": "2026-03-17",
+        "hora": "2:07:03 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773789905540,
+        "fecha": "2026-03-17",
+        "hora": "6:25:05 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 2,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 50000
+          },
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 2,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 4000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          },
+          {
+            "nombre": "pera",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026009",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "acetaminofen",
+            "precio": 10400,
+            "cantidad": 2,
+            "referencia": "2026010",
+            "unidad": "500 G",
+            "gananciaUnit": 2400,
+            "gananciaTotal": 4800
+          }
+        ],
+        "total": 368400,
+        "ganancia": 104400
+      },
+      {
+        "id": 1773789996535,
+        "fecha": "2026-03-17",
+        "hora": "6:26:36 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 2000
+          }
+        ],
+        "total": 22000,
+        "ganancia": 2000
+      },
+      {
+        "id": 1773790057875,
+        "fecha": "2026-03-17",
+        "hora": "6:27:37 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 3,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 75000
+          },
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 2,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 4000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 282600,
+        "ganancia": 84600
+      },
+      {
+        "id": 1773790327871,
+        "fecha": "2026-03-17",
+        "hora": "6:32:07 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773790330557,
+        "fecha": "2026-03-17",
+        "hora": "6:32:10 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773790331703,
+        "fecha": "2026-03-17",
+        "hora": "6:32:11 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773790332790,
+        "fecha": "2026-03-17",
+        "hora": "6:32:12 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773790333922,
+        "fecha": "2026-03-17",
+        "hora": "6:32:13 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773790335095,
+        "fecha": "2026-03-17",
+        "hora": "6:32:15 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773790336681,
+        "fecha": "2026-03-17",
+        "hora": "6:32:16 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773790337787,
+        "fecha": "2026-03-17",
+        "hora": "6:32:17 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773790338981,
+        "fecha": "2026-03-17",
+        "hora": "6:32:18 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773790340315,
+        "fecha": "2026-03-17",
+        "hora": "6:32:20 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773790341508,
+        "fecha": "2026-03-17",
+        "hora": "6:32:21 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773790398418,
+        "fecha": "2026-03-17",
+        "hora": "6:33:18 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 2000
+          }
+        ],
+        "total": 22000,
+        "ganancia": 2000
+      },
+      {
+        "id": 1773790425794,
+        "fecha": "2026-03-17",
+        "hora": "6:33:45 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 2000
+          }
+        ],
+        "total": 97000,
+        "ganancia": 27000
+      },
+      {
+        "id": 1773790598918,
+        "fecha": "2026-03-17",
+        "hora": "6:36:38 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          },
+          {
+            "nombre": "acetaminofen",
+            "precio": 10400,
+            "cantidad": 1,
+            "referencia": "2026010",
+            "unidad": "500 G",
+            "gananciaUnit": 2400,
+            "gananciaTotal": 2400
+          }
+        ],
+        "total": 164000,
+        "ganancia": 48000
+      },
+      {
+        "id": 1773790663771,
+        "fecha": "2026-03-17",
+        "hora": "6:37:43 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          },
+          {
+            "nombre": "pera",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026009",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "acetaminofen",
+            "precio": 10400,
+            "cantidad": 1,
+            "referencia": "2026010",
+            "unidad": "500 G",
+            "gananciaUnit": 2400,
+            "gananciaTotal": 2400
+          }
+        ],
+        "total": 239000,
+        "ganancia": 73000
+      },
+      {
+        "id": 1773790748795,
+        "fecha": "2026-03-17",
+        "hora": "6:39:08 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773790790684,
+        "fecha": "2026-03-17",
+        "hora": "6:39:50 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 2,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 50000
+          },
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 5,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 10000
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          },
+          {
+            "nombre": "pera",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026009",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "acetaminofen",
+            "precio": 10400,
+            "cantidad": 1,
+            "referencia": "2026010",
+            "unidad": "500 G",
+            "gananciaUnit": 2400,
+            "gananciaTotal": 2400
+          }
+        ],
+        "total": 410400,
+        "ganancia": 102400
+      },
+      {
+        "id": 1773790837849,
+        "fecha": "2026-03-17",
+        "hora": "6:40:37 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 2000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          },
+          {
+            "nombre": "pera",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026009",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 250600,
+        "ganancia": 72600
+      },
+      {
+        "id": 1773791082571,
+        "fecha": "2026-03-17",
+        "hora": "6:44:42 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 4,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 100000
+          },
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 2000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "pera",
+            "precio": 75000,
+            "cantidad": 7,
+            "referencia": "2026009",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 175000
+          }
+        ],
+        "total": 860600,
+        "ganancia": 282600
+      },
+      {
+        "id": 1773791184830,
+        "fecha": "2026-03-17",
+        "hora": "6:46:24 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "pera",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026009",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773791205331,
+        "fecha": "2026-03-17",
+        "hora": "6:46:45 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773791226616,
+        "fecha": "2026-03-17",
+        "hora": "6:47:06 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773791399173,
+        "fecha": "2026-03-17",
+        "hora": "6:49:59 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 2000
+          }
+        ],
+        "total": 97000,
+        "ganancia": 27000
+      },
+      {
+        "id": 1773791439829,
+        "fecha": "2026-03-17",
+        "hora": "6:50:39 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773791894889,
+        "fecha": "2026-03-17",
+        "hora": "6:58:14 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773791935244,
+        "fecha": "2026-03-17",
+        "hora": "6:58:55 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773792063238,
+        "fecha": "2026-03-17",
+        "hora": "7:01:03 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 752,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 18800000
+          }
+        ],
+        "total": 56400000,
+        "ganancia": 18800000
+      },
+      {
+        "id": 1773792190673,
+        "fecha": "2026-03-17",
+        "hora": "7:03:10 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 13600,
+        "ganancia": 5600
+      },
+      {
+        "id": 1773792734958,
+        "fecha": "2026-03-17",
+        "hora": "7:12:14 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 13600,
+        "ganancia": 5600
+      },
+      {
+        "id": 1773792856136,
+        "fecha": "2026-03-17",
+        "hora": "7:14:16 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 13600,
+        "ganancia": 5600
+      },
+      {
+        "id": 1773792905751,
+        "fecha": "2026-03-17",
+        "hora": "7:15:05 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 13600,
+        "ganancia": 5600
+      },
+      {
+        "id": 1773794147377,
+        "fecha": "2026-03-17",
+        "hora": "7:35:47 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 13600,
+        "ganancia": 5600
+      },
+      {
+        "id": 1773794236235,
+        "fecha": "2026-03-17",
+        "hora": "7:37:16 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 2,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 30000
+          }
+        ],
+        "total": 143600,
+        "ganancia": 35600
+      },
+      {
+        "id": 1773794564967,
+        "fecha": "2026-03-17",
+        "hora": "7:42:44 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 13600,
+        "ganancia": 5600
+      },
+      {
+        "id": 1773794643217,
+        "fecha": "2026-03-17",
+        "hora": "7:44:03 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 13600,
+        "ganancia": 5600
+      },
+      {
+        "id": 1773794721543,
+        "fecha": "2026-03-17",
+        "hora": "7:45:21 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 2,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 30000
+          }
+        ],
+        "total": 143600,
+        "ganancia": 35600
+      },
+      {
+        "id": 1773800263731,
+        "fecha": "2026-03-17",
+        "hora": "9:17:43 p. m.",
+        "cliente": "LEIDI",
+        "items": [
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 3,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 6000
+          }
+        ],
+        "total": 66000,
+        "ganancia": 6000
+      },
+      {
+        "id": 1773800652042,
+        "fecha": "2026-03-17",
+        "hora": "9:24:12 p. m.",
+        "cliente": "LEIDI",
+        "items": [
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 2000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 35600,
+        "ganancia": 7600
+      },
+      {
+        "id": 1773800783347,
+        "fecha": "2026-03-17",
+        "hora": "9:26:23 p. m.",
+        "cliente": "LEIDI",
+        "items": [
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 2000
+          }
+        ],
+        "total": 22000,
+        "ganancia": 2000
+      },
+      {
+        "id": 1773801701774,
+        "fecha": "2026-03-17",
+        "hora": "9:41:41 p. m.",
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 2000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          }
+        ],
+        "total": 100600,
+        "ganancia": 22600
+      },
+      {
+        "id": 1773804617114,
+        "fecha": "2026-03-17",
+        "hora": "10:30:17 p. m.",
+        "cliente": "LEIDI",
+        "items": [
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          }
+        ],
+        "total": 65000,
+        "ganancia": 15000
+      },
+      {
+        "id": 1773807258615,
+        "fecha": "2026-03-17",
+        "hora": "11:14:18 p. m.",
+        "cliente": "LEIDI",
+        "items": [
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 1,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 2000
+          }
+        ],
+        "total": 22000,
+        "ganancia": 2000
+      },
+      {
+        "id": 1773807361415,
+        "fecha": "2026-03-17",
+        "hora": "11:16:01 p. m.",
+        "cliente": "LEIDI",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "ATUN",
+            "precio": 22000,
+            "cantidad": 22,
+            "referencia": "2026002",
+            "unidad": "KILO",
+            "gananciaUnit": 2000,
+            "gananciaTotal": 44000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 3,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 16800
+          },
+          {
+            "nombre": "LAPIZ",
+            "precio": 65000,
+            "cantidad": 1,
+            "referencia": "2026007",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 15000,
+            "gananciaTotal": 15000
+          }
+        ],
+        "total": 664800,
+        "ganancia": 100800
+      },
+      {
+        "id": 1773807624707,
+        "fecha": "2026-03-17",
+        "hora": "11:20:24 p. m.",
+        "cliente": "LEIDI",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "ganancia": 25000
+      },
+      {
+        "id": 1773852035390,
+        "cliente": "LEIDI",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 88600,
+        "fecha": "2026-03-18",
+        "hora": "11:40:35 a. m.",
+        "ganancia": 30600
+      },
+      {
+        "id": 1773853065609,
+        "cliente": "LEIDI",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 3,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 75000
+          }
+        ],
+        "total": 225000,
+        "fecha": "2026-03-18",
+        "hora": "11:57:45 a. m.",
+        "ganancia": 75000
+      },
+      {
+        "id": 1773854522418,
+        "cliente": "LEIDI",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 27,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 675000
+          }
+        ],
+        "total": 2025000,
+        "fecha": "2026-03-18",
+        "hora": "12:22:02 p. m.",
+        "ganancia": 675000
+      },
+      {
+        "id": 1773858556193,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 2,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 11200
+          }
+        ],
+        "total": 27200,
+        "fecha": "2026-03-18",
+        "hora": "1:29:16 p. m.",
+        "ganancia": 11200
+      },
+      {
+        "id": 1773861540017,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "poo",
+            "precio": 84000,
+            "cantidad": 2,
+            "referencia": "yh",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 4000,
+            "gananciaTotal": 8000
+          }
+        ],
+        "total": 168000,
+        "fecha": "2026-03-18",
+        "hora": "2:19:00 p. m.",
+        "ganancia": 8000
+      },
+      {
+        "id": 1773861869720,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 88600,
+        "fecha": "2026-03-18",
+        "hora": "2:24:29 p. m.",
+        "ganancia": 30600
+      },
+      {
+        "id": 1773862285953,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "fecha": "2026-03-18",
+        "hora": "2:31:25 p. m.",
+        "ganancia": 25000
+      },
+      {
+        "id": 1773862721505,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          },
+          {
+            "nombre": "poo",
+            "precio": 84000,
+            "cantidad": 1,
+            "referencia": "yh",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 4000,
+            "gananciaTotal": 4000
+          }
+        ],
+        "total": 172600,
+        "fecha": "2026-03-18",
+        "hora": "2:38:41 p. m.",
+        "ganancia": 34600
+      },
+      {
+        "id": 1773864371220,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "fecha": "2026-03-18",
+        "hora": "3:06:11 p. m.",
+        "ganancia": 25000
+      },
+      {
+        "id": 1773865058104,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          }
+        ],
+        "total": 75000,
+        "fecha": "2026-03-18",
+        "hora": "3:17:38 p. m.",
+        "ganancia": 25000
+      },
+      {
+        "id": 1773865789349,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 2,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 50000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 163600,
+        "fecha": "2026-03-18",
+        "hora": "3:29:49 p. m.",
+        "ganancia": 55600
+      },
+      {
+        "id": 1773872250540,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 7,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 175000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 4,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 22400
+          },
+          {
+            "nombre": "acetaminofen",
+            "precio": 10400,
+            "cantidad": 5,
+            "referencia": "2026010",
+            "unidad": "500 G",
+            "gananciaUnit": 2400,
+            "gananciaTotal": 12000
+          }
+        ],
+        "total": 631400,
+        "fecha": "2026-03-18",
+        "hora": "5:17:30 p. m.",
+        "ganancia": 209400
+      },
+      {
+        "id": 1773872293720,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 1,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 5600
+          }
+        ],
+        "total": 88600,
+        "fecha": "2026-03-18",
+        "hora": "5:18:13 p. m.",
+        "ganancia": 30600
+      },
+      {
+        "id": 1773872331628,
+        "cliente": "XIMENA IMBACUAN",
+        "items": [
+          {
+            "nombre": "SERRUCHO",
+            "precio": 75000,
+            "cantidad": 1,
+            "referencia": "2026001",
+            "unidad": "UNIDAD",
+            "gananciaUnit": 25000,
+            "gananciaTotal": 25000
+          },
+          {
+            "nombre": "SARDINA",
+            "precio": 13600,
+            "cantidad": 2,
+            "referencia": "2026003",
+            "unidad": "500 G",
+            "gananciaUnit": 5600,
+            "gananciaTotal": 11200
+          }
+        ],
+        "total": 102200,
+        "fecha": "2026-03-18",
+        "hora": "5:18:51 p. m.",
+        "ganancia": 36200
+      }
+    ]
+  }
+]

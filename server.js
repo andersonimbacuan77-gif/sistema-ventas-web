@@ -46,6 +46,20 @@ const productoSchema = new mongoose.Schema({
 
 const Producto = mongoose.models.Producto || mongoose.model('Producto', productoSchema);
 
+const usuarioSchema = new mongoose.Schema({
+    nombre: String,
+    user: { type: String, unique: true },
+    pass: String,
+    rol: { type: String, default: 'cliente' },
+    canEditPrice: { type: Boolean, default: false },
+    permExcel: { type: Boolean, default: false },
+    permPrint: { type: Boolean, default: false },
+    permTicket: { type: Boolean, default: false },
+    permWA: { type: Boolean, default: false }
+});
+
+const Usuario = mongoose.models.Usuario || mongoose.model('Usuario', usuarioSchema);
+
 // --- RUTAS API ---
 
 // 1. Productos - Obtener todos
@@ -118,25 +132,39 @@ app.post('/api/config', (req, res) => {
 });
 
 // 4. Usuarios / Login
-app.get('/api/usuarios', (req, res) => {
+app.get('/api/usuarios', async (req, res) => {
     try {
-        const usersPath = path.join(__dirname, 'usuarios.json');
-        if (fs.existsSync(usersPath)) {
-            const data = JSON.parse(fs.readFileSync(usersPath, 'utf8'));
-            res.json(Array.isArray(data) ? data : []);
+        if (mongoose.connection.readyState === 1) {
+            const users = await Usuario.find();
+            res.json(users);
         } else {
-            res.json([]);
+            const usersPath = path.join(__dirname, 'usuarios.json');
+            if (fs.existsSync(usersPath)) {
+                const data = JSON.parse(fs.readFileSync(usersPath, 'utf8'));
+                res.json(Array.isArray(data) ? data : []);
+            } else {
+                res.json([]);
+            }
         }
     } catch (error) {
         res.status(500).json({ error: 'Error al obtener usuarios' });
     }
 });
 
-app.post('/api/usuarios', (req, res) => {
+app.post('/api/usuarios', async (req, res) => {
     try {
-        const usersPath = path.join(__dirname, 'usuarios.json');
-        fs.writeFileSync(usersPath, JSON.stringify(req.body, null, 2));
-        res.json({ success: true });
+        if (mongoose.connection.readyState === 1) {
+            // Sincronizar array de usuarios con MongoDB
+            const users = req.body;
+            for (const u of users) {
+                await Usuario.findOneAndUpdate({ user: u.user }, u, { upsert: true });
+            }
+            res.json({ success: true });
+        } else {
+            const usersPath = path.join(__dirname, 'usuarios.json');
+            fs.writeFileSync(usersPath, JSON.stringify(req.body, null, 2));
+            res.json({ success: true });
+        }
     } catch (error) {
         res.status(500).json({ error: 'Error al guardar usuarios' });
     }
@@ -145,9 +173,18 @@ app.post('/api/usuarios', (req, res) => {
 app.post('/api/login', async (req, res) => {
     const { user, pass } = req.body;
     try {
-        const pathUsuarios = path.join(__dirname, 'usuarios.json');
-        const usuarios = JSON.parse(fs.readFileSync(pathUsuarios, 'utf8'));
-        const cuenta = usuarios.find(u => u.user === user && u.pass === pass);
+        let cuenta = null;
+        if (mongoose.connection.readyState === 1) {
+            cuenta = await Usuario.findOne({ user, pass });
+        }
+        
+        if (!cuenta) {
+            const pathUsuarios = path.join(__dirname, 'usuarios.json');
+            if (fs.existsSync(pathUsuarios)) {
+                const usuarios = JSON.parse(fs.readFileSync(pathUsuarios, 'utf8'));
+                cuenta = usuarios.find(u => u.user === user && u.pass === pass);
+            }
+        }
         
         if (cuenta) {
             res.json({ success: true, user: cuenta });
@@ -155,6 +192,7 @@ app.post('/api/login', async (req, res) => {
             res.status(401).json({ success: false, message: 'Usuario o clave incorrectos' });
         }
     } catch (error) {
+        console.error('Login Error:', error);
         res.status(500).json({ error: 'Error en el servidor' });
     }
 });

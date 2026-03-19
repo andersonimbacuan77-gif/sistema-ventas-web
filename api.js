@@ -1,4 +1,6 @@
-const API_URL = window.location.protocol === 'file:' ? 'http://localhost:3000' : '';
+const API_URL = (window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') 
+    ? 'http://localhost:3000' 
+    : '';
 
 async function apiRequest(endpoint, method = 'GET', body = null) {
     const options = {
@@ -13,16 +15,22 @@ async function apiRequest(endpoint, method = 'GET', body = null) {
         const response = await fetch(`${API_URL}${endpoint}`, options);
         if (!response.ok) {
             const text = await response.text();
+            let errorMessage = `Error ${response.status}`;
             try {
                 const error = JSON.parse(text);
-                throw new Error(error.message || `Error ${response.status}`);
+                errorMessage = error.message || error.error || errorMessage;
             } catch(e) {
-                throw new Error(`Error del servidor (${response.status}): Verifique el tamaño de la imagen o la conexión.`);
+                if (response.status === 404) errorMessage = "Ruta no encontrada en el servidor.";
+                if (response.status === 500) errorMessage = "Error interno del servidor. Verifique los logs.";
             }
+            throw new Error(errorMessage);
         }
         return await response.json();
     } catch (error) {
         console.error('API Error:', error);
+        if (error.message.includes('Failed to fetch')) {
+            throw new Error("No se pudo conectar con el servidor. Verifique su conexión o si el servidor está activo.");
+        }
         throw error;
     }
 }

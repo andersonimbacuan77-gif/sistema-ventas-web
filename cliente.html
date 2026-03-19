@@ -8,7 +8,8 @@
     </script>
 
     <meta charset="UTF-8">
-    <title>Catálogo Digital - Pedidos Directos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Pedidos - Premium Experience</title>
     <style>
         :root { 
             --primary: #3b82f6; 
@@ -389,8 +390,17 @@
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--accent-glow); }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
 
+        @media (max-width: 768px) {
+            body { flex-direction: column; overflow-y: auto; height: auto; }
+            .sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border); padding: 20px; box-sizing: border-box; }
+            .main { padding: 20px; overflow-y: visible; }
+            .header-controls { padding: 20px; margin: -20px -20px 20px -20px; position: relative; }
+            .cart-panel { position: relative; height: auto; width: 100%; border-left: none; border-top: 1px solid var(--border); padding: 20px; box-sizing: border-box; }
+            .grid { grid-template-columns: 1fr; }
+            .form-grid { grid-template-columns: 1fr; }
+        }
 
         #ticket-print-area { display: none; }
         @media print {
