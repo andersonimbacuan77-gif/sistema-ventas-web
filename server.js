@@ -117,17 +117,35 @@ app.post('/api/config', (req, res) => {
     }
 });
 
+// Helper to ensure JSON files exist
+const ensureFiles = () => {
+    const files = {
+        'usuarios.json': [{ user: 'admin', pass: 'admin', nombre: 'Admin System', rol: 'admin' }],
+        'config.json': { categorias: [], unidades: [], empresa: { nombre: 'MI EMPRESA' } },
+        'database.json': [],
+        'pedidos.json': [],
+        'reportes.json': [],
+        'ingresos.json': [],
+        'egresos.json': []
+    };
+    Object.keys(files).forEach(f => {
+        const p = path.join(__dirname, f);
+        if (!fs.existsSync(p)) {
+            console.log(`Creando archivo faltante: ${f}`);
+            fs.writeFileSync(p, JSON.stringify(files[f], null, 2));
+        }
+    });
+};
+ensureFiles();
+
 // 4. Usuarios / Login
 app.get('/api/usuarios', (req, res) => {
     try {
         const usersPath = path.join(__dirname, 'usuarios.json');
-        if (fs.existsSync(usersPath)) {
-            const data = JSON.parse(fs.readFileSync(usersPath, 'utf8'));
-            res.json(Array.isArray(data) ? data : []);
-        } else {
-            res.json([]);
-        }
+        const data = JSON.parse(fs.readFileSync(usersPath, 'utf8'));
+        res.json(Array.isArray(data) ? data : []);
     } catch (error) {
+        console.error('Error al obtener usuarios:', error);
         res.status(500).json({ error: 'Error al obtener usuarios' });
     }
 });
@@ -146,6 +164,9 @@ app.post('/api/login', async (req, res) => {
     const { user, pass } = req.body;
     try {
         const pathUsuarios = path.join(__dirname, 'usuarios.json');
+        if (!fs.existsSync(pathUsuarios)) {
+            return res.status(500).json({ error: 'Archivo de usuarios no encontrado' });
+        }
         const usuarios = JSON.parse(fs.readFileSync(pathUsuarios, 'utf8'));
         const cuenta = usuarios.find(u => u.user === user && u.pass === pass);
         
@@ -155,7 +176,8 @@ app.post('/api/login', async (req, res) => {
             res.status(401).json({ success: false, message: 'Usuario o clave incorrectos' });
         }
     } catch (error) {
-        res.status(500).json({ error: 'Error en el servidor' });
+        console.error('Login Error:', error);
+        res.status(500).json({ error: 'Error interno en el servidor: ' + error.message });
     }
 });
 
