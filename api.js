@@ -1,4 +1,6 @@
-const API_URL = window.location.protocol === 'file:' ? 'http://localhost:3000' : '';
+const API_URL = window.location.protocol === 'file:' 
+    ? 'http://localhost:3000' 
+    : 'https://sistema-ventas-web.onrender.com';
 
 async function apiRequest(endpoint, method = 'GET', body = null) {
     const options = {
