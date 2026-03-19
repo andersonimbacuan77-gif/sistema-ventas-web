@@ -60,6 +60,44 @@ const usuarioSchema = new mongoose.Schema({
 
 const Usuario = mongoose.models.Usuario || mongoose.model('Usuario', usuarioSchema);
 
+const pedidoSchema = new mongoose.Schema({
+    id: Number,
+    fecha: String,
+    hora: String,
+    cliente: String,
+    items: Array,
+    total: Number,
+    ganancia: Number
+});
+const Pedido = mongoose.models.Pedido || mongoose.model('Pedido', pedidoSchema);
+
+const reporteSchema = new mongoose.Schema({
+    idReporte: Number,
+    fechaCreacion: String,
+    admin: String,
+    rango: Object,
+    ventasRaw: Number,
+    gananciaRaw: Number,
+    cantidadPedidos: Number,
+    pedidos: Array
+});
+const Reporte = mongoose.models.Reporte || mongoose.model('Reporte', reporteSchema);
+
+const registroFinancieroSchema = new mongoose.Schema({
+    fecha: String,
+    tipo: String, // 'ingreso' o 'egreso'
+    registros: Array // Array de objetos con { categoria, monto, descripcion, hora }
+});
+const RegistroFinanciero = mongoose.models.RegistroFinanciero || mongoose.model('RegistroFinanciero', registroFinancieroSchema);
+
+const configSchema = new mongoose.Schema({
+    id: { type: String, default: 'main' },
+    categorias: Array,
+    unidades: Array,
+    empresa: Object
+});
+const Config = mongoose.models.Config || mongoose.model('Config', configSchema);
+
 // --- RUTAS API ---
 
 // Middleware para verificar conexión a BD
@@ -99,13 +137,11 @@ app.post('/api/productos', async (req, res) => {
 });
 
 // 3. Configuración
-app.get('/api/config', (req, res) => {
+app.get('/api/config', async (req, res) => {
     try {
-        const configPath = path.join(__dirname, 'config.json');
-        let config = { categorias: [], unidades: [], empresa: {} };
-        if (fs.existsSync(configPath)) {
-            const data = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-            config = { ...config, ...data };
+        let config = await Config.findOne({ id: 'main' });
+        if (!config) {
+            config = { id: 'main', categorias: [], unidades: [], empresa: {} };
         }
         res.json(config);
     } catch (error) {
@@ -113,10 +149,9 @@ app.get('/api/config', (req, res) => {
     }
 });
 
-app.post('/api/config', (req, res) => {
+app.post('/api/config', async (req, res) => {
     try {
-        const configPath = path.join(__dirname, 'config.json');
-        fs.writeFileSync(configPath, JSON.stringify(req.body, null, 2));
+        await Config.findOneAndUpdate({ id: 'main' }, req.body, { upsert: true });
         res.json({ success: true });
     } catch (error) {
         res.status(500).json({ error: 'Error al guardar configuración' });
@@ -179,15 +214,10 @@ app.delete('/api/productos/:id', async (req, res) => {
 });
 
 // 6. Pedidos - Obtener todos
-app.get('/api/pedidos', (req, res) => {
+app.get('/api/pedidos', async (req, res) => {
     try {
-        const pedidosPath = path.join(__dirname, 'pedidos.json');
-        if (fs.existsSync(pedidosPath)) {
-            const data = JSON.parse(fs.readFileSync(pedidosPath, 'utf8'));
-            res.json(data);
-        } else {
-            res.json([]);
-        }
+        const pedidos = await Pedido.find();
+        res.json(pedidos);
     } catch (error) {
         res.status(500).json({ error: 'Error al obtener pedidos' });
     }
@@ -195,105 +225,83 @@ app.get('/api/pedidos', (req, res) => {
 
 // 7. Pedidos - Guardar uno nuevo
 app.post('/api/pedidos', async (req, res) => {
-    const pedido = req.body;
+    const p = req.body;
     try {
-        const pedidosPath = path.join(__dirname, 'pedidos.json');
-        let pedidos = [];
-        if (fs.existsSync(pedidosPath)) {
-            pedidos = JSON.parse(fs.readFileSync(pedidosPath, 'utf8'));
-        }
-        pedidos.push(pedido);
-        fs.writeFileSync(pedidosPath, JSON.stringify(pedidos, null, 2));
+        const nuevo = new Pedido(p);
+        await nuevo.save();
 
-        // Actualizar existencias de productos si es necesario
-        const dbPath = path.join(__dirname, 'database.json');
-        if (fs.existsSync(dbPath)) {
-            let productos = JSON.parse(fs.readFileSync(dbPath, 'utf8'));
-            pedido.items.forEach(item => {
-                const prod = productos.find(p => p.codigo === item.referencia);
-                if (prod) {
-                    prod.existencia = (parseInt(prod.existencia) || 0) - (parseInt(item.cantidad) || 0);
-                }
-            });
-            fs.writeFileSync(dbPath, JSON.stringify(productos, null, 2));
-        }
-
-        // Si se usa MongoDB, también actualizar allí
-        if (mongoose.connection.readyState === 1) {
-            for (const item of pedido.items) {
-                await Producto.findOneAndUpdate(
-                    { codigo: item.referencia },
-                    { $inc: { existencia: -(parseInt(item.cantidad) || 0) } }
-                );
-            }
+        // Actualizar existencias de productos en MongoDB
+        for (const item of p.items) {
+            await Producto.findOneAndUpdate(
+                { codigo: item.referencia },
+                { $inc: { existencia: -(parseInt(item.cantidad) || 0) } }
+            );
         }
 
         res.json({ success: true });
     } catch (error) {
+        console.error('Error saving order:', error);
         res.status(500).json({ error: 'Error al guardar pedido' });
     }
 });
 
 // 8. Historial de Reportes
-app.get('/api/reportes', (req, res) => {
+app.get('/api/reportes', async (req, res) => {
     try {
-        const repoPath = path.join(__dirname, 'reportes.json');
-        if (fs.existsSync(repoPath)) {
-            const data = JSON.parse(fs.readFileSync(repoPath, 'utf8'));
-            res.json(data);
-        } else {
-            res.json([]);
-        }
+        const reportes = await Reporte.find();
+        res.json(reportes);
     } catch (error) {
         res.status(500).json({ error: 'Error al obtener reportes' });
     }
 });
 
-app.post('/api/reportes', (req, res) => {
+app.post('/api/reportes', async (req, res) => {
     try {
-        const repoPath = path.join(__dirname, 'reportes.json');
-        fs.writeFileSync(repoPath, JSON.stringify(req.body, null, 2));
+        const reportes = req.body; // Viene como un array según cliente.html/admin.html
+        if (Array.isArray(reportes)) {
+            for (const r of reportes) {
+                await Reporte.findOneAndUpdate({ idReporte: r.idReporte }, r, { upsert: true });
+            }
+        } else {
+            await Reporte.findOneAndUpdate({ idReporte: reportes.idReporte }, reportes, { upsert: true });
+        }
         res.json({ success: true });
     } catch (error) {
         res.status(500).json({ error: 'Error al guardar reportes' });
     }
 });
 
-app.delete('/api/reportes/:id', (req, res) => {
+app.delete('/api/reportes/:id', async (req, res) => {
     try {
-        const repoPath = path.join(__dirname, 'reportes.json');
-        if (fs.existsSync(repoPath)) {
-            let data = JSON.parse(fs.readFileSync(repoPath, 'utf8'));
-            const idToRemove = parseInt(req.params.id);
-            data = data.filter(r => r.idReporte !== idToRemove);
-            fs.writeFileSync(repoPath, JSON.stringify(data, null, 2));
-            res.json({ success: true });
-        } else {
-            res.status(404).json({ error: 'No hay reportes' });
-        }
+        await Reporte.findOneAndDelete({ idReporte: parseInt(req.params.id) });
+        res.json({ success: true });
     } catch (error) {
         res.status(500).json({ error: 'Error al eliminar reporte' });
     }
 });
 
 // 9. Ingresos
-app.get('/api/ingresos', (req, res) => {
+app.get('/api/ingresos', async (req, res) => {
     try {
-        const p = path.join(__dirname, 'ingresos.json');
-        if (fs.existsSync(p)) {
-            res.json(JSON.parse(fs.readFileSync(p, 'utf8')));
-        } else {
-            res.json([]);
-        }
+        // En el formato original, ingresos.json guardaba un array de días.
+        // Aquí cada documento es un día de registros.
+        const registros = await RegistroFinanciero.find({ tipo: 'ingreso' });
+        res.json(registros);
     } catch (error) {
         res.status(500).json({ error: 'Error al obtener ingresos' });
     }
 });
 
-app.post('/api/ingresos', (req, res) => {
+app.post('/api/ingresos', async (req, res) => {
     try {
-        const p = path.join(__dirname, 'ingresos.json');
-        fs.writeFileSync(p, JSON.stringify(req.body, null, 2));
+        const data = req.body; // Array de registros por día
+        for (const r of data) {
+            await RegistroFinanciero.findOneAndUpdate(
+                { fecha: r.fecha, tipo: 'ingreso' },
+                { ...r, tipo: 'ingreso' },
+                { upsert: true }
+            );
+        }
         res.json({ success: true });
     } catch (error) {
         res.status(500).json({ error: 'Error al guardar ingresos' });
@@ -301,39 +309,38 @@ app.post('/api/ingresos', (req, res) => {
 });
 
 // 10. Egresos
-app.get('/api/egresos', (req, res) => {
+app.get('/api/egresos', async (req, res) => {
     try {
-        const p = path.join(__dirname, 'egresos.json');
-        if (fs.existsSync(p)) {
-            res.json(JSON.parse(fs.readFileSync(p, 'utf8')));
-        } else {
-            res.json([]);
-        }
+        const registros = await RegistroFinanciero.find({ tipo: 'egreso' });
+        res.json(registros);
     } catch (error) {
         res.status(500).json({ error: 'Error al obtener egresos' });
     }
 });
 
-app.post('/api/egresos', (req, res) => {
+app.post('/api/egresos', async (req, res) => {
     try {
-        const p = path.join(__dirname, 'egresos.json');
-        fs.writeFileSync(p, JSON.stringify(req.body, null, 2));
+        const data = req.body;
+        for (const r of data) {
+            await RegistroFinanciero.findOneAndUpdate(
+                { fecha: r.fecha, tipo: 'egreso' },
+                { ...r, tipo: 'egreso' },
+                { upsert: true }
+            );
+        }
         res.json({ success: true });
     } catch (error) {
         res.status(500).json({ error: 'Error al guardar egresos' });
     }
 });
 
-// 11. Reiniciar Sistema (Borrar Todo)
-app.post('/api/reset-system', (req, res) => {
+// 11. Reiniciar Sistema (Borrar Todo en MongoDB)
+app.post('/api/reset-system', async (req, res) => {
     try {
-        const files = ['database.json', 'ingresos.json', 'egresos.json', 'pedidos.json', 'reportes.json'];
-        files.forEach(f => {
-            const p = path.join(__dirname, f);
-            if (fs.existsSync(p)) {
-                fs.writeFileSync(p, JSON.stringify([], null, 2));
-            }
-        });
+        await Producto.deleteMany({});
+        await Pedido.deleteMany({});
+        await Reporte.deleteMany({});
+        await RegistroFinanciero.deleteMany({});
         res.json({ success: true });
     } catch (error) {
         res.status(500).json({ error: 'Error al reiniciar sistema' });
