@@ -6,7 +6,7 @@ const path = require('path');
 const fs = require('fs');
 require('dotenv').config();
 
-const PORT = process.env.PORT || 10000;
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Servidor iniciado`);
