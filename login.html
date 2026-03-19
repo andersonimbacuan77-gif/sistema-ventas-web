@@ -9,321 +9,115 @@
         localStorage.removeItem('nombreCliente');
     </script>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SISCONTED - Acceso Profesional</title>
+    
+    <link rel="stylesheet" href="global.css">
     <style>
-        :root {
-            --primary: #6366f1;
-            --primary-light: #818cf8;
-            --primary-glow: rgba(99, 102, 241, 0.4);
-            --bg: #010103;
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --border: rgba(255, 255, 255, 0.1);
-            --text: #ffffff;
-            --text-muted: #a0aec0;
-        }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #010103; color: white; font-family: 'Inter', sans-serif; }
+        #canvas-stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+        .container { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; box-sizing: border-box; }
 
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Orbitron:wght@700&family=Bodoni+Moda:ital,wght@0,400..900;1,400..900&family=Playfair+Display:wght@700;900&display=swap');
-
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background: var(--bg);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            color: var(--text);
-        }
-
-        /* --- FONDO GALÁCTICO --- */
-        #canvas-stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
-
-        /* --- CONTENEDOR PRINCIPAL --- */
-        .container {
-            position: relative;
-            z-index: 10;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            perspective: 2000px;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        /* --- TÍTULO ELEGANTE (BODONI MODA) --- */
         .system-title {
-            font-family: 'Bodoni Moda', serif;
-            font-size: 5.5rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
             font-weight: 800;
-            margin-bottom: 1.2rem;
-            letter-spacing: 12px;
+            margin-bottom: 2rem;
+            letter-spacing: 15px;
             display: flex;
-            gap: 2px;
+            gap: 5px;
             text-align: center;
             flex-wrap: wrap;
             justify-content: center;
             text-transform: uppercase;
-            filter: drop-shadow(0 0 15px rgba(99, 102, 241, 0.3));
-            position: relative;
-            margin-top: 20px;
+            filter: drop-shadow(0 0 20px var(--accent-glow));
         }
 
-        .letter {
-            display: inline-block;
-            position: relative;
-            transform: translateY(-150vh) rotate(540deg) scale(0);
+        .letter { 
+            display: inline-block; 
+            position: relative; 
+            transform: translateY(-100vh) rotate(360deg) scale(0); 
+            opacity: 0; 
+            animation: dropSwirl 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards; 
+            background: linear-gradient(180deg, #fff 0%, var(--accent) 100%); 
+            -webkit-background-clip: text; 
+            background-clip: text;
+            -webkit-text-fill-color: transparent; 
+        }
+
+        @keyframes dropSwirl { 
+            0% { transform: translateY(-100vh) rotate(720deg) scale(0.1); opacity: 0; } 
+            100% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; } 
+        }
+
+        .login-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px;
+            width: 400px;
+            max-width: 100%;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: fadeInUp 0.8s ease-out forwards 1.2s;
             opacity: 0;
-            animation: 
-                dropSwirl 2.2s cubic-bezier(0.22, 1, 0.36, 1) forwards,
-                waveTenue 4s ease-in-out infinite;
-            background: linear-gradient(180deg, #94a3b8 20%, #1e293b 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            -webkit-text-stroke: 0.8px rgba(255, 255, 255, 0.25);
         }
 
-        .letter::after {
-            content: attr(data-letter);
-            position: absolute;
-            left: 0;
-            top: 0;
-            z-index: -1;
-            -webkit-text-stroke: 2px transparent;
-            background: linear-gradient(90deg, transparent 40%, rgba(255,255,255,0.4) 50%, transparent 60%);
-            background-size: 200% 100%;
-            -webkit-background-clip: text;
-            animation: shineBorderEffect 5s linear infinite;
+        @keyframes fadeInUp { 
+            from { opacity: 0; transform: translateY(30px); } 
+            to { opacity: 1; transform: translateY(0); } 
         }
 
-        @keyframes shineBorderEffect {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; margin-bottom: 8px; font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+        
+        .footer-login { 
+            position: fixed; 
+            bottom: 20px; 
+            text-align: center; 
+            width: 100%; 
+            font-size: 0.75rem; 
+            color: var(--text-muted); 
+            z-index: 10;
         }
 
-        @keyframes dropSwirl {
-            0% { transform: translateY(-150vh) rotate(720deg) scale(0.1); opacity: 0; }
-            70% { transform: translateY(20px) rotate(-20deg) scale(1.1); opacity: 1; }
-            100% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+        @media (max-width: 768px) {
+            .system-title { font-size: 2.5rem; letter-spacing: 8px; }
+            .login-card { padding: 30px; }
         }
-
-        @keyframes waveTenue {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-5px) rotate(1deg); }
-        }
-
-        .system-title span.accent { 
-            background: linear-gradient(135deg, #312e81, #5b21b6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            -webkit-text-stroke: 0.8px rgba(99, 102, 241, 0.4);
-        }
-
-        /* --- TARJETA --- */
-        .card {
-            background: var(--card-bg);
-            backdrop-filter: blur(40px);
-            border: 1px solid var(--border);
-            border-radius: 30px;
-            padding: 35px;
-            width: 380px;
-            max-width: 95vw;
-            box-shadow: 0 40px 80px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,255,255,0.05);
-            animation: fadeIn 1s ease forwards 2s;
-            opacity: 0;
-            position: relative;
-            margin-bottom: 100px;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .input-group { margin-bottom: 15px; }
-        label {
-            display: block;
-            font-size: 0.65rem;
-            color: var(--text-muted);
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 700;
-        }
-        input {
-            width: 100%;
-            padding: 13px 18px;
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            color: white;
-            font-size: 0.9rem;
-            outline: none;
-            transition: 0.3s;
-            box-sizing: border-box;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-        input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 15px var(--primary-glow);
-            background: rgba(0, 0, 0, 0.8);
-        }
-
-        button {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, var(--primary), #7c3aed);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-            transition: 0.3s;
-            margin-top: 10px;
-            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
-        }
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 30px var(--primary-glow);
-        }
-
-        .link {
-            display: block;
-            margin-top: 20px;
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 0.7rem;
-            text-decoration: none;
-            transition: 0.3s;
-            cursor: pointer;
-            font-weight: 600;
-        }
-        .link:hover { color: var(--primary-light); }
-
-        .hidden { display: none !important; }
-
-        /* --- FOOTER --- */
-        footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 15px 0;
-            text-align: center;
-            font-size: 0.6rem;
-            color: var(--text-muted);
-            z-index: 100;
-            background: linear-gradient(to top, rgba(0,0,0,0.95), transparent);
-            pointer-events: none;
-        }
-        .footer-content { pointer-events: auto; }
-        .footer-line {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            opacity: 0.7;
-            margin-bottom: 4px;
-        }
-        footer b { color: #f3f4f6; letter-spacing: 0.5px; font-weight: 800; }
-        footer a {
-            color: #22c55e;
-            text-decoration: none;
-            font-weight: 800;
-            transition: 0.3s;
-            pointer-events: auto;
-        }
-        footer a:hover { color: #4ade80; text-shadow: 0 0 10px rgba(34, 197, 94, 0.4); }
-
-        /* --- TOASTS --- */
-        #toast-container { position: fixed; top: 20px; right: 20px; z-index: 20000; display: flex; flex-direction: column; gap: 8px; }
-        .toast {
-            background: rgba(10, 10, 25, 0.95);
-            backdrop-filter: blur(10px);
-            color: white;
-            padding: 12px 20px;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 600;
-            font-size: 0.8rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            animation: slideIn 0.4s ease-out forwards;
-        }
-        @keyframes slideIn { from { transform: translateX(120%); } to { transform: translateX(0); } }
     </style>
 </head>
 <body>
-
     <canvas id="canvas-stars"></canvas>
 
     <div class="container">
-        <div class="system-title" id="title-anim">
-            <!-- Letras generadas por JS -->
-        </div>
+        <div class="system-title" id="title-anim"></div>
 
-        <!-- Vista Login -->
-        <div id="vista-login" class="card">
+        <div id="vista-login" class="login-card">
             <div class="input-group">
                 <label>Usuario</label>
-                <input type="text" id="user-login" placeholder="Usuario" spellcheck="false">
+                <input type="text" id="user-login" placeholder="Ingrese su usuario" class="form-control">
             </div>
             <div class="input-group">
                 <label>Contraseña</label>
-                <input type="password" id="pass-login" placeholder="••••••••">
+                <input type="password" id="pass-login" placeholder="••••••••" class="form-control">
             </div>
-            <button onclick="login()">ACCEDER</button>
-            <a class="link" onclick="mostrarRegistro()">¿No tiene cuenta? Regístrese</a>
-        </div>
-
-        <!-- Vista Registro -->
-        <div id="vista-registro" class="card hidden">
-            <div class="input-group">
-                <label>Nombre Completo</label>
-                <input type="text" id="reg-nombre" placeholder="Nombre y Apellido">
+            <button class="btn btn-primary" style="width: 100%; margin-top: 10px;" onclick="login()">INICIAR SESIÓN</button>
+            <div style="margin-top: 25px; text-align: center;">
+                <a href="#" class="link-small" onclick="UI.showToast('Contacte al administrador para registro', 'info')">¿No tiene cuenta? Regístrese aquí</a>
             </div>
-            <div class="input-group">
-                <label>Nombre de Usuario</label>
-                <input type="text" id="reg-user" placeholder="Usuario">
-            </div>
-            <div class="input-group">
-                <label>Definir Contraseña</label>
-                <input type="password" id="reg-pass" placeholder="••••••••">
-            </div>
-            <button onclick="registrarYEntrar()">REGISTRARSE</button>
-            <a class="link" onclick="mostrarLogin()">Volver al Login</a>
         </div>
     </div>
 
-    <footer>
-        <div class="footer-content">
-            <div class="footer-line">
-                <span>&copy; 2026 DERECHOS RESERVADOS</span>
-                <span>|</span>
-                <span>DESARROLLADOR: <b>EDUAR ANDERSON IMBACUÁN</b></span>
-            </div>
-            <a href="https://wa.me/573182744758" target="_blank">
-                SOPORTE TÉCNICO: 3182744758
-            </a>
-        </div>
-    </footer>
+    <div class="footer-login">
+        &copy; 2026 SISCONTED | Desarrollado por <b>Eduar Anderson Imbacuán</b><br>
+        <a href="https://wa.me/573182744758" target="_blank" style="color:var(--success); text-decoration:none;">Soporte Técnico: 3182744758</a>
+    </div>
 
     <script src="api.js"></script>
+    <script src="ui-helpers.js"></script>
     <script>
-        // --- ANIMACIÓN TÍTULO (SISCONTED) ---
+        // --- ANIMACIÓN TÍTULO ---
         const titleContainer = document.getElementById('title-anim');
         const titleText = "SISCONTED";
         titleText.split('').forEach((l, i) => {
@@ -331,126 +125,71 @@
             span.textContent = l;
             span.setAttribute('data-letter', l);
             span.className = 'letter';
-            if (i >= 3) span.classList.add('accent');
-            span.style.animationDelay = `${i * 0.15}s, ${i * 0.2}s`; 
+            if (i >= 3) span.style.color = 'var(--primary-light)';
+            span.style.animationDelay = `${i * 0.1}s, ${i * 0.2}s`; 
             titleContainer.appendChild(span);
         });
 
-        // --- CANVA STARS ---
+        // --- STARS ---
         const canvas = document.getElementById('canvas-stars');
         const ctx = canvas.getContext('2d');
         let stars = [];
-
         function initStars() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
             stars = [];
-            for (let i = 0; i < 400; i++) {
-                stars.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    size: Math.random() * 1.5,
-                    speed: Math.random() * 0.1,
-                    opacity: Math.random(),
-                    blink: Math.random() * 0.01 + 0.005
-                });
+            for (let i = 0; i < 200; i++) {
+                stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 1.2, speed: Math.random() * 0.05, opacity: Math.random() });
             }
         }
-
         function animateStars() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height); 
-            ctx.fillStyle = "#010103";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
+            ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle = "#010103"; ctx.fillRect(0,0,canvas.width,canvas.height);
             stars.forEach(s => {
-                ctx.globalAlpha = s.opacity;
-                ctx.fillStyle = "white";
-                ctx.beginPath();
-                ctx.arc(Math.round(s.x), Math.round(s.y), s.size, 0, Math.PI * 2);
-                ctx.fill();
-                
-                s.y -= s.speed;
-                if (s.y < 0) s.y = canvas.height;
-                
-                s.opacity += s.blink;
-                if (s.opacity > 1 || s.opacity < 0.2) s.blink *= -1;
+                ctx.globalAlpha = s.opacity; ctx.fillStyle = "white"; ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI*2); ctx.fill();
+                s.y -= s.speed; if(s.y < 0) s.y = canvas.height;
             });
             requestAnimationFrame(animateStars);
         }
-
-        window.addEventListener('resize', initStars);
-        initStars(); animateStars();
-
-        function showToast(msg, type = 'info') {
-            let container = document.getElementById('toast-container');
-            if (!container) {
-                container = document.createElement('div');
-                container.id = 'toast-container';
-                document.body.appendChild(container);
-            }
-            const toast = document.createElement('div');
-            toast.className = `toast`;
-            const icon = type === 'success' ? '✅' : (type === 'error' ? '❌' : '⚠️');
-            toast.innerHTML = `<span>${icon}</span> <span>${msg}</span>`;
-            container.appendChild(toast);
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateX(120%)';
-                setTimeout(() => toast.remove(), 500);
-            }, 3000);
-        }
+        window.addEventListener('resize', initStars); initStars(); animateStars();
 
         function mostrarRegistro() {
             document.getElementById('vista-login').classList.add('hidden');
             document.getElementById('vista-registro').classList.remove('hidden');
         }
-
         function mostrarLogin() {
             document.getElementById('vista-registro').classList.add('hidden');
             document.getElementById('vista-login').classList.remove('hidden');
         }
 
-        async function registrarYEntrar() {
-            const nom = document.getElementById('reg-nombre').value.trim();
-            const usr = document.getElementById('reg-user').value.trim();
-            const pss = document.getElementById('reg-pass').value.trim();
-            if (!nom || !usr || !pss) return showToast("Por favor complete todos los campos", "warning");
-            
-            try {
-                // Implementación pendiente en el servidor (API.register)
-                showToast("El registro está siendo adaptado para la web. Intente loguear con admin.", "info");
-            } catch (e) { showToast("Error en el registro", "error"); }
-        }
-
         async function login() {
             const u = document.getElementById('user-login').value.trim();
             const p = document.getElementById('pass-login').value.trim();
+            if(!u || !p) return UI.showToast("Ingrese credenciales", "warning");
+            
             try {
-                const response = await API.login(u, p);
-                if (response.success) {
-                    const cuenta = response.user;
-                    // Guardar todos los datos y permisos de la cuenta
-                    localStorage.setItem('nombreCliente', cuenta.nombre);
-                    localStorage.setItem('userLogin', cuenta.user);
-                    localStorage.setItem('userRol', cuenta.rol);
-                    localStorage.setItem('canEditPrice', cuenta.canEditPrice || false);
-                    localStorage.setItem('permExcel', cuenta.permExcel || false);
-                    localStorage.setItem('permPrint', cuenta.permPrint || false);
-                    localStorage.setItem('permTicket', cuenta.permTicket || false);
-                    localStorage.setItem('permWA', cuenta.permWA || false);
+                const res = await API.login(u, p);
+                if (res.success) {
+                    const c = res.user;
+                    localStorage.setItem('nombreCliente', c.nombre);
+                    localStorage.setItem('userLogin', c.user);
+                    localStorage.setItem('userRol', c.rol);
+                    localStorage.setItem('canEditPrice', c.canEditPrice);
+                    localStorage.setItem('permExcel', c.permExcel);
+                    localStorage.setItem('permPrint', c.permPrint);
+                    localStorage.setItem('permTicket', c.permTicket);
+                    localStorage.setItem('permWA', c.permWA);
                     
-                    if (cuenta.rol === 'admin') {
-                        localStorage.setItem('adminLogueado', cuenta.nombre); 
+                    if (c.rol === 'admin') {
+                        localStorage.setItem('adminLogueado', c.nombre); 
                         window.location.href = 'index.html';
                     } else { 
                         window.location.href = 'cliente.html'; 
                     }
-                } else { 
-                    showToast("Usuario o clave incorrectos", "error"); 
-                }
-            } catch (error) { 
-                showToast("Error de acceso al servidor", "error"); 
-            }
+                } else { UI.showToast("Usuario o clave incorrectos", "error"); }
+            } catch (e) { UI.showToast("Error de conexión", "error"); }
+        }
+
+        async function registrarYEntrar() {
+            UI.showToast("Registro próximamente disponible. Use admin/admin.", "info");
         }
     </script>
 </body>
