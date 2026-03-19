@@ -29,9 +29,7 @@ const MONGO_URI = process.env.MONGO_URI;
 if (MONGO_URI) {
     mongoose.connect(MONGO_URI)
         .then(() => console.log('Conectado a MongoDB Atlas'))
-        .catch(err => console.error('Error al conectar a MongoDB:', err));
-} else {
-    console.log('ADVERTENCIA: No hay MONGO_URI. Usando JSON locales.');
+        .catch(err => console.error('Error al conectar:', err));
 }
 
 // Modelos
