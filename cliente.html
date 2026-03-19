@@ -6,368 +6,1065 @@
             window.location.href = 'login.html';
         }
     </script>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catálogo - SISCONTED</title>
-    <link rel="stylesheet" href="global.css">
+    <title>Catálogo Digital - Pedidos Directos</title>
     <style>
-        body { background: var(--bg); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
-        .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; }
-        
-        .header-app {
-            background: var(--card-bg);
-            padding: 15px 25px;
-            border-bottom: 1px solid var(--border);
+        :root { 
+            --primary: #3b82f6; 
+            --primary-glow: rgba(59, 130, 246, 0.4);
+            --whatsapp: #22c55e; 
+            --bg: #05060f; 
+            --card-bg: rgba(31, 41, 55, 0.4);
+            --header-dark: #020617; 
+            --accent: #00f2ff;
+            --accent-glow: rgba(0, 242, 255, 0.3);
+            --confirm: #6366f1; 
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.08);
+            --ticket: #f59e0b;
+            --print: #a855f7;
+        }
+
+        /* --- TOAST NOTIFICATIONS --- */
+        #toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 20000;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+        .toast {
+            background: rgba(15, 23, 42, 0.9);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            border-left: 5px solid var(--primary);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex;
             align-items: center;
+            gap: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            animation: slideIn 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+            min-width: 250px;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            pointer-events: auto;
+        }
+        .toast.success { border-left-color: var(--whatsapp); border-left-width: 6px; }
+        .toast.error { border-left-color: #ef4444; border-left-width: 6px; }
+        .toast.warning { border-left-color: var(--ticket); border-left-width: 6px; }
+        
+        @keyframes slideIn {
+            from { transform: translateX(120%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes fadeOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(120%); opacity: 0; }
+        }
+
+        /* --- MODAL CONFIRM --- */
+        #modalConfirm {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+        .confirm-content {
+            background: var(--header-dark);
+            border: 1px solid var(--primary);
+            padding: 25px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 350px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 20px var(--primary-glow);
+            animation: zoomIn 0.3s ease;
+        }
+        .confirm-content h3 { font-family: 'Orbitron', sans-serif; margin-bottom: 15px; color: white; font-size: 1rem; }
+        .confirm-content p { color: var(--text-muted); margin-bottom: 25px; font-size: 0.85rem; }
+        .confirm-btns { display: flex; gap: 12px; justify-content: center; }
+        .btn-confirm { padding: 10px 15px; border-radius: 10px; border: none; font-weight: 700; cursor: pointer; transition: 0.3s; text-transform: uppercase; font-size: 0.7rem; }
+        .btn-yes { background: var(--primary); color: white; flex: 1; }
+        .btn-no { background: rgba(255,255,255,0.05); color: white; border: 1px solid var(--border); flex: 1; }
+        .btn-yes:hover { filter: brightness(1.2); transform: scale(1.05); }
+        .btn-no:hover { background: rgba(255,255,255,0.1); }
+        @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap');
+
+        body { 
+            font-family: 'Inter', system-ui, sans-serif; 
+            margin: 0; 
+            background: var(--bg);
+            background-image: 
+                radial-gradient(circle at 10% 10%, rgba(59, 130, 246, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 90%, rgba(0, 242, 255, 0.05) 0%, transparent 40%);
+            color: var(--text-main);
+            display: flex; 
+            flex-direction: column; 
+            height: 100vh; 
+            overflow: hidden; 
+        }
+        
+        header { 
+            background: rgba(2, 6, 23, 0.82); 
+            backdrop-filter: blur(20px);
+            color: white; 
+            padding: 10px 20px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4); 
+            z-index: 100;
+        }
+
+        header h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            margin: 0;
+            background: linear-gradient(90deg, var(--accent), var(--primary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+
+        .cart-status { 
+            font-weight: 700; 
+            background: rgba(0, 242, 255, 0.1); 
+            border: 1px solid var(--accent);
+            padding: 6px 16px; 
+            border-radius: 20px; 
+            font-size: 0.8rem; 
+            color: var(--accent);
+            text-transform: uppercase;
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .btn-logout { 
+            background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); padding: 8px 16px; 
+            border-radius: 10px; cursor: pointer; font-size: 0.8rem; font-weight: 700;
+            transition: 0.3s; text-transform: uppercase;
+        }
+        .btn-logout:hover { background: #ef4444; color: white; }
+
+        .container { flex: 1; padding: 25px; overflow-y: auto; z-index: 10; scroll-behavior: smooth; }
+        
+        .controls { 
+            background: rgba(255, 255, 255, 0.03); 
+            padding: 20px; 
+            border-radius: 20px; 
+            margin-bottom: 25px; 
+            border: 1px solid var(--border);
             backdrop-filter: blur(10px);
         }
 
-        .customer-greeting h2 { margin: 0; font-size: 1.1rem; font-family: 'Orbitron', sans-serif; color: var(--accent); }
-        .customer-greeting p { margin: 0; font-size: 0.75rem; color: var(--text-muted); }
+        .search-row { display: flex; gap: 10px; margin-bottom: 10px; }
 
-        .catalog-container { flex: 1; overflow-y: auto; padding: 20px; }
-        
-        .controls-row { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-        .search-container { flex: 1; position: relative; min-width: 250px; }
-        .search-container i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
-        
-        .cat-filters { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 5px; margin-bottom: 20px; }
-        .cat-filters::-webkit-scrollbar { height: 3px; }
+        .search-bar { 
+            flex: 1; padding: 8px; 
+            background: #0f172a;
+            border: 1px solid #334155; 
+            border-radius: 8px; 
+            font-size: 0.9rem; 
+            color: white;
+            outline: none; 
+            box-sizing: border-box; 
+        }
 
-        /* Grid specific to Catalog */
-        .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
-        .product-item {
-            background: var(--card-bg);
+        .view-btn {
+            background: #334155; border: 1px solid var(--accent); color: var(--accent);
+            padding: 0 15px; border-radius: 8px; cursor: pointer; font-size: 1.2rem;
+        }
+
+        .category-btns { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 5px; }
+        .cat-btn { 
+            background: #334155; border: none; padding: 6px 12px; border-radius: 15px; 
+            cursor: pointer; white-space: nowrap; font-size: 0.75rem; color: #cbd5e1; 
+        }
+        .search-row { display: flex; gap: 15px; margin-bottom: 15px; }
+
+        .search-bar { 
+            flex: 1; padding: 14px 20px; 
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border); 
+            border-radius: 12px; 
+            font-size: 1rem; 
+            color: white;
+            outline: none; 
+            transition: 0.3s;
+        }
+        .search-bar:focus { border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
+
+        .view-btn {
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); color: var(--text-muted);
+            padding: 0 18px; border-radius: 12px; cursor: pointer; font-size: 1.1rem;
+            transition: 0.3s;
+        }
+        .view-btn:hover, .view-btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
+
+        .category-btns { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; }
+        .category-btns::-webkit-scrollbar { height: 4px; }
+        .category-btns::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+
+        .cat-btn { 
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); padding: 6px 16px; border-radius: 20px; 
+            cursor: pointer; white-space: nowrap; font-size: 0.75rem; color: var(--text-muted); 
+            transition: 0.3s; font-weight: 600;
+        }
+        .cat-btn:hover { border-color: var(--accent); color: white; }
+        .cat-btn.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 0 15px var(--primary-glow); }
+
+        /* MODOS DE VISTA */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+        
+        .list { display: flex; flex-direction: column; gap: 12px; }
+        .list .card { flex-direction: row; height: 85px; align-items: center; }
+        .list .card img { width: 85px; height: 85px; border-bottom: none; border-right: 1px solid var(--border); }
+        .list .info { display: flex; flex-direction: row; align-items: center; justify-content: space-between; padding: 0 20px; }
+        .list .info h3 { height: auto; white-space: nowrap; width: 220px; font-size: 0.8rem; }
+        .list .order-zone { border-top: none; border-left: 1px solid var(--border); display: flex; align-items: center; gap: 12px; padding: 10px; }
+        .list .qty-box { margin-bottom: 0; }
+
+        .card { 
+            background: var(--card-bg); 
+            border-radius: 20px; 
+            overflow: hidden; 
+            border: 1px solid var(--border); 
+            display: flex; flex-direction: column; 
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.3s;
+            backdrop-filter: blur(10px);
+        }
+        .card:hover { transform: translateY(-8px); border-color: var(--accent); box-shadow: 0 15px 35px rgba(0,0,0,0.4); }
+        .card img { width: 100%; height: 150px; object-fit: cover; cursor: zoom-in; opacity: 0.9; transition: 0.5s; }
+        .card:hover img { opacity: 1; transform: scale(1.05); }
+
+        .info { padding: 15px; flex: 1; }
+        .info h3 { margin: 0; font-size: 0.9rem; color: var(--text-main); height: 40px; overflow: hidden; line-height: 1.3; font-weight: 600; }
+        .price { font-size: 1.3rem; color: var(--accent); font-weight: 800; margin: 10px 0; font-family: 'Orbitron', sans-serif; text-shadow: 0 0 10px var(--accent-glow); }
+        .unit-label { font-size: 0.65rem; color: var(--text-muted); font-weight: 800; text-transform: uppercase; margin-bottom: 5px; display: block; letter-spacing: 1px; }
+        .badge-unit { background: var(--primary); color: white; font-size: 0.65rem; padding: 4px 10px; border-radius: 6px; display: inline-block; margin-top: 5px; font-weight: 700; }
+        .ref-label { font-size: 0.65rem; background: rgba(0,0,0,0.3); padding: 3px 8px; border-radius: 6px; color: var(--text-muted); border: 1px solid var(--border); }
+        
+        .stock-label { font-size: 0.75rem; font-weight: 800; display: block; margin-top: 10px; text-transform: uppercase; }
+        .stock-high { color: var(--whatsapp); }
+        .stock-low { color: #facc15; animation: pulse 1.5s infinite; }
+        .stock-none { color: #ef4444; }
+
+        .stock-badge {
+            font-size: 0.65rem;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-weight: 800;
+            display: inline-block;
+            margin-bottom: 5px;
+            border: 1px solid;
+        }
+        .stock-badge.stock-high { background: rgba(34, 197, 94, 0.1); border-color: var(--whatsapp); }
+        .stock-badge.stock-low { background: rgba(250, 204, 21, 0.1); border-color: #facc15; }
+        .stock-badge.stock-none { background: rgba(239, 68, 68, 0.1); border-color: #ef4444; }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .card.out-of-stock { filter: grayscale(0.5); border-color: rgba(239, 68, 68, 0.2); }
+
+        .order-zone { padding: 15px; background: rgba(0,0,0,0.25); border-top: 1px solid var(--border); }
+        .qty-box { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; font-size: 0.8rem; }
+        .qty-input { 
+            width: 55px; padding: 8px; 
+            background: rgba(0,0,0,0.5); border: 1px solid var(--border); 
+            border-radius: 8px; text-align: center; color: white; font-size: 1rem; font-weight: 700;
+        }
+        .btn-add { 
+            width: 100%; background: linear-gradient(135deg, var(--primary), #4f46e5); color: white; border: none; padding: 12px; 
+            border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 0.85rem; transition: 0.3s;
+            text-transform: uppercase; letter-spacing: 1px; font-family: 'Orbitron', sans-serif;
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+        .btn-add:hover { transform: translateY(-2px); filter: brightness(1.1); box-shadow: 0 8px 10px var(--primary-glow); }
+
+        /* --- MINI CARRITO ABAJO --- */
+        .resumen-seccion { background: #05060f; border-top: 1px solid var(--accent); max-height: 150px; overflow-y: auto; backdrop-filter: blur(20px); }
+        table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+        thead { background: rgba(0, 242, 255, 0.03); color: var(--accent); position: sticky; top: 0; }
+        th, td { padding: 8px 15px; border-bottom: 1px solid var(--border); text-align: left; }
+        
+        .edit-qty-table, .edit-price-table {
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); color: white;
+            padding: 5px; border-radius: 8px; width: 70px; text-align: center; font-weight: 700;
+        }
+        .edit-price-table { width: 100px; color: var(--accent); }
+        .edit-price-table[readonly] { border: none; background: transparent; pointer-events: none; }
+
+        .footer-actions { 
+            padding: 20px 30px; 
+            background: var(--header-dark); 
+            border-top: 1px solid var(--border); 
+            display: flex; justify-content: space-between; align-items: center; 
+            backdrop-filter: blur(20px);
+        }
+        .total-container { font-size: 1.4rem; font-weight: 800; color: var(--accent); font-family: 'Orbitron', sans-serif; text-shadow: 0 0 15px var(--accent-glow); }
+        .action-btns { display: flex; gap: 12px; }
+        
+        .btn-reset { background: transparent; color: #f87171; border: 1px solid #ef4444; padding: 10px 15px; border-radius: 10px; font-size: 0.8rem; cursor: pointer; transition: 0.3s; font-weight: 700; }
+        .btn-reset:hover { background: #ef4444; color: white; }
+
+        .btn-confirm, .btn-bill, .btn-send, .btn-ticket, .btn-print { border: none; padding: 12px 20px; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 0.85rem; transition: 0.3s; font-family: 'Orbitron', sans-serif; letter-spacing: 1px; text-transform: uppercase; }
+        .btn-confirm { background: var(--confirm); color: white; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3); }
+        .btn-bill { background: var(--bill); color: white; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); }
+        .btn-send { background: var(--whatsapp); color: white; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3); }
+        .btn-ticket { background: var(--ticket); color: white; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3); }
+        .btn-print { background: var(--print); color: white; box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3); }
+        
+        button:hover:not(:disabled) { transform: translateY(-3px); filter: brightness(1.1); box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
+
+        .modal { 
+            display: none; 
+            position: fixed; 
+            z-index: 10000; 
+            left: 0; 
+            top: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0,0,0,0.9); 
+            align-items: center; 
+            justify-content: center; 
+            overflow: hidden;
+        }
+
+        #imgGrande {
+            max-width: 90vw;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .modal-form {
+            background: #0a0b14;
+            padding: 40px;
+            border-radius: 30px;
             border: 1px solid var(--border);
-            border-radius: 15px;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            transition: 0.2s;
+            width: 380px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.8);
+            position: relative;
         }
-        .product-item:hover { border-color: var(--accent); transform: translateY(-3px); }
-        .product-item img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 10px; margin-bottom: 10px; cursor: pointer; }        .product-item h3 { margin: 0; font-size: 0.85rem; height: 2.4rem; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; }
-        .product-item .price { font-size: 1.1rem; font-weight: 800; color: var(--success); margin: 8px 0; }
-        .product-item .stock { font-size: 0.65rem; color: var(--text-muted); }
-        .product-item .stock.low { color: var(--danger); font-weight: bold; }
-
-        .cart-summary {
-            background: var(--sidebar-bg);
-            border-top: 1px solid var(--border);
-            max-height: 200px;
-            overflow-y: auto;
-            padding: 10px;
+        .modal-form h3 { margin-top: 0; color: var(--accent); font-family: 'Orbitron', sans-serif; letter-spacing: 1px; font-size: 1.2rem; }
+        .modal-form input {
+            width: 100%;
+            padding: 14px;
+            margin: 15px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: white;
+            border-radius: 12px;
+            box-sizing: border-box;
+            outline: none;
+            transition: 0.3s;
         }
+        .modal-form input:focus { border-color: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
 
-        .footer-payment {
-            padding: 15px 25px;
-            background: var(--card-bg);
-            border-top: 2px solid var(--accent);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 20px;
-        }
+        .modal-form .form-btns { display: flex; gap: 15px; margin-top: 25px; }
+        .modal-form button { flex: 1; padding: 14px; border-radius: 12px; border: none; font-weight: 700; cursor: pointer; transition: 0.3s; font-family: 'Orbitron', sans-serif; text-transform: uppercase; }
+        
+        /* --- SCROLLBAR --- */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent-glow); }
 
-        @media (max-width: 768px) {
-            .catalog-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-            .footer-payment { flex-direction: column; padding: 15px; gap: 15px; }
-            .footer-payment .btn { width: 100%; }
+
+        #ticket-print-area { display: none; }
+        @media print {
+            body * { visibility: hidden; }
+            #ticket-print-area, #ticket-print-area * { visibility: visible; }
+            #ticket-print-area { 
+                display: block; 
+                position: absolute; 
+                left: 0; top: 0; 
+                width: 75mm;
+                color: black;
+                font-family: 'Courier New', Courier, monospace;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="menu-toggle" onclick="UI.toggleSidebar()">☰</div>
 
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <div class="logo">🛍️</div>
-            <div class="brand-name">SISCONTED</div>
-        </div>
-        <nav>
-            <a href="cliente.html" class="active">🛍️ Catálogo</a>
-            <a href="index.html" id="link-admin" style="display:none;">⚙️ Panel Admin</a>
-            <a href="#" onclick="cerrarSesion()" class="btn-logout" style="margin-top:20px; border:1px solid rgba(239,68,68,0.3); color:#f87171;">🚪 Salir</a>
-        </nav>
-        <div style="margin-top: auto; padding: 15px; font-size: 0.75rem; color: var(--text-muted); border-top: 1px solid var(--border);">
-            BIENVENIDO:<br><b id="user-badge" style="color:white; text-transform:uppercase;">...</b>
+<div id="modalConfirm">
+    <div class="confirm-content">
+        <h3 id="confirm-title">¿ESTÁS SEGURO?</h3>
+        <p id="confirm-msg">Esta acción no se puede deshacer.</p>
+        <div class="confirm-btns">
+            <button id="confirm-btn-yes" class="btn-confirm btn-yes">SÍ, CONTINUAR</button>
+            <button onclick="cerrarConfirmacion()" class="btn-confirm btn-no">CANCELAR</button>
         </div>
     </div>
+</div>
 
-    <div class="main-content">
-        <div class="header-app">
-            <div class="customer-greeting">
-                <h2 id="titulo-saludo">👋 Cargando...</h2>
-                <p>Arma tu pedido y confirma al finalizar</p>
-            </div>
-            <div class="cart-status" style="background:var(--accent-glow); padding:8px 15px; border-radius:30px; border:1px solid var(--accent); font-weight:800; font-size:0.9rem;">
-                🛒 <span id="cart-count">0</span>
-            </div>
-        </div>
+<div id="modalZoom" class="modal" onclick="this.style.display='none'">
+    <img id="imgGrande" class="modal-content">
+</div>
 
-        <div class="catalog-container">
-            <div class="controls-row">
-                <div class="search-container">
-                    <i>🔍</i>
-                    <input type="text" id="buscador" class="form-control" placeholder="Buscar producto por nombre..." onkeyup="render()">
-                </div>
-                <button class="btn btn-secondary" onclick="togglevista()" id="btn-vista" style="width:45px;">🔲</button>
-            </div>
-            <div id="categorias" class="cat-filters"></div>
-            <div id="lista" class="catalog-grid"></div>
-        </div>
-
-        <div class="cart-summary">
-            <table>
-                <thead>
-                    <tr>
-                        <th align="left">Producto</th>
-                        <th align="right">Precio</th>
-                        <th align="center">Cant</th>
-                        <th align="right">Total</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody id="items-tabla"></tbody>
-            </table>
-        </div>
-
-        <div class="footer-payment">
-            <div style="font-family:'Orbitron'; font-size:1.4rem; color:var(--accent); font-weight:800;">
-                TOTAL: <span id="total-dinero">$ 0</span>
-            </div>
-            <div style="display:flex; gap:10px;">
-                <button class="btn btn-secondary" onclick="reiniciarPedido()">🔄 Limpiar</button>
-                <button id="btn-confirmar" class="btn btn-primary" onclick="abrirModalPago()" disabled>🚀 FINALIZAR PEDIDO</button>
-            </div>
+<div id="modalTicket" class="modal">
+    <div class="modal-form">
+        <h3>🎫 Ticket WhatsApp</h3>
+        <label style="font-size: 0.8rem;">Nombre del Cliente:</label>
+        <input type="text" id="tk-nombre" placeholder="Ej: Juan Pérez" onkeyup="if(event.key==='Enter'){procesarTicketTxt()}">
+        <label style="font-size: 0.8rem;">Celular de Envío:</label>
+        <input type="number" id="tk-celular" placeholder="321512xxxx" onkeyup="if(event.key==='Enter'){procesarTicketTxt()}">
+        <div class="form-btns">
+            <button onclick="cerrarModalTicket()" style="background: #475569; color: white;">Cancelar</button>
+            <button onclick="procesarTicketTxt()" style="background: var(--ticket); color: white;">Enviar Ticket</button>
         </div>
     </div>
+</div>
+
+<div id="modalPrint" class="modal">
+    <div class="modal-form" style="border: 1px solid var(--print); box-shadow: 0 0 30px rgba(168, 85, 247, 0.2);">
+        <h3 style="color: var(--print); display: flex; align-items: center; gap: 10px;">
+            <span>🖨️</span> Imprimir Ticket
+        </h3>
+        <div style="margin-bottom: 20px;">
+            <label style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 1px;">Nombre Cliente:</label>
+            <input type="text" id="print-nombre" placeholder="Nombre para el ticket" style="border-radius: 10px; margin-top: 5px;" onkeyup="if(event.key==='Enter'){ejecutarImpresionFinal(document.querySelector('button[onclick*=\'ejecutarImpresionFinal\']'))}">
+        </div>
+        <div style="margin-bottom: 20px;">
+            <label style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 1px;">Celular (Opcional):</label>
+            <input type="number" id="print-celular" placeholder="Celular para el ticket" style="border-radius: 10px; margin-top: 5px;" onkeyup="if(event.key==='Enter'){ejecutarImpresionFinal(document.querySelector('button[onclick*=\'ejecutarImpresionFinal\']'))}">
+        </div>
+        <div class="form-btns">
+            <button onclick="cerrarModalPrint()" style="background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid var(--border);">CANCELAR</button>
+            <button onclick="ejecutarImpresionFinal(this)" style="background: var(--print); color: white; box-shadow: 0 5px 15px rgba(168, 85, 247, 0.3);">IMPRIMIR</button>
+        </div>
+    </div>
+</div>
+
+<div id="modalPago" class="modal">
+    <div class="modal-form" style="max-width: 450px; border: 1px solid var(--accent); box-shadow: 0 0 30px var(--accent-glow);">
+        <h3 style="color: var(--accent); text-align: center; margin-bottom: 25px;">🧮 DETALLE Y PAGO</h3>
+        
+        <div id="pago-detalle-items" style="max-height: 150px; overflow-y: auto; margin-bottom: 20px; font-size: 0.75rem; color: var(--text-muted); border-bottom: 1px solid var(--border); padding-bottom: 10px;">
+            <!-- Se llena dinámicamente -->
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <span style="font-size: 1rem; font-weight: 700;">TOTAL A PAGAR:</span>
+            <span id="pago-total" style="font-size: 1.5rem; color: var(--accent); font-family: 'Orbitron', sans-serif;">$ 0</span>
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;">DINERO RECIBIDO:</label>
+            <input type="number" id="pago-recibido" placeholder="0" style="font-size: 1.5rem; text-align: center; color: var(--accent); border-color: var(--accent);" onkeyup="if(event.key==='Enter'){guardarPedidoFinal()}else{calcularCambio()}">
+        </div>
+
+        <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 12px; margin-bottom: 25px; text-align: center; border: 1px dashed var(--border);">
+            <div style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px;">EL CAMBIO ES:</div>
+            <div id="pago-cambio" style="font-size: 1.8rem; color: #22c55e; font-family: 'Orbitron', sans-serif; font-weight: 700;">$ 0</div>
+        </div>
+
+        <div class="form-btns">
+            <button onclick="cerrarModalPago()" style="background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid var(--border);">CANCELAR</button>
+            <button onclick="guardarPedidoFinal()" style="background: var(--whatsapp); color: white; box-shadow: 0 5px 15px rgba(34, 197, 94, 0.3);">GUARDAR PEDIDO</button>
+        </div>
+    </div>
+</div>
+
+<div id="ticket-print-area"></div>
+
+<header>
+    <h2 id="titulo-saludo" style="font-size: 1rem; margin:0;">👋 Hola...</h2>
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <div class="cart-status">Items: <span id="cart-count">0</span></div>
+        <button class="btn-logout" onclick="cerrarSesion()">Salir</button>
+    </div>
+</header>
+
+<div class="container">
+    <div class="controls">
+        <div class="search-row">
+            <input type="text" id="buscador" class="search-bar" placeholder="🔍 F1 para buscar o escanear..." onkeyup="render()" onkeydown="handleSearchKey(event)" autofocus>
+            <button class="view-btn" onclick="toggleView()" id="btn-vista">🔲</button>
+        </div>
+        <div id="categorias" class="category-btns"></div>
+    </div>
+    <div id="lista" class="grid"></div>
+</div>
+
+<div class="resumen-seccion">
+    <table>
+        <thead>
+            <tr>
+                <th>REF</th>
+                <th>Producto</th>
+                <th>Precio Unit.</th>
+                <th style="width: 50px;">Cant.</th>
+                <th>Subtotal</th>
+                <th style="width: 35px;"></th>
+            </tr>
+        </thead>
+        <tbody id="items-tabla"></tbody>
+    </table>
+</div>
+
+<div class="footer-actions">
+    <div class="total-container">TOTAL: <span id="total-dinero">$ 0</span></div>
+    <div class="action-btns">
+        <button class="btn-reset" onclick="reiniciarPedido()" title="Atajo: F3">🔄 Limpiar [F3]</button>
+        <button id="btn-confirmar" class="btn-confirm" onclick="abrirModalPago()" title="Atajo: F2">💾 Confirmar [F2]</button>
+        <button id="btn-bill" class="btn-bill" onclick="generarFacturaExcel()" disabled>📊 Excel</button>
+        <button id="btn-print" class="btn-print" onclick="abrirModalPrint()" disabled title="Atajo: F4">🖨️ Imprimir [F4]</button>
+        <button id="btn-ticket" class="btn-ticket" onclick="abrirModalTicket()" disabled title="Atajo: F5">🎫 Ticket [F5]</button>
+        <button id="btn-send" class="btn-send" onclick="enviarPedido()" disabled title="Atajo: F6">✅ WhatsApp [F6]</button>
+    </div>
+</div>
 
     <script src="api.js"></script>
-    <script src="ui-helpers.js"></script>
     <script>
         let productos = [];
-        let config = {};
-        let carrito = {};
-        let vistaActual = 'grid';
+        let config = { categorias: [], empresa: {} };
+        let carrito = {}; 
         let categoriaActual = 'Todas';
+        let idPedidoActual = null;
+        let puedeEditarPrecio = false;
+        let vistaActual = 'grid';
 
-        async function init() {
+        function toggleView() {
+            const lista = document.getElementById('lista');
+            const btn = document.getElementById('btn-vista');
+            if (vistaActual === 'grid') {
+                vistaActual = 'list';
+                lista.classList.remove('grid');
+                lista.classList.add('list');
+                btn.innerText = '☰';
+                btn.classList.add('active');
+            } else {
+                vistaActual = 'grid';
+                lista.classList.remove('list');
+                lista.classList.add('grid');
+                btn.innerText = '🔲';
+                btn.classList.remove('active');
+            }
+        }
+
+        // Persistencia del carrito
+        function guardarCarrito() {
+            localStorage.setItem('carrito_pro_ventas', JSON.stringify(carrito));
+            if(idPedidoActual) localStorage.setItem('id_pedido_temp', idPedidoActual);
+        }
+
+        function cargarCarrito() {
+            const s = localStorage.getItem('carrito_pro_ventas');
+            const id = localStorage.getItem('id_pedido_temp');
+            if(id) idPedidoActual = id;
+            if(s) {
+                try { 
+                    carrito = JSON.parse(s); 
+                    actualizarTabla(); 
+                    if(idPedidoActual) {
+                        const btns = ['btn-bill', 'btn-send', 'btn-ticket', 'btn-print'];
+                        btns.forEach(b => {
+                            const el = document.getElementById(b);
+                            if(el) el.disabled = false;
+                        });
+                        const btnConf = document.getElementById('btn-confirmar');
+                        if(btnConf) {
+                            btnConf.disabled = true;
+                            btnConf.innerText = "Guardado";
+                        }
+                    }
+                } catch(e) { console.error("Error cargando carrito", e); }
+            }
+        }
+
+        const clienteLogueado = localStorage.getItem('nombreCliente') || "Cliente";
+        document.getElementById('titulo-saludo').innerText = `👋 Hola, ${clienteLogueado}`;
+
+        async function validarPermisos() {
+            try {
+                const canEdit = localStorage.getItem('canEditPrice') === 'true';
+                puedeEditarPrecio = canEdit;
+                const rol = localStorage.getItem('userRol');
+                if (rol !== 'admin') {
+                    // Mapeo de permisos exactos desde usuarios.json
+                    if (localStorage.getItem('permExcel') === 'false') document.getElementById('btn-bill').style.display = 'none';
+                    if (localStorage.getItem('permPrint') === 'false') document.getElementById('btn-print').style.display = 'none';
+                    if (localStorage.getItem('permTicket') === 'false') document.getElementById('btn-ticket').style.display = 'none';
+                    if (localStorage.getItem('permWA') === 'false') document.getElementById('btn-send').style.display = 'none';
+                }
+            } catch (e) { console.error("Error validando permisos", e); }
+        }
+
+        function showToast(msg, type = 'info') {
+            let container = document.getElementById('toast-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'toast-container';
+                document.body.appendChild(container);
+            }
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `<div>${type === 'success' ? '✅' : 'ℹ️'}</div> <div>${msg}</div>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.animation = 'fadeOut 0.4s ease forwards';
+                setTimeout(() => toast.remove(), 400);
+            }, 3500);
+        }
+
+        async function cargarData() {
             try {
                 productos = await API.getProductos();
                 config = await API.getConfig();
-                const rol = localStorage.getItem('userRol');
-                if(rol === 'admin') document.getElementById('link-admin').style.display = 'block';
-                const user = localStorage.getItem('nombreCliente') || "CLIENTE";
-                document.getElementById('user-badge').innerText = user;
-                document.getElementById('titulo-saludo').innerText = `👋 Hola, ${user.split(' ')[0]}`;
-                renderCategorias();
-                render();
-            } catch (e) { UI.showToast("Error de conexión", "error"); }
-        }
-
-        function renderCategorias() {
-            const container = document.getElementById('categorias');
-            let html = `<button class="btn btn-sm ${categoriaActual==='Todas'?'btn-primary':'btn-secondary'}" onclick="filtrar('Todas')">Todas</button>`;
-            if (config.categorias) {
-                config.categorias.forEach(c => {
-                    html += `<button class="btn btn-sm ${categoriaActual===c?'btn-primary':'btn-secondary'}" onclick="filtrar('${c}')">${c}</button>`;
+                
+                const container = document.getElementById('categorias');
+                let html = `<button class="cat-btn ${categoriaActual === 'Todas' ? 'active' : ''}" onclick="filtrar('Todas')">Todas</button>`;
+                (config.categorias || []).forEach(cat => {
+                    html += `<button class="cat-btn ${categoriaActual === cat ? 'active' : ''}" onclick="filtrar('${cat}')">${cat}</button>`;
                 });
+                container.innerHTML = html;
+                render();
+            } catch (error) {
+                showToast("Error de conexión", "error");
             }
-            container.innerHTML = html;
         }
 
-        function filtrar(cat) {
-            categoriaActual = cat;
-            renderCategorias();
-            render();
+        function handleSearchKey(e) {
+            if (e.key === 'Enter') {
+                const query = document.getElementById('buscador').value.toLowerCase().trim();
+                if (!query) return;
+                
+                // Buscar primero por código exacto
+                let p = productos.find(x => x.codigo.toLowerCase() === query);
+                
+                // Si no, buscar por nombre o coincidencia parcial
+                if (!p) {
+                    p = productos.find(x => 
+                        x.nombre.toLowerCase().includes(query) || 
+                        x.codigo.toLowerCase().includes(query)
+                    );
+                }
+
+                if (p) {
+                    const stock = parseInt(p.existencia) || 0;
+                    if (stock > 0) {
+                        agregarAlCarrito(p.codigo, p.nombre, p.precio, p.unidad);
+                    } else {
+                        showToast("Producto sin stock", "warning");
+                    }
+                    document.getElementById('buscador').value = '';
+                    render();
+                }
+            }
         }
 
         function render() {
             const query = document.getElementById('buscador').value.toLowerCase();
             const filtrados = productos.filter(p => {
-                const match = (p.nombre||"").toLowerCase().includes(query) || (p.codigo||"").toLowerCase().includes(query);
-                return match && (categoriaActual === 'Todas' || p.categoria === categoriaActual);
+                const mB = (p.nombre || "").toLowerCase().includes(query) || (p.codigo || "").toLowerCase().includes(query);
+                const mC = categoriaActual === 'Todas' || p.categoria === categoriaActual;
+                return mB && mC;
             });
 
-            const container = document.getElementById('lista');
-            container.className = vistaActual === 'grid' ? 'catalog-grid' : 'list';
-            
-            container.innerHTML = filtrados.map(p => {
+            document.getElementById('lista').innerHTML = filtrados.map(p => {
                 const stock = parseInt(p.existencia) || 0;
-                const yaIn = carrito[p.codigo] ? carrito[p.codigo].cantidad : 0;
-                const disponible = stock - yaIn;
-
+                let statusClass = stock <= 0 ? 'stock-none' : (stock < 5 ? 'stock-low' : 'stock-high');
                 return `
-                    <div class="product-item ${stock <= 0 ? 'opacity-50' : ''}">
-                        <img src="${p.imagen || 'https://via.placeholder.com/150?text=📦'}" onclick="UI.showModal('${p.nombre}', '<img src=\\'${p.imagen}\\' style=\\'width:100%; border-radius:10px;\\'>')">
-                        <div style="flex:1;">
-                            <span style="font-size: 0.6rem; color: var(--text-muted);">REF: ${p.codigo}</span>
-                            <h3 style="text-transform:uppercase;">${p.nombre}</h3>
+                    <div class="card ${stock <= 0 ? 'out-of-stock' : ''}">
+                        <img src="${p.imagen || ''}" onclick="abrirZoom(this.src)" onerror="this.src='https://via.placeholder.com/200?text=📦'">
+                        <div class="info">
+                            <span class="ref-label">REF: ${p.codigo}</span>
+                            <h3>${p.nombre} <small style="color:var(--accent); font-size:0.7rem;">(${p.unidad || 'Und'})</small></h3>
                             <div class="price">$${parseFloat(p.precio || 0).toLocaleString()}</div>
-                            <div class="stock ${stock < 5 ? 'low' : ''}">${stock > 0 ? 'Disponible: '+stock : 'Agotado'}</div>
+                            <span class="stock-badge ${statusClass}">${stock <= 0 ? 'Agotado' : 'Stock: ' + stock}</span>
                         </div>
-                        <div style="margin-top:10px;">
-                            <div style="display:flex; align-items:center; gap:5px; margin-bottom:8px;">
-                                <input type="number" id="qty-${p.codigo}" class="form-control" value="1" min="1" max="${disponible}" style="height:35px; text-align:center;" ${stock <= 0 ? 'disabled' : ''}>
-                                <span style="font-size:0.7rem;">${p.unidad || 'UND'}</span>
-                            </div>
-                            <button class="btn btn-primary btn-sm" onclick="agregar('${p.codigo}')" style="width: 100%;" ${stock <= 0 ? 'disabled' : ''}>AÑADIR</button>
+                        <div class="order-zone">
+                            <input type="number" id="qty-${p.codigo}" class="qty-input" value="1" min="1" ${stock <= 0 ? 'disabled' : ''}>
+                            <button class="btn-add" onclick="agregarAlCarrito('${p.codigo}', '${p.nombre}', ${p.precio}, '${p.unidad}')" ${stock <= 0 ? 'disabled' : ''}>Añadir</button>
                         </div>
                     </div>
                 `;
             }).join('');
         }
 
-        function agregar(ref) {
+        function agregarAlCarrito(ref, nom, pre, uni) {
+            const qtyInput = document.getElementById(`qty-${ref}`);
+            const cant = qtyInput ? parseInt(qtyInput.value) : 1;
             const p = productos.find(x => x.codigo === ref);
-            const qtyIn = document.getElementById(`qty-${ref}`);
-            const cant = parseInt(qtyIn.value) || 1;
-            const yaIn = carrito[ref] ? carrito[ref].cantidad : 0;
+            const stock = p ? (parseInt(p.existencia) || 0) : 0;
+            const yaEn = carrito[ref] ? carrito[ref].cantidad : 0;
 
-            if (p.existencia < (yaIn + cant)) return UI.showToast("Sin inventario suficiente", "warning");
+            if (stock < (yaEn + cant)) return showToast("Stock insuficiente", "warning");
 
             if (carrito[ref]) carrito[ref].cantidad += cant;
-            else carrito[ref] = { ...p, cantidad: cant };
-
-            UI.showToast("Producto añadido", "success");
-            actualizarCarrito();
-            render(); // Refresh to update input 'max'
+            else carrito[ref] = { nombre: nom, precio: pre, cantidad: cant, referencia: ref, unidad: uni };
+            
+            actualizarTabla();
+            showToast("Añadido", "success");
         }
 
-        function actualizarCarrito() {
+        function actualizarTabla() {
             const tbody = document.getElementById('items-tabla');
-            let total = 0; let count = 0;
-            let html = "";
-            
+            let total = 0; let count = 0; let html = "";
             for (let ref in carrito) {
-                const it = carrito[ref];
-                const sub = it.precio * it.cantidad;
-                total += sub; count += it.cantidad;
+                const item = carrito[ref];
+                const sub = item.precio * item.cantidad;
+                total += sub; count += item.cantidad;
                 html += `
                     <tr>
-                        <td><b>${it.nombre}</b></td>
-                        <td align="right">$${it.precio.toLocaleString()}</td>
-                        <td align="center"><input type="number" value="${it.cantidad}" onchange="editarCant('${ref}', this.value)" style="width:45px; background:none; border:1px solid var(--border); color:white; text-align:center;"></td>
-                        <td align="right" class="text-accent"><b>$${sub.toLocaleString()}</b></td>
-                        <td align="center"><button class="btn btn-danger btn-sm" style="padding:2px 8px;" onclick="eliminar('${ref}')">✕</button></td>
+                        <td>${ref}</td>
+                        <td>${item.nombre}</td>
+                        <td><input type="number" value="${item.precio}" ${puedeEditarPrecio ? '' : 'readonly'} onchange="editarPrecio('${ref}', this.value)"></td>
+                        <td><input type="number" value="${item.cantidad}" onchange="editarCant('${ref}', this.value)"></td>
+                        <td style="font-weight:bold">$${sub.toLocaleString()}</td>
+                        <td><button onclick="eliminarItem('${ref}')">✕</button></td>
                     </tr>
                 `;
             }
-            tbody.innerHTML = html || '<tr><td colspan="5" align="center" style="padding:20px; color:var(--text-muted);">Sin productos seleccionados</td></tr>';
+            tbody.innerHTML = html || '<tr><td colspan="6" style="text-align:center">Carrito vacío</td></tr>';
             document.getElementById('total-dinero').innerText = `$ ${total.toLocaleString()}`;
             document.getElementById('cart-count').innerText = count;
-            document.getElementById('btn-confirmar').disabled = total <= 0;
+            guardarCarrito();
         }
 
         function editarCant(ref, val) {
             const n = parseInt(val);
-            if (n <= 0) delete carrito[ref];
-            else {
-                const p = productos.find(x => x.codigo === ref);
-                if(p.existencia < n) {
-                    UI.showToast("Stock limitado", "warning");
-                    carrito[ref].cantidad = p.existencia;
-                } else {
-                    carrito[ref].cantidad = n;
-                }
-            }
-            actualizarCarrito();
-            render();
+            if (n > 0) carrito[ref].cantidad = n;
+            actualizarTabla();
         }
 
-        function eliminar(ref) {
+        function editarPrecio(ref, val) {
+            const n = parseFloat(val);
+            if (n >= 0) carrito[ref].precio = n;
+            actualizarTabla();
+        }
+
+        function eliminarItem(ref) {
             delete carrito[ref];
-            actualizarCarrito();
-            render();
-        }
-
-        function togglevista() {
-            vistaActual = vistaActual === 'grid' ? 'list' : 'grid';
-            document.getElementById('btn-vista').innerText = vistaActual === 'grid' ? '🔲' : '☰';
-            render();
-        }
-
-        function abrirModalPago() {
-            const total = document.getElementById('total-dinero').innerText;
-            const tableHtml = `
-                <div style="font-size:0.85rem; margin-bottom:20px; border-bottom:1px solid var(--border); padding-bottom:10px;">
-                    ${Object.values(carrito).map(it => `
-                        <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                            <span>${it.cantidad}x ${it.nombre}</span>
-                            <span>$${(it.cantidad*it.precio).toLocaleString()}</span>
-                        </div>
-                    `).join('')}
-                </div>
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                    <b style="font-size:1.2rem; color:var(--accent);">TOTAL:</b>
-                    <b id="pago-total" style="font-size:1.5rem; color:var(--accent); font-family:'Orbitron';">${total}</b>
-                </div>
-                <div style="margin-bottom:15px;">
-                    <label class="label-small">Efectivo Recibido:</label>
-                    <input type="number" id="pago-recibido" class="form-control" oninput="calcularCambio()" placeholder="0" style="font-size:1.5rem; height:50px; text-align:center; color:var(--accent);">
-                </div>
-                <div style="text-align:center; padding:15px; background:rgba(0,0,0,0.2); border-radius:12px; margin-bottom:20px;">
-                    <div class="label-small">SU CAMBIO:</div>
-                    <div id="pago-cambio" style="font-size:1.8rem; color:var(--success); font-weight:800; font-family:'Orbitron';">$ 0</div>
-                </div>
-                <div style="display:flex; gap:10px;">
-                    <button class="btn btn-primary" style="flex:1;" onclick="guardarPedidoFinal()">CONFIRMAR VENTA</button>
-                </div>
-            `;
-            UI.showModal("DETALLE DE PAGO", tableHtml);
-            setTimeout(() => document.getElementById('pago-recibido').focus(), 100);
-        }
-
-        function calcularCambio() {
-            const total = parseFloat(document.getElementById('pago-total').innerText.replace(/[^\d]/g, "")) || 0;
-            const rec = parseFloat(document.getElementById('pago-recibido').value) || 0;
-            const cambio = rec - total;
-            document.getElementById('pago-cambio').innerText = `$ ${(cambio > 0 ? cambio : 0).toLocaleString()}`;
+            actualizarTabla();
         }
 
         async function guardarPedidoFinal() {
-            const total = parseFloat(document.getElementById('pago-total').innerText.replace(/[^\d]/g, ""));
+            const total = parseFloat(document.getElementById('total-dinero').innerText.replace(/[^\d]/g, ""));
+            if (total <= 0) return showToast("Carrito vacío", "warning");
+
             const pedido = {
                 id: Date.now(),
-                cliente: (localStorage.getItem('nombreCliente') || "CLIENTE").toUpperCase(),
+                cliente: (localStorage.getItem('nombreCliente') || "Cliente").toUpperCase(),
                 items: Object.values(carrito),
                 total: total,
-                fecha: new Date().toLocaleDateString(),
+                fecha: API.getFechaLocal(),
                 hora: new Date().toLocaleTimeString()
             };
 
             try {
                 const res = await API.savePedido(pedido);
                 if (res.success) {
-                    UI.showToast("Venta realizada", "success");
-                    carrito = {};
-                    UI.closeModal();
-                    actualizarCarrito();
-                    init(); 
+                    idPedidoActual = pedido.id;
+                    guardarCarrito();
+                    showToast("Venta guardada", "success");
+                    document.getElementById('btn-confirmar').disabled = true;
+                    document.getElementById('btn-confirmar').innerText = "Guardado";
+                    ['btn-bill', 'btn-send', 'btn-ticket', 'btn-print'].forEach(id => {
+                        const el = document.getElementById(id);
+                        if(el) el.disabled = false;
+                    });
+                    cerrarModalPago();
+                    cargarData();
                 }
-            } catch (e) { UI.showToast("Error en proceso", "error"); }
+            } catch (error) { showToast("Error al guardar", "error"); }
         }
 
         function reiniciarPedido() {
-            if(!Object.keys(carrito).length) return;
-            UI.confirm("VACIAR CARRITO", "¿Deseas eliminar todos los productos seleccionados?", () => {
-                carrito = {};
-                actualizarCarrito();
-                render();
-            });
+            if (confirm("¿Nueva venta?")) {
+                carrito = {}; idPedidoActual = null;
+                localStorage.removeItem('carrito_pro_ventas');
+                localStorage.removeItem('id_pedido_temp');
+                actualizarTabla();
+                const btn = document.getElementById('btn-confirmar');
+                if(btn) {
+                    btn.disabled = false;
+                    btn.innerText = "💾 Confirmar [F2]";
+                }
+                ['btn-bill', 'btn-send', 'btn-ticket', 'btn-print'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if(el) el.disabled = true;
+                });
+                cargarData();
+            }
         }
 
-        function cerrarSesion() { localStorage.clear(); window.location.href = 'login.html'; }
-        window.onload = init;
-    </script>
-</body>
-</html>
-}
+        function filtrar(cat) {
+            categoriaActual = cat;
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b.innerText === cat));
+            render();
+        }
 
-        window.onload = init;
+        function abrirModalPago() {
+            document.getElementById('modalPago').style.display = 'flex';
+            document.getElementById('pago-total').innerText = document.getElementById('total-dinero').innerText;
+            document.getElementById('pago-recibido').focus();
+        }
+        function cerrarModalPago() { document.getElementById('modalPago').style.display = 'none'; }
+        
+        function calcularCambio() {
+            const tText = document.getElementById('pago-total').innerText.replace(/[^\d]/g, "");
+            const t = parseFloat(tText) || 0;
+            const r = parseFloat(document.getElementById('pago-recibido').value) || 0;
+            document.getElementById('pago-cambio').innerText = `$ ${(r - t).toLocaleString()}`;
+        }
+
+        function enviarPedido() {
+            if(!idPedidoActual) return showToast("Guarde el pedido primero", "warning");
+            const emp = config.empresa || {};
+            const empName = (emp.nombre || "MI EMPRESA").toUpperCase();
+            
+            let msg = `*━━━━━━━━━━━━━━━━━━━━━━━━━*\n`;
+            msg += `*🚀 ${empName}*\n`;
+            msg += `*━━━━━━━━━━━━━━━━━━━━━━━━━*\n`;
+            if(emp.nit) msg += `*NIT:* ${emp.nit}\n`;
+            if(emp.telefono) msg += `*TEL:* ${emp.telefono}\n`;
+            if(emp.direccion) msg += `*DIR:* ${emp.direccion}\n`;
+            msg += `---------------------------------------------------------\n`;
+            msg += `*PEDIDO:* #${idPedidoActual}\n`;
+            msg += `*CLIENTE:* ${clienteLogueado.toUpperCase()}\n`;
+            msg += `*FECHA:* ${new Date().toLocaleString()}\n`;
+            msg += `---------------------------------------------------------\n`;
+            msg += `*CANT | PRODUCTO | SUBTOTAL*\n`;
+            msg += `---------------------------------------------------------\n`;
+            
+            let total = 0;
+            for (let ref in carrito) {
+                const it = carrito[ref];
+                const sub = it.precio * it.cantidad;
+                total += sub;
+                msg += `${it.cantidad} x ${it.nombre.substring(0,15)} (${it.unidad || 'Und'}) → *$${sub.toLocaleString()}*\n`;
+            }
+            
+            msg += `---------------------------------------------------------\n`;
+            msg += `*TOTAL PEDIDO: $${total.toLocaleString()}*\n`;
+            msg += `---------------------------------------------------------\n`;
+            msg += `_Enviado desde el Punto de Venta_`;
+
+            const tel = emp.proveedor || "573182744758";
+            window.open(`https://wa.me/${tel}?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        function cerrarSesion() {
+            localStorage.clear();
+            window.location.href = 'login.html';
+        }
+
+        function abrirModalTicket() { document.getElementById('modalTicket').style.display = 'flex'; document.getElementById('tk-nombre').focus(); }
+        function cerrarModalTicket() { document.getElementById('modalTicket').style.display = 'none'; }
+        
+        function abrirModalPrint() { document.getElementById('modalPrint').style.display = 'flex'; document.getElementById('print-nombre').focus(); }
+        function cerrarModalPrint() { document.getElementById('modalPrint').style.display = 'none'; }
+
+        function cerrarConfirmacion() { document.getElementById('modalConfirm').style.display = 'none'; }
+
+        function obtenerHeaderEmpresa(cols) {
+            let emp = { nombre: 'MI EMPRESA', nit: '', direccion: '', telefono: '', logoBase64: '' };
+            if (config && config.empresa) emp = { ...emp, ...config.empresa };
+            let logoHtml = '';
+            if (emp.logoBase64) {
+                // Cambiamos el src por cid:logo para que MHT lo reconozca
+                // Reducimos tamaño para que encuadre perfectamente en 3 filas
+                logoHtml = `<th rowspan="3" width="80" style="text-align:center; vertical-align:middle; background:white; border:1px solid #ccc; height:60px;"><img src="cid:logo" width="60" height="60" style="display:block; margin:auto;"></th>`;
+                cols--;
+            }
+            return `
+                <tr height="20">${logoHtml}<th colspan="${cols}" style="text-align:center; font-size:16px; height:20px;">${emp.nombre.toUpperCase()}</th></tr>
+                <tr height="20"><th colspan="${cols}" style="text-align:center; font-size:12px; height:20px;">NIT: ${emp.nit} | TEL: ${emp.telefono}</th></tr>
+                <tr height="20"><th colspan="${cols}" style="text-align:center; font-size:11px; border-bottom:2px solid #333; height:20px;">${emp.direccion}</th></tr>
+            `;
+        }
+
+        async function generarFacturaExcel() {
+            if(!idPedidoActual) return showToast("Guarde el pedido primero", "warning");
+            const header = obtenerHeaderEmpresa(6);
+            let htmlCont = `<table border="1">${header}
+                <tr><th colspan="6" style="background:#0f172a; color:#00f2ff; height:35px; text-align:center;">COMPROBANTE DE VENTA #${idPedidoActual}</th></tr>
+                <tr style="background:#f1f5f9; font-weight:bold; text-align:center;">
+                    <th>PRODUCTO</th><th>REF</th><th>UND</th><th>CANT</th><th>PRECIO</th><th>SUBTOTAL</th>
+                </tr>`;
+            
+            let total = 0;
+            for(let k in carrito) {
+                const it = carrito[k];
+                const sub = it.precio * it.cantidad;
+                total += sub;
+                htmlCont += `<tr><td>${it.nombre}</td><td>'${it.referencia}</td><td align="center">${it.unidad || 'Und'}</td><td align="center">${it.cantidad}</td><td align="right">$${it.precio.toLocaleString()}</td><td align="right">$${sub.toLocaleString()}</td></tr>`;
+            }
+            htmlCont += `<tr style="font-weight:bold; background:#f1f5f9;"><td colspan="5" align="right">TOTAL DE VENTA:</td><td align="right">$${total.toLocaleString()}</td></tr></table>`;
+            
+            // Usamos la nueva función de la API que soporta MHT
+            API.descargarExcelMHT(htmlCont, `Venta_${idPedidoActual}`, config.empresa ? config.empresa.logoBase64 : null);
+        }
+
+        async function ejecutarImpresionFinal(btn) {
+            const nom = document.getElementById('print-nombre').value.trim() || "Cliente General";
+            const cel = document.getElementById('print-celular').value.trim();
+            const fecha = new Date().toLocaleString();
+            
+            let ticketHtml = `
+                <div style="width:100%; font-family:monospace; font-size:12px; color:black; padding:10px; text-align:center;">
+                    <div style="border-bottom:1px dashed #000; padding-bottom:5px; margin-bottom:5px;">
+                        <strong style="font-size:14px;">${config.empresa.nombre || 'MI EMPRESA'}</strong><br>
+                        NIT: ${config.empresa.nit || ''}<br>
+                        TEL: ${config.empresa.telefono || ''}<br>
+                        ${config.empresa.direccion || ''}
+                    </div>
+                    <div style="margin-bottom:10px; text-align:center;">
+                        FECHA: ${fecha}<br>
+                        ORDEN: #${idPedidoActual}<br>
+                        CLIENTE: ${nom}<br>
+                        ${cel ? 'CELULAR: ' + cel : ''}
+                    </div>
+                    <table style="width:100%; border-collapse:collapse; font-size:11px;">
+                        <thead style="border-bottom:1px solid #000;">
+                            <tr><th align="center">CANT</th><th align="center">PRODUCTO (UND)</th><th align="center">TOTAL</th></tr>
+                        </thead>
+                        <tbody>`;
+            
+            let total = 0;
+            for(let k in carrito) {
+                const it = carrito[k];
+                total += (it.precio * it.cantidad);
+                ticketHtml += `<tr>
+                    <td align="center">${it.cantidad}</td>
+                    <td align="center">${it.nombre.substring(0,15)} (${it.unidad || 'Und'})</td>
+                    <td align="center">$${(it.precio * it.cantidad).toLocaleString()}</td>
+                </tr>`;
+            }
+
+            ticketHtml += `
+                        </tbody>
+                    </table>
+                    <div style="border-top:1px solid #000; margin-top:5px; padding-top:5px; text-align:center;">
+                        <strong style="font-size:14px;">TOTAL: $${total.toLocaleString()}</strong>
+                    </div>
+                    <div style="text-align:center; margin-top:15px; font-size:10px;">
+                        ¡GRACIAS POR SU COMPRA!
+                    </div>
+                </div>`;
+
+            const printArea = document.getElementById('ticket-print-area');
+            printArea.innerHTML = ticketHtml;
+            window.print();
+            cerrarModalPrint();
+        }
+
+        function procesarTicketTxt() {
+            const nom = document.getElementById('tk-nombre').value.trim() || clienteLogueado;
+            const cel = document.getElementById('tk-celular').value.trim();
+            if(!cel) return showToast("Ingrese celular", "warning");
+
+            const emp = config.empresa || {};
+            const empName = (emp.nombre || "MI EMPRESA").toUpperCase();
+
+            let msg = `*━━━━━━━━━━━━━━━━━━━━━━━━━*\n`;
+            msg += `*🧾 ${empName}*\n`;
+            msg += `*━━━━━━━━━━━━━━━━━━━━━━━━━*\n`;
+            if(emp.nit) msg += `*NIT:* ${emp.nit}\n`;
+            if(emp.telefono) msg += `*TEL:* ${emp.telefono}\n`;
+            if(emp.direccion) msg += `*DIR:* ${emp.direccion}\n`;
+            msg += `---------------------------------------------------------\n`;
+            msg += `*TICKET:* #${idPedidoActual}\n`;
+            msg += `*CLIENTE:* ${nom.toUpperCase()}\n`;
+            msg += `*FECHA:* ${new Date().toLocaleString()}\n`;
+            msg += `---------------------------------------------------------\n`;
+            msg += `*CANT | PRODUCTO (UND) | TOTAL*\n`;
+            msg += `---------------------------------------------------------\n`;
+            
+            let total = 0;
+            for (let k in carrito) {
+                const it = carrito[k];
+                const sub = it.precio * it.cantidad;
+                total += sub;
+                msg += `${it.cantidad} x ${it.nombre.substring(0,15)} (${it.unidad || 'Und'}) → *$${sub.toLocaleString()}*\n`;
+            }
+            
+            msg += `---------------------------------------------------------\n`;
+            msg += `*TOTAL A PAGAR: $${total.toLocaleString()}*\n`;
+            msg += `---------------------------------------------------------\n`;
+            msg += `_¡GRACIAS POR SU COMPRA!_\n`;
+            msg += `*━━━━━━━━━━━━━━━━━━━━━━━━━*`;
+
+            window.open(`https://wa.me/57${cel}?text=${encodeURIComponent(msg)}`, '_blank');
+            cerrarModalTicket();
+        }
+
+        function abrirZoom(src) {
+            if(!src) return;
+            document.getElementById('imgGrande').src = src;
+            document.getElementById('modalZoom').style.display = 'flex';
+        }
+
+        window.onload = async () => {
+            await validarPermisos();
+            await cargarData();
+            cargarCarrito();
+        };
+
+        window.onkeydown = (e) => {
+            const btnConf = document.getElementById('btn-confirmar');
+            // F1: Enfoque Buscador
+            if(e.key === 'F1') {
+                e.preventDefault();
+                document.getElementById('buscador').focus();
+            }
+            // F2: Confirmar / Guardar
+            if(e.key === 'F2' && btnConf && !btnConf.disabled) {
+                e.preventDefault();
+                abrirModalPago();
+            }
+            // F3: Nuevo / Limpiar
+            if(e.key === 'F3') { e.preventDefault(); reiniciarPedido(); }
+            // F4: Imprimir
+            if(e.key === 'F4') {
+                e.preventDefault();
+                const btn = document.getElementById('btn-print');
+                if(btn && !btn.disabled) abrirModalPrint();
+            }
+            // F5: Ticket WhatsApp
+            if(e.key === 'F5') {
+                e.preventDefault();
+                const btn = document.getElementById('btn-ticket');
+                if(btn && !btn.disabled) abrirModalTicket();
+            }
+            // F6: Enviar WhatsApp Proveedor
+            if(e.key === 'F6') {
+                e.preventDefault();
+                const btn = document.getElementById('btn-send');
+                if(btn && !btn.disabled) enviarPedido();
+            }
+            
+            if(e.key === 'Escape') {
+                cerrarModalPago();
+                cerrarModalPrint();
+                cerrarModalTicket();
+                document.getElementById('modalZoom').style.display = 'none';
+            }
+        };
     </script>
 </body>
 </html>

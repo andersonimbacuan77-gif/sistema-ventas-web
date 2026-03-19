@@ -8,55 +8,264 @@
     </script>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Configuración - SISCONTED</title>
-    
-    <link rel="stylesheet" href="global.css">
+    <title>Configuración Pro - Dark Mode</title>
     <style>
-        .main {
-            flex: 1;
-            padding: 30px;
-            overflow-y: auto;
+        :root {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --primary-glow: rgba(99, 102, 241, 0.2);
+            --secondary: #0ea5e9;
+            --accent: #38bdf8;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --bg: #0a0b14;
+            --sidebar-bg: #111827;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-hover: rgba(255, 255, 255, 0.06);
+            --border: rgba(255, 255, 255, 0.08);
+            --text: #f3f4f6;
+            --text-muted: #94a3b8;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Orbitron:wght@500;700&display=swap');
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
             background: var(--bg);
+            background-image: 
+                radial-gradient(circle at 10% 10%, rgba(99, 102, 241, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 90%, rgba(14, 165, 233, 0.03) 0%, transparent 40%);
+            margin: 0;
+            padding: 40px 60px;
+            color: var(--text);
+            min-height: 100vh;
+            overflow-y: auto;
         }
 
-        .config-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 25px;
-            margin-top: 20px;
-        }
-
-        .config-card {
-            background: var(--card-bg);
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--sidebar-bg);
+            padding: 24px 40px;
+            border-radius: 20px;
             border: 1px solid var(--border);
-            border-radius: 15px;
-            padding: 25px;
+            margin-bottom: 48px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.25rem;
+            color: white;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .header h1::before {
+            content: '';
+            width: 6px;
+            height: 24px;
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        .btn-back {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.8rem;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: 0.2s;
+            text-transform: uppercase;
+        }
+
+        .btn-back:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px var(--primary-glow);
+        }
+
+        .btn-back:active {
+            transform: translateY(0) scale(0.95);
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 32px;
+            padding-bottom: 60px;
+        }
+
+        .section-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 32px;
+            border: 1px solid var(--border);
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            transition: 0.3s;
         }
+        .section-card:hover { border-color: rgba(255, 255, 255, 0.15); }
 
-        .config-card h2 {
-            font-family: 'Orbitron', sans-serif;
+        .section-card h2 {
             font-size: 0.9rem;
-            color: var(--accent);
-            margin: 0;
+            margin: 0 0 24px 0;
+            font-weight: 700;
+            color: var(--primary-light);
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
-            letter-spacing: 1px;
             border-bottom: 1px solid var(--border);
-            padding-bottom: 10px;
+            padding-bottom: 12px;
         }
 
-        .user-row {
-            background: rgba(0,0,0,0.2);
+        .form-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        input, select {
+            padding: 12px 16px;
             border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 10px;
+            outline: none;
+            font-size: 0.9rem;
+            width: 100%;
+            background: var(--bg);
+            color: white;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+        input:focus, select:focus { 
+            border-color: var(--primary); 
+            box-shadow: 0 0 0 4px var(--primary-glow);
         }
 
+        .permiso-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 14px 20px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 22px;
+        }
+
+        .switch input { opacity: 0; width: 0; height: 0; }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #374151;
+            transition: .3s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px; width: 16px;
+            left: 3px; bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider { background-color: var(--success); }
+        input:checked + .slider:before { transform: translateX(18px); }
+
+        .btn-add {
+            background: var(--primary);
+            color: white;
+            border: none;
+            min-width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.25rem;
+        }
+        .btn-add:hover { 
+            background: var(--primary-light); 
+            transform: translateY(-2px); 
+            box-shadow: 0 4px 12px var(--primary-glow);
+        }
+        .btn-add:active { transform: translateY(0) scale(0.9); }
+
+        .list-container {
+            flex: 1;
+            overflow-y: auto;
+            max-height: 400px;
+        }
+
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            margin-bottom: 8px;
+            border: 1px solid var(--border);
+            transition: 0.2s;
+        }
+        .list-item:hover { border-color: rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.04); }
+
+        .btn-text-del {
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.1);
+            background: rgba(239, 68, 68, 0.05);
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            transition: 0.2s;
+        }
+        .btn-text-del:hover { 
+            background: var(--danger); 
+            color: white; 
+            border-color: var(--danger);
+            transform: scale(1.05);
+        }
+        .btn-text-del:active { transform: scale(0.95); }
+
+        .user-row {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            transition: 0.2s;
+        }
+        .user-row:hover { border-color: var(--primary-glow); }
+
         .user-header {
+            padding: 16px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -64,129 +273,118 @@
         }
 
         .badge {
-            padding: 4px 8px;
-            border-radius: 6px;
             font-size: 0.65rem;
+            padding: 4px 10px;
+            border-radius: 6px;
             font-weight: 700;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-        .badge-admin { background: rgba(99, 102, 241, 0.2); color: #818cf8; }
-        .badge-cliente { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
+        .badge-admin { background: rgba(99, 102, 241, 0.1); color: var(--primary-light); border: 1px solid rgba(99, 102, 241, 0.2); }
+        .badge-cliente { background: rgba(16, 185, 129, 0.1); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.2); }
 
-        .edit-panel {
-            margin-top: 15px;
-            padding-top: 15px;
+        .user-edit-panel {
+            padding: 24px;
+            background: rgba(0, 0, 0, 0.2);
             border-top: 1px solid var(--border);
             display: none;
         }
-        .edit-panel.active { display: block; }
 
-        .permiso-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            font-size: 0.85rem;
+        .btn-save-user {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 14px;
+            width: 100%;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.8rem;
         }
-
-        /* Switch styling kept standard */
-        .switch { position: relative; display: inline-block; width: 34px; height: 18px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #334155; transition: .4s; border-radius: 34px; }
-        .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; transition: .4s; border-radius: 50%; }
-        input:checked + .slider { background-color: var(--accent); }
-        input:checked + .slider:before { transform: translateX(16px); }
-
-        @media (max-width: 768px) {
-            .main { padding: 15px; }
-            .config-grid { grid-template-columns: 1fr; }
-            .sidebar { width: 0; display: none; }
+        .btn-save-user:hover { 
+            background: #059669; 
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(16, 185, 129, 0.2);
         }
+        .btn-save-user:active { transform: translateY(0) scale(0.98); }
+
+        .visible { display: block !important; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
     </style>
 </head>
 <body>
-    <div class="menu-toggle" onclick="UI.toggleSidebar()">☰</div>
 
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <div class="logo">⚙️</div>
-            <div class="brand-name">SISCONTED</div>
-        </div>
-        <nav>
-            <a href="index.html">🏠 Inicio</a>
-            <a href="admin.html">📊 Ventas</a>
-            <a href="inventario.html">📦 Inventario</a>
-            <a href="config.html" class="active">⚙️ Configuración</a>
-            <a href="reportes.html">📂 Reportes</a>
-            <a href="#" onclick="cerrarSesion()" class="btn-logout" style="margin-top:20px; border:1px solid rgba(239,68,68,0.3); color:#f87171;">🚪 Salir</a>
-        </nav>
+    <div class="header">
+        <h1>⚙️ Configuración <span style="font-weight:300; color:var(--text-muted); font-size: 1rem;">| Panel Dark</span></h1>
+        <button class="btn-back" onclick="window.location.href='index.html'">Regresar al Panel</button>
     </div>
 
-    <div class="main">
-        <div style="margin-bottom: 25px;">
-            <h1 style="font-family: 'Orbitron', sans-serif; font-size: 1.5rem; margin: 0; color:var(--accent);">CONFIGURACIÓN</h1>
-            <p style="margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.85rem;">Gestión de parámetros y accesos</p>
+    <div class="container">
+        <div class="section-card">
+            <h2>📁 Categorías</h2>
+            <div class="form-group">
+                <input type="text" id="nueva-cat" placeholder="Ej: Pinturas">
+                <button class="btn-add" onclick="agregarConfig('categorias', 'nueva-cat')">+</button>
+            </div>
+            <div id="lista-categorias" class="list-container"></div>
         </div>
 
-        <div class="config-grid">
-            <!-- Categorías -->
-            <div class="config-card">
-                <h2>📁 Categorías</h2>
-                <div style="display: flex; gap: 10px;">
-                    <input type="text" id="nueva-cat" placeholder="Nueva categoría..." style="flex:1;">
-                    <button class="btn btn-primary" onclick="agregarConfig('categorias', 'nueva-cat')">+</button>
+        <div class="section-card">
+            <h2>📏 Unidades de Medida</h2>
+            <div class="form-group">
+                <input type="text" id="nueva-uni" placeholder="Ej: Litros">
+                <button class="btn-add" onclick="agregarConfig('unidades', 'nueva-uni')">+</button>
+            </div>
+            <div id="lista-unidades" class="list-container"></div>
+        </div>
+
+        <div class="section-card">
+            <h2>👥 Gestión de Accesos</h2>
+            <div id="lista-usuarios" class="list-container"></div>
+        </div>
+
+        <div class="section-card">
+            <h2>🏢 Datos de la Empresa</h2>
+            <div class="user-row" style="margin-top: 0;">
+                <div class="user-header" onclick="toggleEmpresa()">
+                    <span id="label-emp-nombre" style="font-weight:700; color:var(--primary);">Configurar Empresa</span>
+                    <span class="badge badge-admin">Editar</span>
                 </div>
-                <div id="lista-categorias" style="max-height: 200px; overflow-y: auto;"></div>
-            </div>
-
-            <!-- Unidades -->
-            <div class="config-card">
-                <h2>📏 Unidades de Medida</h2>
-                <div style="display: flex; gap: 10px;">
-                    <input type="text" id="nueva-uni" placeholder="Nueva unidad..." style="flex:1;">
-                    <button class="btn btn-primary" onclick="agregarConfig('unidades', 'nueva-uni')">+</button>
-                </div>
-                <div id="lista-unidades" style="max-height: 200px; overflow-y: auto;"></div>
-            </div>
-
-            <!-- Usuarios -->
-            <div class="config-card" style="grid-column: 1 / -1;">
-                <h2>👥 Usuarios y Accesos</h2>
-                <div id="lista-usuarios" class="config-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); margin-top:0;"></div>
-            </div>
-
-            <!-- Empresa -->
-            <div class="config-card" style="grid-column: 1 / -1;">
-                <h2>🏢 Datos de la Empresa</h2>
-                <div id="panel-empresa" class="config-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); margin-top:0;">
-                    <div>
-                        <label class="label-small">Nombre / Razón Social</label>
-                        <input type="text" id="emp-nombre">
-                    </div>
-                    <div>
-                        <label class="label-small">NIT / Documento</label>
-                        <input type="text" id="emp-nit">
-                    </div>
-                    <div>
-                        <label class="label-small">Dirección</label>
-                        <input type="text" id="emp-direccion">
-                    </div>
-                    <div>
-                        <label class="label-small">Teléfono</label>
-                        <input type="text" id="emp-telefono">
-                    </div>
-                    <div>
-                        <label class="label-small">WhatsApp Proveedor</label>
-                        <input type="number" id="emp-proveedor" placeholder="57321...">
-                    </div>
-                    <div>
-                        <label class="label-small">Logo Empresa</label>
-                        <input type="file" id="emp-logo" accept="image/*" onchange="previewLogo(event)">
-                        <img id="logo-preview" style="max-height: 50px; margin-top: 10px; display: none; border-radius: 5px;">
-                        <input type="hidden" id="emp-logo-b64">
-                    </div>
-                    <div style="grid-column: 1 / -1;">
-                        <button class="btn btn-primary" style="width: 100%;" onclick="guardarDatosEmpresa()">GUARDAR DATOS DE EMPRESA</button>
+                <div id="panel-empresa" class="user-edit-panel">
+                    <div class="form-group" style="flex-direction: column; gap: 15px; margin-bottom: 0;">
+                        <div>
+                            <label style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Razón Social / Nombre</label>
+                            <input type="text" id="emp-nombre" placeholder="Nombre de la empresa">
+                        </div>
+                        <div>
+                            <label style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">NIT / Documento</label>
+                            <input type="text" id="emp-nit" placeholder="NIT o CC">
+                        </div>
+                        <div>
+                            <label style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Dirección</label>
+                            <input type="text" id="emp-direccion" placeholder="Calle/Carrera # 00-00">
+                        </div>
+                        <div>
+                            <label style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Teléfono / Celular</label>
+                            <input type="text" id="emp-telefono" placeholder="321 000 0000">
+                        </div>
+                        <div>
+                            <label style="font-size:0.7rem; color:var(--whatsapp); text-transform:uppercase; font-weight:700;">Teléfono Proveedor (Pedidos WhatsApp)</label>
+                            <input type="number" id="emp-proveedor" placeholder="Ej: 573215122980" style="border-color: var(--whatsapp);">
+                        </div>
+                        <div>
+                            <label style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Logo de la Empresa (Para Reportes Excel)</label>
+                            <input type="file" id="emp-logo" accept="image/*" onchange="previewLogo(event)" style="padding: 8px;">
+                            <img id="logo-preview" style="max-height: 60px; margin-top: 10px; display: none; border-radius: 8px; border: 1px solid var(--border);">
+                            <input type="hidden" id="emp-logo-b64">
+                        </div>
+                        <button class="btn-save-user" onclick="guardarDatosEmpresa()" style="background: var(--primary);">GUARDAR DATOS EMPRESA</button>
                     </div>
                 </div>
             </div>
@@ -194,19 +392,14 @@
     </div>
 
     <script src="api.js"></script>
-    <script src="ui-helpers.js"></script>
     <script>
         let configData = { categorias: [], unidades: [], empresa: {} };
         let usuariosData = [];
 
-        async function init() {
-            await cargarConfig();
-            await cargarUsuarios();
-        }
-
         async function cargarConfig() {
             try {
                 const data = await API.getConfig();
+                // Aseguramos que siempre existan los arreglos para evitar errores al hacer .push()
                 configData = {
                     categorias: Array.isArray(data.categorias) ? data.categorias : [],
                     unidades: Array.isArray(data.unidades) ? data.unidades : [],
@@ -216,50 +409,77 @@
                 renderListaSimple(configData.categorias, 'lista-categorias', 'categorias');
                 renderListaSimple(configData.unidades, 'lista-unidades', 'unidades');
                 
-                const emp = configData.empresa;
-                document.getElementById('emp-nombre').value = emp.nombre || '';
-                document.getElementById('emp-nit').value = emp.nit || '';
-                document.getElementById('emp-direccion').value = emp.direccion || '';
-                document.getElementById('emp-telefono').value = emp.telefono || '';
-                document.getElementById('emp-proveedor').value = emp.proveedor || '';
-                document.getElementById('emp-logo-b64').value = emp.logoBase64 || '';
-                
-                if (emp.logoBase64) {
-                    const preview = document.getElementById('logo-preview');
-                    preview.src = emp.logoBase64;
-                    preview.style.display = 'block';
+                if (configData.empresa) {
+                    document.getElementById('emp-nombre').value = configData.empresa.nombre || '';
+                    document.getElementById('emp-nit').value = configData.empresa.nit || '';
+                    document.getElementById('emp-direccion').value = configData.empresa.direccion || '';
+                    document.getElementById('emp-telefono').value = configData.empresa.telefono || '';
+                    document.getElementById('emp-proveedor').value = configData.empresa.proveedor || '';
+                    document.getElementById('emp-logo-b64').value = configData.empresa.logoBase64 || '';
+                    
+                    if (configData.empresa.logoBase64) {
+                        const preview = document.getElementById('logo-preview');
+                        preview.src = configData.empresa.logoBase64;
+                        preview.style.display = 'block';
+                    }
+                    
+                    if(configData.empresa.nombre) {
+                        document.getElementById('label-emp-nombre').innerText = configData.empresa.nombre;
+                    }
                 }
-            } catch (e) { UI.showToast("Error al cargar configuración", "error"); }
+            } catch (e) { console.error("Error cargando config:", e); }
         }
 
         async function guardarDatosEmpresa() {
             try {
+                const nuevoNombre = document.getElementById('emp-nombre').value.trim();
                 configData.empresa = {
-                    nombre: document.getElementById('emp-nombre').value.trim(),
+                    nombre: nuevoNombre,
                     nit: document.getElementById('emp-nit').value.trim(),
                     direccion: document.getElementById('emp-direccion').value.trim(),
                     telefono: document.getElementById('emp-telefono').value.trim(),
                     proveedor: document.getElementById('emp-proveedor').value.trim(),
                     logoBase64: document.getElementById('emp-logo-b64').value
                 };
-                await API.saveConfig(configData);
-                UI.showToast("Datos de empresa guardados", "success");
-            } catch (e) { UI.showToast("Error al guardar", "error"); }
+                
+                const res = await API.saveConfig(configData);
+                if(res.success) {
+                    if(nuevoNombre) document.getElementById('label-emp-nombre').innerText = nuevoNombre;
+                    alert("Datos de la empresa guardados correctamente");
+                    toggleEmpresa();
+                }
+            } catch (e) { alert("Error al guardar datos de la empresa: " + e.message); }
+        }
+
+        function toggleEmpresa() {
+            const el = document.getElementById('panel-empresa');
+            el.classList.toggle('visible');
         }
 
         function previewLogo(event) {
             const file = event.target.files[0];
-            if (!file) return;
-            if (file.size > 2 * 1024 * 1024) return UI.showToast("Imagen muy pesada (máx 2MB)", "warning");
+            if (file) {
+                // Verificar tamaño básico
+                if (file.size > 5 * 1024 * 1024) { // 5MB límite razonable para un logo
+                    alert("La imagen es muy pesada. Intente con una de menos de 5MB.");
+                    event.target.value = "";
+                    return;
+                }
 
-            const reader = new FileReader();
-            reader.onload = e => {
-                document.getElementById('emp-logo-b64').value = e.target.result;
-                const p = document.getElementById('logo-preview');
-                p.src = e.target.result;
-                p.style.display = 'block';
-            };
-            reader.readAsDataURL(file);
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const b64 = e.target.result;
+                    document.getElementById('emp-logo-b64').value = b64;
+                    const preview = document.getElementById('logo-preview');
+                    preview.src = b64;
+                    preview.style.display = 'block';
+                    console.log("Logo cargado en memoria (previsualización)");
+                }
+                reader.onerror = function() {
+                    alert("Error al leer el archivo de imagen.");
+                }
+                reader.readAsDataURL(file);
+            }
         }
 
         async function cargarUsuarios() {
@@ -268,43 +488,60 @@
                 document.getElementById('lista-usuarios').innerHTML = usuariosData.map((u, i) => `
                     <div class="user-row">
                         <div class="user-header" onclick="toggleEdit(${i})">
-                            <span style="font-weight:700; color:var(--accent);">${u.nombre}</span>
+                            <span style="font-weight:700; color:var(--primary);">${u.nombre}</span>
                             <span class="badge badge-${u.rol}">${u.rol}</span>
                         </div>
-                        <div id="panel-${i}" class="edit-panel">
-                            <label class="label-small">Nombre Completo</label>
+                        <div id="panel-${i}" class="user-edit-panel">
+                            <label style="font-size:0.65rem; color:var(--text-muted);">NOMBRE COMPLETO</label>
                             <input type="text" id="edit-nom-${i}" value="${u.nombre}">
                             
-                            <div style="margin: 15px 0;">
-                                <div class="permiso-row"><span>Precio</span><label class="switch"><input type="checkbox" id="edit-permiso-${i}" ${u.canEditPrice ? 'checked' : ''}><span class="slider"></span></label></div>
-                                <div class="permiso-row"><span>Excel</span><label class="switch"><input type="checkbox" id="edit-excel-${i}" ${u.permExcel ? 'checked' : ''}><span class="slider"></span></label></div>
-                                <div class="permiso-row"><span>Imprimir</span><label class="switch"><input type="checkbox" id="edit-print-${i}" ${u.permPrint ? 'checked' : ''}><span class="slider"></span></label></div>
-                                <div class="permiso-row"><span>WhatsApp</span><label class="switch"><input type="checkbox" id="edit-wa-${i}" ${u.permWA ? 'checked' : ''}><span class="slider"></span></label></div>
+                            <div class="permisos-grid" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin: 15px 0;">
+                                <div class="permiso-row">
+                                    <span style="font-size:0.75rem;">Editar Precio</span>
+                                    <label class="switch"><input type="checkbox" id="edit-permiso-${i}" ${u.canEditPrice ? 'checked' : ''}><span class="slider"></span></label>
+                                </div>
+                                <div class="permiso-row">
+                                    <span style="font-size:0.75rem;">Excel</span>
+                                    <label class="switch"><input type="checkbox" id="edit-excel-${i}" ${u.permExcel ? 'checked' : ''}><span class="slider"></span></label>
+                                </div>
+                                <div class="permiso-row">
+                                    <span style="font-size:0.75rem;">Imprimir</span>
+                                    <label class="switch"><input type="checkbox" id="edit-print-${i}" ${u.permPrint ? 'checked' : ''}><span class="slider"></span></label>
+                                </div>
+                                <div class="permiso-row">
+                                    <span style="font-size:0.75rem;">Ticket</span>
+                                    <label class="switch"><input type="checkbox" id="edit-ticket-${i}" ${u.permTicket ? 'checked' : ''}><span class="slider"></span></label>
+                                </div>
+                                <div class="permiso-row">
+                                    <span style="font-size:0.75rem;">WhatsApp</span>
+                                    <label class="switch"><input type="checkbox" id="edit-wa-${i}" ${u.permWA ? 'checked' : ''}><span class="slider"></span></label>
+                                </div>
                             </div>
 
-                            <label class="label-small">Login</label>
+                            <label style="font-size:0.65rem; color:var(--text-muted);">ID USUARIO / LOGIN</label>
                             <input type="text" id="edit-user-${i}" value="${u.user}">
-                            <label class="label-small">Password</label>
-                            <input type="text" id="edit-pass-${i}" value="${u.pass}" style="margin-bottom:10px;">
-                            <label class="label-small">Rol</label>
-                            <select id="edit-rol-${i}" style="margin-bottom:15px;">
-                                <option value="admin" ${u.rol === 'admin' ? 'selected' : ''}>Admin</option>
-                                <option value="cliente" ${u.rol === 'cliente' ? 'selected' : ''}>Vendedor</option>
+                            <label style="font-size:0.65rem; color:var(--text-muted);">CONTRASEÑA</label>
+                            <input type="text" id="edit-pass-${i}" value="${u.pass}">
+                            <label style="font-size:0.65rem; color:var(--text-muted);">ROL</label>
+                            <select id="edit-rol-${i}" style="width:100%; margin-bottom:15px; padding:10px; background:rgba(0,0,0,0.3); color:white; border:1px solid var(--border); border-radius:8px;">
+                                <option value="admin" ${u.rol === 'admin' ? 'selected' : ''}>Administrador</option>
+                                <option value="cliente" ${u.rol === 'cliente' ? 'selected' : ''}>Vendedor / Cliente</option>
                             </select>
                             
-                            <button class="btn btn-primary" style="width:100%;" onclick="guardarUsuario(${i})">GUARDAR</button>
-                            ${u.user !== 'admin' ? `<button class="btn btn-danger" style="width:100%; margin-top:10px;" onclick="eliminarUsuario(${i})">ELIMINAR</button>` : ''}
+                            <button class="btn-save-user" onclick="guardarUsuario(${i})" style="background:var(--success);">GUARDAR CAMBIOS</button>
+                            ${u.user !== 'admin' ? `<button class="btn-text-del" style="width:100%; margin-top:10px; color:var(--danger);" onclick="eliminarUsuario(${i})">ELIMINAR USUARIO</button>` : ''}
                         </div>
                     </div>
                 `).join('');
-            } catch (e) { UI.showToast("Error al cargar usuarios", "error"); }
+            } catch (e) { console.error("Error cargando usuarios:", e); }
         }
 
+        // --- FUNCIONES DE ACCIÓN ---
         function renderListaSimple(array, elementId, key) {
-            document.getElementById(elementId).innerHTML = array.map((item, idx) => `
-                <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; border-bottom:1px solid var(--border);">
-                    <span style="font-size:0.85rem;">${item}</span>
-                    <button class="btn btn-danger btn-sm" onclick="eliminarConfig('${key}', ${idx})">×</button>
+            document.getElementById(elementId).innerHTML = array.map((item, index) => `
+                <div class="list-item">
+                    <span style="font-weight:500;">${item}</span>
+                    <button class="btn-text-del" onclick="eliminarConfig('${key}', ${index})">Eliminar</button>
                 </div>
             `).join('');
         }
@@ -312,21 +549,26 @@
         async function agregarConfig(key, inputId) {
             const input = document.getElementById(inputId);
             const val = input.value.trim();
-            if(!val) return;
+            if (!val) return;
             configData[key].push(val);
-            if((await API.saveConfig(configData)).success) { input.value = ''; cargarConfig(); }
+            const res = await API.saveConfig(configData);
+            if(res.success) {
+                input.value = '';
+                cargarConfig();
+            }
         }
 
-        async function eliminarConfig(key, idx) {
-            configData[key].splice(idx, 1);
-            if((await API.saveConfig(configData)).success) cargarConfig();
+        async function eliminarConfig(key, index) {
+            configData[key].splice(index, 1);
+            const res = await API.saveConfig(configData);
+            if(res.success) cargarConfig();
         }
 
         function toggleEdit(idx) {
             const el = document.getElementById(`panel-${idx}`);
-            const wasActive = el.classList.contains('active');
-            document.querySelectorAll('.edit-panel').forEach(p => p.classList.remove('active'));
-            if(!wasActive) el.classList.add('active');
+            const v = el.classList.contains('visible');
+            document.querySelectorAll('.user-edit-panel').forEach(p => p.classList.remove('visible'));
+            if (!v) el.classList.add('visible');
         }
 
         async function guardarUsuario(idx) {
@@ -339,28 +581,29 @@
                     canEditPrice: document.getElementById(`edit-permiso-${idx}`).checked,
                     permExcel: document.getElementById(`edit-excel-${idx}`).checked,
                     permPrint: document.getElementById(`edit-print-${idx}`).checked,
+                    permTicket: document.getElementById(`edit-ticket-${idx}`).checked,
                     permWA: document.getElementById(`edit-wa-${idx}`).checked
                 };
-                if((await API.saveUsuarios(usuariosData)).success) {
-                    UI.showToast("Usuario actualizado", "success");
+
+                const res = await API.saveUsuarios(usuariosData);
+                if(res.success) {
+                    alert("Usuario actualizado");
                     cargarUsuarios();
                 }
-            } catch (e) { UI.showToast("Error al guardar", "error"); }
+            } catch (error) { alert("Error al guardar: " + error.message); }
         }
 
         async function eliminarUsuario(idx) {
-            UI.confirm("ELIMINAR", "¿Deseas eliminar este usuario?", async () => {
-                usuariosData.splice(idx, 1);
-                await API.saveUsuarios(usuariosData);
-                cargarUsuarios();
-            });
+            if(!confirm("¿Eliminar?")) return;
+            usuariosData.splice(idx, 1);
+            await API.saveUsuarios(usuariosData);
+            cargarUsuarios();
         }
 
-        function cerrarSesion() { localStorage.clear(); window.location.href = 'login.html'; }
-        window.onload = init;
-    </script>
-</body>
-</html>
+        window.onload = () => {
+            cargarConfig();
+            cargarUsuarios();
+        };
     </script>
 </body>
 </html>

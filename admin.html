@@ -8,253 +8,861 @@
     </script>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administración - SISCONTED</title>
-    
-    <link rel="stylesheet" href="global.css">
+    <title>Panel Administrativo v2.0 - Edición Premium</title>
     <style>
-        .main { padding: 30px; flex: 1; overflow-y: auto; background: var(--bg); }
-        .header-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
-        .stat-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 20px; text-align: center; }
-        .stat-card h3 { font-size: 0.7rem; color: var(--text-muted); margin: 0 0 10px 0; text-transform: uppercase; }
-        .stat-card p { font-size: 1.5rem; font-weight: 800; color: var(--accent); margin: 0; font-family: 'Orbitron', sans-serif; }
-        
-        .admin-controls { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 25px; }
-        .filters-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
-        
-        @media (max-width: 768px) {
-            .main { padding: 15px; }
-            .header-stats { grid-template-columns: 1fr; }
+        :root {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --primary-glow: rgba(99, 102, 241, 0.2);
+            --secondary: #0ea5e9;
+            --accent: #38bdf8;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --bg: #0a0b14;
+            --sidebar-bg: #111827;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-hover: rgba(255, 255, 255, 0.06);
+            --border: rgba(255, 255, 255, 0.08);
+            --text: #f3f4f6;
+            --text-muted: #94a3b8;
+            --profit: #10b981;
         }
-    </style>
+
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Orbitron:wght@500;700&display=swap');
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            background: var(--bg);
+            background-image: 
+                radial-gradient(circle at 10% 10%, rgba(99, 102, 241, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 90%, rgba(14, 165, 233, 0.03) 0%, transparent 40%);
+            color: var(--text);
+            overflow: hidden;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            width: 300px;
+            background: var(--sidebar-bg);
+            padding: 40px 24px;
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .sidebar h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.25rem;
+            color: white;
+            margin-bottom: 48px;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .sidebar h2::before {
+            content: '';
+            width: 6px;
+            height: 24px;
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        .section-label {
+            font-size: 0.65rem; 
+            font-weight: 800; 
+            color: var(--text-muted);
+            text-transform: uppercase; 
+            letter-spacing: 1.5px; 
+            margin-bottom: 16px; 
+            display: block;
+        }
+
+        label { display: block; font-size: 0.75rem; margin-bottom: 8px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
+
+        input, select {
+            width: 100%; 
+            background: var(--bg); 
+            border: 1px solid var(--border);
+            padding: 12px 16px; 
+            border-radius: 12px; 
+            color: white; 
+            margin-bottom: 20px; 
+            outline: none;
+            font-family: inherit;
+            transition: 0.2s;
+            box-sizing: border-box;
+        }
+
+        input:focus, select:focus { 
+            border-color: var(--primary); 
+            box-shadow: 0 0 0 4px var(--primary-glow);
+        }
+
+        .btn-main {
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 50%, #3730a3 100%);
+            color: white; 
+            padding: 12px 24px; 
+            border: 1px solid rgba(255, 255, 255, 0.2); 
+            border-radius: 12px;
+            font-weight: 700; 
+            cursor: pointer; 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 
+                0 4px 15px rgba(0, 0, 0, 0.3),
+                inset 0 1px 1px rgba(255, 255, 255, 0.2);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+        .btn-main:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 
+                0 15px 30px var(--primary-glow),
+                inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            filter: brightness(1.2);
+        }
+        .btn-main:active {
+            transform: translateY(0) scale(0.95);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        
+        .btn-accent {
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 50%, #0369a1 100%);
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
+        }
+        .btn-accent:hover {
+            box-shadow: 0 15px 30px rgba(14, 165, 233, 0.4);
+        }
+
+        .btn-nav {
+            width: 100%; 
+            padding: 12px 18px; 
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--text-muted);
+            border: 1px solid rgba(255, 255, 255, 0.05); 
+            border-radius: 12px;
+            font-weight: 600; 
+            cursor: pointer; 
+            margin-bottom: 10px;
+            display: flex; 
+            align-items: center; 
+            gap: 14px;
+            text-decoration: none; 
+            font-size: 0.85rem; 
+            transition: 0.3s;
+        }
+        .btn-nav:hover { 
+            background: rgba(255, 255, 255, 0.08); 
+            border-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            transform: translateX(8px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .btn-nav.active {
+            background: linear-gradient(90deg, rgba(99, 102, 241, 0.15) 0%, transparent 100%);
+            color: var(--primary-light);
+            border-left: 3px solid var(--primary);
+            border-top-left-radius: 2px;
+            border-bottom-left-radius: 2px;
+        }
+
+        .btn-logout { 
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%); 
+            color: #f87171; 
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            margin-top: 12px; 
+            justify-content: center;
+            font-weight: 700;
+            backdrop-filter: blur(5px);
+        }
+        .btn-logout:hover { 
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); 
+            color: white; 
+            border-color: #fca5a5;
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+            transform: scale(1.02);
+        }
+
+        .btn-danger-outline {
+            background: rgba(239, 68, 68, 0.02);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.15);
+            margin-top: auto;
+            font-weight: 600;
+            font-size: 0.75rem;
+            backdrop-filter: blur(5px);
+        }
+        .btn-danger-outline:hover {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: #f87171;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* --- MAIN CONTENT --- */
+        .main { flex: 1; padding: 48px 64px; overflow-y: auto; z-index: 10; }
+
+        .header-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 24px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            transition: 0.3s;
+        }
+        .stat-card:hover { border-color: rgba(255, 255, 255, 0.15); background: var(--card-hover); }
+        .stat-card h3 { font-size: 0.7rem; color: var(--text-muted); margin: 0 0 12px 0; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; }
+        .stat-card p { font-size: 1.75rem; font-weight: 700; margin: 0; color: white; font-family: 'Orbitron', sans-serif; }
+        .stat-card .trend { font-size: 0.7rem; margin-top: 12px; display: flex; align-items: center; gap: 6px; font-weight: 600; }
+
+        /* --- TABLES --- */
+        .table-container {
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        table { width: 100%; border-collapse: separate; border-spacing: 0; text-align: left; }
+        th { 
+            background: rgba(255, 255, 255, 0.02); 
+            padding: 16px 20px; 
+            font-size: 0.7rem; 
+            text-transform: uppercase; 
+            letter-spacing: 1.5px; 
+            color: var(--text-muted);
+            font-weight: 700;
+            border-bottom: 1px solid var(--border);
+        }
+        td { padding: 16px 20px; border-bottom: 1px solid var(--border); font-size: 0.85rem; color: var(--text); }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: rgba(255, 255, 255, 0.02); }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .badge-success { background: rgba(16, 185, 129, 0.1); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.2); }
+
+        .action-btns { display: flex; gap: 8px; }
+        .btn-circle {
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 1rem;
+        }
+        .btn-circle:hover { 
+            background: rgba(255, 255, 255, 0.15); 
+            border-color: rgba(255, 255, 255, 0.4); 
+            transform: translateY(-3px);
+            color: white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        .btn-circle:active { transform: scale(0.9); }
+        
+        .btn-circle.btn-del:hover { 
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); 
+            border-color: #f87171;
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+        }
+        .btn-view:hover {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border-color: #60a5fa;
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+        }
+        .btn-print:hover {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            border-color: #a78bfa;
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.4);
+        }
+
+        /* --- MODALES --- */
+        #modal-detalle {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(12px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: var(--sidebar-bg);
+            border: 1px solid var(--border);
+            padding: 40px;
+            border-radius: 24px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+        }
+        .close-modal { position: absolute; top: 24px; right: 24px; font-size: 1.5rem; cursor: pointer; color: var(--text-muted); transition: 0.2s; }
+        .close-modal:hover { color: white; }
+
+        /* --- MODAL CONFIRM --- */
+        #modalConfirm {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+        .confirm-content {
+            background: var(--sidebar-bg);
+            border: 1px solid var(--primary);
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 20px var(--primary-glow);
+            animation: zoomIn 0.3s ease;
+        }
+        .confirm-content h3 { font-family: 'Orbitron', sans-serif; margin-bottom: 15px; color: white; }
+        .confirm-content p { color: var(--text-muted); margin-bottom: 25px; font-size: 0.9rem; }
+        .confirm-btns { display: flex; gap: 15px; justify-content: center; }
+        .btn-confirm { padding: 10px 20px; border-radius: 10px; border: none; font-weight: 700; cursor: pointer; transition: 0.3s; text-transform: uppercase; font-size: 0.75rem; }
+        .btn-yes { background: var(--primary); color: white; flex: 1; }
+        .btn-no { background: rgba(255,255,255,0.05); color: white; border: 1px solid var(--border); flex: 1; }
+        .btn-yes:hover { filter: brightness(1.2); transform: scale(1.05); }
+        .btn-no:hover { background: rgba(255,255,255,0.1); }
+
+        /* --- SCROLLBAR --- */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+        /* --- TOAST NOTIFICATIONS --- */
+        #toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 20000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+        .toast {
+            background: rgba(15, 23, 42, 0.9);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            border-left: 5px solid var(--primary);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            animation: slideIn 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+            min-width: 250px;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            pointer-events: auto;
+        }
+        .toast.success { border-left-color: var(--success); border-left-width: 6px; }
+        .toast.error { border-left-color: var(--danger); border-left-width: 6px; }
+        .toast.warning { border-left-color: var(--warning); border-left-width: 6px; }
+        
+        @keyframes slideIn {
+            from { transform: translateX(120%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes fadeOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(120%); opacity: 0; }
+        }
+    </style>>
 </head>
 <body>
-    <div class="menu-toggle" onclick="UI.toggleSidebar()">☰</div>
 
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <div class="logo">📊</div>
-            <div class="brand-name">SISCONTED</div>
+<div id="modalConfirm">
+    <div class="confirm-content">
+        <h3 id="confirm-title">¿ESTÁS SEGURO?</h3>
+        <p id="confirm-msg">Esta acción no se puede deshacer.</p>
+        <div class="confirm-btns">
+            <button id="confirm-btn-yes" class="btn-confirm btn-yes">SÍ, CONTINUAR</button>
+            <button onclick="cerrarConfirmacion()" class="btn-confirm btn-no">CANCELAR</button>
         </div>
-        <nav>
-            <a href="index.html">🏠 Inventario Local</a>
-            <a href="admin.html" class="active">📊 Dashboard Ventas</a>
-            <a href="inventario.html">📦 Inventario Global</a>
-            <a href="reportes.html">📂 Reportes</a>
-            <a href="config.html">⚙️ Configuración</a>
-            <a href="#" onclick="cerrarSesion()" class="btn-logout" style="margin-top:20px; border:1px solid rgba(239,68,68,0.3); color:#f87171;">🚪 Salir</a>
-        </nav>
-        <div style="margin-top: auto; padding: 15px; font-size: 0.7rem; color: var(--text-muted); border-top: 1px solid var(--border);">
-            Admin: <span id="admin-badge">...</span>
+    </div>
+</div>
+
+<div class="sidebar">
+    <h2>SISCONTED</h2>
+    
+    <span class="section-label">Navegación</span>
+    <button onclick="window.location.href='index.html'" class="btn-nav"><span>🏠</span> Inicio</button>
+    <button onclick="window.location.href='reportes.html'" class="btn-nav"><span>📂</span> Historial Reportes</button>
+    
+    <div style="margin: 32px 0;">
+        <span class="section-label">Administrador</span>
+        <div style="background: rgba(255,255,255,0.03); padding: 16px; border-radius: 12px; border: 1px solid var(--border);">
+            <div id="admin-badge" style="font-weight: 700; color: var(--primary-light); font-size: 0.85rem;">Cargando...</div>
+            <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 4px; text-transform: uppercase; font-weight: 600;">Sesión Activa</div>
         </div>
     </div>
 
-    <div class="main">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 15px;">
-            <h1 style="font-family: 'Orbitron', sans-serif; font-size: 1.2rem; margin: 0; color:var(--accent);">REGISTRO DE VENTAS</h1>
-            <div style="display: flex; gap: 10px;">
-                <button class="btn btn-secondary btn-sm" onclick="exportarReporte()">📄 Excel</button>
-                <button class="btn btn-primary btn-sm" onclick="exportarConsolidado()">📦 Consolidado</button>
-            </div>
-        </div>
+    <button onclick="borrarTodo()" class="btn-nav btn-danger-outline"><span>🗑️</span> Limpiar Base Datos</button>
+    
+    <button onclick="window.location.href='login.html'" class="btn-nav btn-logout"><span>🚪</span> Cerrar Sesión</button>
+</div>
 
-        <div class="header-stats">
-            <div class="stat-card">
-                <h3>Ventas Totales</h3>
-                <p id="total-ventas">$ 0</p>
-            </div>
-            <div class="stat-card">
-                <h3>Utilidad</h3>
-                <p id="total-utilidad" style="color:var(--success);">$ 0</p>
-            </div>
-            <div class="stat-card">
-                <h3>Pedidos</h3>
-                <p id="count-pedidos" style="color:white;">0</p>
-            </div>
-        </div>
-
-        <div class="admin-controls">
-            <div class="filters-grid">
-                <div>
-                    <label class="label-small">Desde</label>
-                    <input type="date" id="f-inicio" class="form-control" onchange="cargarReporte()">
-                </div>
-                <div>
-                    <label class="label-small">Hasta</label>
-                    <input type="date" id="f-fin" class="form-control" onchange="cargarReporte()">
-                </div>
-                <div>
-                    <label class="label-small">Cliente</label>
-                    <input type="text" id="b-cliente" class="form-control" placeholder="Buscar..." onkeyup="cargarReporte()">
-                </div>
-                <div style="display:flex; align-items:flex-end;">
-                    <button class="btn btn-success btn-sm" style="width:100%; height:42px;" onclick="guardarReporteJSON()">💾 Guardar Historial</button>
-                </div>
-            </div>
-            <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Fecha / Hora</th>
-                        <th>Cliente</th>
-                        <th>Total</th>
-                        <th>Utilidad</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody id="lista-pedidos"></tbody>
-            </table>
+<div class="main">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+        <h1 style="font-family: 'Orbitron', sans-serif; font-size: 1.5rem; margin: 0; background: linear-gradient(90deg, #fff, var(--primary)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">REGISTRO DE VENTAS</h1>
+        <div style="display: flex; gap: 12px;">
+            <button class="btn-main" onclick="exportarReporte()">📄 Exportar Excel</button>
+            <button class="btn-main btn-accent" onclick="exportarConsolidado()">📦 Consolidado</button>
         </div>
     </div>
 
-    <script src="api.js"></script>
-    <script src="ui-helpers.js"></script>
-    <script>
-        let listaFiltradaActual = [];
-        let productosDB = [];
-        let config = { empresa: {} };
+    <div class="header-stats">
+        <div class="stat-card">
+            <h3>Total Vendido</h3>
+            <p id="total-ventas">$ 0</p>
+            <div class="trend" style="color: var(--success)">↑ Ingreso Bruto</div>
+        </div>
+        <div class="stat-card">
+            <h3>Ganancia Real</h3>
+            <p id="total-utilidad" style="color: var(--success)">$ 0</p>
+            <div class="trend" style="color: var(--primary)">★ Utilidad Neta</div>
+        </div>
+        <div class="stat-card">
+            <h3>Total Pedidos</h3>
+            <p id="count-pedidos">0</p>
+            <div class="trend">📋 Registros</div>
+        </div>
+    </div>
 
-        const ADMIN_NAME = localStorage.getItem('adminLogueado') || "Eduar Anderson Imbacuan";
-        document.getElementById('admin-badge').innerText = ADMIN_NAME;
+    <div class="controls" style="background: var(--card-bg); padding: 25px; border-radius: 20px; margin-bottom: 30px; border: 1px solid var(--border);">
+        <span class="section-label" style="margin-bottom: 15px;">Filtros de Búsqueda</span>
+        <div style="display: flex; gap: 20px; align-items: flex-end;">
+            <div style="flex: 1;">
+                <label>Desde</label>
+                <input type="date" id="f-inicio" style="margin-bottom:0">
+            </div>
+            <div style="flex: 1;">
+                <label>Hasta</label>
+                <input type="date" id="f-fin" style="margin-bottom:0">
+            </div>
+            <div style="flex: 2;">
+                <label>Buscar Cliente</label>
+                <input type="text" id="b-cliente" placeholder="Escriba nombre del cliente..." onkeyup="cargarReporte()" style="margin-bottom:0">
+            </div>
+            <div style="flex: 1.5;">
+                <label>ID Registro</label>
+                <input type="text" id="b-id" placeholder="Ej: 1773801..." onkeyup="cargarReporte()" style="margin-bottom:0; font-family: monospace;">
+            </div>
+            <button class="btn-main" onclick="guardarReporteJSON()" style="width: auto; margin:0;">💾 Guardar Reporte</button>
+        </div>
+    </div>
 
-        async function init() {
-            try {
-                document.getElementById('f-inicio').value = API.getFechaLocal();
-                document.getElementById('f-fin').value = API.getFechaLocal();
-                await cargarReporte();
-            } catch (e) { UI.showToast("Error al inicializar", "error"); }
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha / Hora</th>
+                    <th>Cliente</th>
+                    <th>Venta Total</th>
+                    <th>Ganancia</th>
+                    <th>ID Registro</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="lista-pedidos"></tbody>
+        </table>
+    </div>
+</div>
+
+<div id="modal-detalle">
+    <div class="modal-content">
+        <span class="close-modal" onclick="cerrarModal()">&times;</span>
+        <h2 style="font-family: 'Orbitron', sans-serif; margin-top:0; color:var(--primary); text-transform: uppercase;">📄 Detalle de Pedido</h2>
+        <div id="detalle-info" style="font-size:0.9rem; margin-bottom:20px; border-bottom:1px solid var(--border); padding-bottom:15px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;"></div>
+        <div id="detalle-productos" style="background: rgba(0,0,0,0.3); border-radius: 15px; padding: 15px; border: 1px solid var(--border);"></div>
+        <div id="detalle-totales" style="margin-top:20px; font-weight:800; font-size:1.5rem; text-align:right; color: var(--accent); font-family: 'Orbitron', sans-serif;"></div>
+    </div>
+</div>
+
+<div id="modalConfirm">
+    <div class="confirm-content">
+        <h3 id="confirm-title">¿ESTÁS SEGURO?</h3>
+        <p id="confirm-msg">Esta acción no se puede deshacer.</p>
+        <div class="confirm-btns">
+            <button id="confirm-btn-yes" class="btn-confirm btn-yes">SÍ, CONTINUAR</button>
+            <button onclick="cerrarConfirmacion()" class="btn-confirm btn-no">CANCELAR</button>
+        </div>
+    </div>
+</div>
+
+<script src="api.js"></script>
+<script>
+    let listaFiltradaActual = [];
+    let productosDB = [];
+    let config = { empresa: {} };
+
+    function showToast(msg, type = 'info') {
+        let container = document.getElementById('toast-container');
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'toast-container';
+            document.body.appendChild(container);
         }
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        
+        let icon = 'ℹ️';
+        if(type === 'success') icon = '✅';
+        if(type === 'error') icon = '❌';
+        if(type === 'warning') icon = '⚠️';
 
-        function obtenerPrecioCompraHistorico(item) {
-            if (item.precioCompra !== undefined && item.precioCompra !== null) return parseFloat(item.precioCompra);
-            const orig = productosDB.find(prod => prod.codigo === item.referencia);
-            return orig ? parseFloat(orig.precioCompra || 0) : 0;
+        toast.innerHTML = `<div>${icon}</div> <div>${msg}</div>`;
+        container.appendChild(toast);
+
+        setTimeout(() => {
+            toast.style.animation = 'fadeOut 0.4s ease forwards';
+            setTimeout(() => toast.remove(), 400);
+        }, 3500);
+    }
+
+    const ADMIN_NAME = localStorage.getItem('adminLogueado') || "Eduar Anderson Imbacuan";
+    document.getElementById('admin-badge').innerText = "👤 " + ADMIN_NAME;
+
+    document.getElementById('f-inicio').value = API.getFechaLocal();
+    document.getElementById('f-fin').value = API.getFechaLocal();
+
+    function obtenerPrecioCompraHistorico(item) {
+        if (item.precioCompra !== undefined && item.precioCompra !== null) {
+            return parseFloat(item.precioCompra);
         }
+        const orig = productosDB.find(prod => prod.codigo === item.referencia);
+        return orig ? parseFloat(orig.precioCompra || 0) : 0;
+    }
 
-        async function cargarReporte() {
-            try {
-                const pedidos = await API.getPedidos();
-                productosDB = await API.getProductos();
-                config = await API.getConfig();
-                
-                const fIn = document.getElementById('f-inicio').value;
-                const fFi = document.getElementById('f-fin').value;
-                const query = document.getElementById('b-cliente').value.toLowerCase();
-
-                let totalV = 0, totalU = 0, html = "";
-                listaFiltradaActual = pedidos.filter(p => {
-                    const fLocal = API.getFechaLocal(p.id);
-                    const matchFechas = (fLocal >= fIn && fLocal <= fFi);
-                    const matchCliente = (p.cliente || "").toLowerCase().includes(query);
-                    return matchFechas && matchCliente;
-                });
-
-                [...listaFiltradaActual].reverse().forEach(p => {
-                    let utilP = 0;
-                    p.items.forEach(it => utilP += (parseFloat(it.precio) - obtenerPrecioCompraHistorico(it)) * it.cantidad);
-                    totalV += parseFloat(p.total); totalU += utilP;
-
-                    html += `<tr>
-                        <td>${p.fecha}<br><small class="text-muted">${p.hora}</small></td>
-                        <td><b>${p.cliente}</b></td>
-                        <td class="text-accent" style="font-weight:700;">$${parseFloat(p.total).toLocaleString()}</td>
-                        <td style="color:${utilP >= 0 ? 'var(--success)' : 'var(--danger)'}; font-weight:700;">$${utilP.toLocaleString()}</td>
-                        <td>
-                            <div style="display:flex; gap:5px;">
-                                <button class="btn btn-secondary btn-sm" onclick="verDetalle(${p.id})">👁️</button>
-                                <button class="btn btn-primary btn-sm" onclick="imprimirRecibo(${p.id})">🖨️</button>
-                                <button class="btn btn-danger btn-sm" onclick="eliminarPedido(${p.id})">🗑️</button>
-                            </div>
-                        </td>
-                    </tr>`;
-                });
-
-                document.getElementById('lista-pedidos').innerHTML = html || '<tr><td colspan="5" style="text-align:center; padding:30px; color:var(--text-muted);">No hay ventas registradas en este periodo.</td></tr>';
-                document.getElementById('total-ventas').innerText = `$ ${totalV.toLocaleString()}`;
-                document.getElementById('total-utilidad').innerText = `$ ${totalU.toLocaleString()}`;
-                document.getElementById('count-pedidos').innerText = listaFiltradaActual.length;
-            } catch (e) { UI.showToast("Error al cargar datos", "error"); }
-        }
-
-        async function verDetalle(id) {
-            const p = listaFiltradaActual.find(x => x.id == id);
-            if(!p) return;
+    async function cargarReporte() {
+        try {
+            const pedidos = await API.getPedidos();
+            productosDB = await API.getProductos();
+            config = await API.getConfig();
             
-            const tableHtml = `
-                <div style="font-size:0.8rem; margin-bottom:15px; border-bottom:1px solid var(--border); padding-bottom:10px;">
-                    <b>CLIENTE:</b> ${p.cliente}<br><b>ID:</b> ${p.id}<br><b>FECHA:</b> ${p.fecha} ${p.hora}
-                </div>
-                <table style="width:100%; font-size:0.8rem;">
-                    <thead><tr><th align="left">PROD</th><th align="right">UNIT</th><th align="center">CANT</th><th align="right">SUB</th></tr></thead>
-                    <tbody>
-                        ${p.items.map(i => `<tr><td>${i.nombre}</td><td align="right">$${i.precio}</td><td align="center">${i.cantidad}</td><td align="right">$${(i.precio*i.cantidad).toLocaleString()}</td></tr>`).join('')}
-                    </tbody>
-                </table>
-                <div style="text-align:right; margin-top:15px; font-weight:800; font-size:1.2rem; color:var(--accent);">TOTAL: $${parseFloat(p.total).toLocaleString()}</div>
-            `;
-            UI.showModal("Detalle de Venta", tableHtml);
+            const fIn = document.getElementById('f-inicio').value;
+            const fFi = document.getElementById('f-fin').value;
+            const query = document.getElementById('b-cliente').value.toLowerCase();
+            const queryId = document.getElementById('b-id').value.trim();
+
+            let totalV = 0, totalU = 0, html = "";
+            listaFiltradaActual = pedidos.filter(p => {
+                const fLocal = API.getFechaLocal(p.id);
+                const matchFechas = (fLocal >= fIn && fLocal <= fFi);
+                const matchCliente = (p.cliente || "").toLowerCase().includes(query);
+                const matchId = p.id.toString().includes(queryId);
+                return matchFechas && matchCliente && matchId;
+            });
+
+            [...listaFiltradaActual].reverse().forEach(p => {
+                let utilidadP = 0;
+                p.items.forEach(item => {
+                    const pCompra = obtenerPrecioCompraHistorico(item);
+                    const pVenta = parseFloat(item.precio);
+                    utilidadP += (pVenta - pCompra) * parseInt(item.cantidad);
+                });
+
+                totalV += parseFloat(p.total); 
+                totalU += utilidadP;
+
+                html += `<tr>
+                    <td>${p.fecha}<br><small style="color:#94a3b8">${p.hora}</small></td>
+                    <td><b style="color:white">${p.cliente}</b></td>
+                    <td style="color:var(--accent); font-weight:bold">$${parseFloat(p.total).toLocaleString()}</td>
+                    <td style="color:${utilidadP >= 0 ? 'var(--profit)' : 'var(--danger)'}">$${utilidadP.toLocaleString()}</td>
+                    <td style="font-family:monospace; color:#94a3b8">${p.id}</td>
+                    <td class="action-btns">
+                        <button class="btn-circle btn-view" title="Ver" onclick="verDetalle(${p.id})">👁️</button>
+                        <button class="btn-circle btn-print" title="Imprimir" onclick="imprimirRecibo(${p.id})">🖨️</button>
+                        <button class="btn-circle btn-del" title="Eliminar" onclick="eliminarPedido(${p.id})">🗑️</button>
+                    </td>
+                </tr>`;
+            });
+
+            document.getElementById('lista-pedidos').innerHTML = html || '<tr><td colspan="6" align="center">No hay registros para este periodo</td></tr>';
+            document.getElementById('total-ventas').innerText = `$ ${totalV.toLocaleString()}`;
+            document.getElementById('total-utilidad').innerText = `$ ${totalU.toLocaleString()}`;
+            document.getElementById('count-pedidos').innerText = listaFiltradaActual.length;
+        } catch (e) { 
+            console.error(e);
+            showToast("Error al cargar datos del servidor", "error");
+        }
+    }
+
+    // Modal confirmación (Placeholder logic)
+    let confirmCallback = null;
+    function abrirConfirmacion(titulo, msj, callback) {
+        document.getElementById('confirm-title').innerText = titulo;
+        document.getElementById('confirm-msg').innerText = msj;
+        confirmCallback = callback;
+        document.getElementById('modalConfirm').style.display = 'flex';
+    }
+    function cerrarConfirmacion() {
+        document.getElementById('modalConfirm').style.display = 'none';
+        confirmCallback = null;
+    }
+
+    async function guardarReporteJSON() {
+        if (listaFiltradaActual.length === 0) return showToast("No hay datos para generar reporte.", "warning");
+        
+        abrirConfirmacion("GENERAR REPORTE", "¿Deseas guardar este resumen en el historial de reportes?", async function() {
+            try {
+                let totalV = 0, totalU = 0;
+                const pedidosReporte = listaFiltradaActual.map(p => {
+                    let utilidadP = 0;
+                    const itemsConUtilidad = p.items.map(item => {
+                        const pCompra = obtenerPrecioCompraHistorico(item);
+                        const gananciaUnit = (parseFloat(item.precio) - pCompra);
+                        const gananciaTotal = gananciaUnit * parseInt(item.cantidad);
+                        utilidadP += gananciaTotal;
+                        return { ...item, gananciaUnit, gananciaTotal };
+                    });
+                    totalV += parseFloat(p.total);
+                    totalU += utilidadP;
+                    return { ...p, ganancia: utilidadP, items: itemsConUtilidad };
+                });
+
+                const nuevoReporte = {
+                    idReporte: Date.now(),
+                    fechaCreacion: new Date().toLocaleString(),
+                    admin: ADMIN_NAME,
+                    rango: {
+                        desde: document.getElementById('f-inicio').value,
+                        hasta: document.getElementById('f-fin').value
+                    },
+                    ventasRaw: totalV,
+                    gananciaRaw: totalU,
+                    cantidadPedidos: listaFiltradaActual.length,
+                    pedidos: pedidosReporte
+                };
+
+                const historial = await API.getReportes();
+                historial.push(nuevoReporte);
+                await API.saveReportes(historial);
+                
+                showToast("Reporte guardado en el historial.", "success");
+            } catch (e) {
+                console.error(e);
+                showToast("Error al guardar el reporte.", "error");
+            }
+        });
+    }
+
+    window.onload = () => { cargarReporte(); };
+
+    function obtenerHeaderEmpresa(cols) {
+        let emp = { nombre: 'MI EMPRESA', nit: '', direccion: '', telefono: '', logoBase64: '' };
+        if (config && config.empresa) emp = { ...emp, ...config.empresa };
+        
+        let logoHtml = '';
+        if (emp.logoBase64) {
+            // Usamos cid:logo para que MHT lo reconozca
+            // Reducimos tamaño para que encuadre perfectamente en 3 filas
+            logoHtml = `<th rowspan="3" width="80" style="text-align:center; vertical-align:middle; background:white; border:1px solid #ccc; height:60px;"><img src="cid:logo" width="60" height="60" style="display:block; margin:auto;"></th>`;
+            cols = cols - 1;
         }
 
-        function guardarReporteJSON() {
-            if (!listaFiltradaActual.length) return UI.showToast("No hay datos", "warning");
-            UI.confirm("GUARDAR REPORTE", "¿Deseas guardar este resumen en el historial?", async () => {
-                try {
-                    const resumen = {
-                        id: Date.now(), fecha: new Date().toLocaleString(), admin: ADMIN_NAME,
-                        rango: `${document.getElementById('f-inicio').value} / ${document.getElementById('f-fin').value}`,
-                        ventas: document.getElementById('total-ventas').innerText,
-                        utilidad: document.getElementById('total-utilidad').innerText,
-                        pedidos: listaFiltradaActual.length
+        return `
+            <tr height="20">${logoHtml}<th colspan="${cols}" style="font-size: 15px; font-weight: bold; color: #0f172a; text-align: center; height: 20px;">${emp.nombre.toUpperCase()}</th></tr>
+            <tr height="20"><th colspan="${cols}" style="font-size: 14px; color: #334155; text-align: center; height: 20px;">NIT: ${emp.nit} | TEL: ${emp.telefono}</th></tr>
+            <tr height="20"><th colspan="${cols}" style="font-size: 14px; color: #334155; text-align: center; border-bottom: 2px solid #94a3b8; height: 20px;">${emp.direccion}</th></tr>
+        `;
+    }
+
+    function exportarReporte() {
+        if (listaFiltradaActual.length === 0) return showToast("No hay datos para exportar.", "warning");
+        const fIn = document.getElementById('f-inicio').value;
+        const fFi = document.getElementById('f-fin').value;
+
+        let tablaHtml = `<table border="1">
+            ${obtenerHeaderEmpresa(7)}
+            <tr><th colspan="7" style="background-color: #0f172a; color: #00f2ff; height: 40px; font-size: 16px;">REPORTE GENERAL DE VENTAS</th></tr>
+            <tr><th colspan="7" style="background-color: #f8fafc; color: #334155;">Generado por: ${ADMIN_NAME} | Periodo: del ${fIn} al ${fFi}</th></tr>
+            <tr style="font-weight: bold; text-align: center;">
+                <th style="background-color: #e2e8f0;">FECHA</th><th style="background-color: #e2e8f0;">HORA</th><th style="background-color: #e2e8f0;">CLIENTE</th><th style="background-color: #e2e8f0;">ID REGISTRO</th><th style="background-color: #e2e8f0;">PRODUCTOS VENDIDOS</th><th style="background-color: #e2e8f0;">VENTA TOTAL</th><th style="background-color: #e2e8f0;">GANANCIA REAL</th>
+            </tr>`;
+
+        let sumaV = 0, sumaG = 0;
+        listaFiltradaActual.forEach(p => {
+            let ganP = 0;
+            let lista = p.items.map(i => `${i.nombre}(x${i.cantidad})`).join(" | ");
+            p.items.forEach(item => {
+                const pCompra = obtenerPrecioCompraHistorico(item, productosDB);
+                const pVenta = parseFloat(item.precio);
+                ganP += (pVenta - pCompra) * parseInt(item.cantidad);
+            });
+            sumaV += parseFloat(p.total); 
+            sumaG += ganP;
+            tablaHtml += `<tr>
+                <td align="center">${p.fecha}</td>
+                <td align="center">${p.hora}</td>
+                <td>${p.cliente}</td>
+                <td>'${p.id}</td>
+                <td>${lista}</td>
+                <td align="right">$ ${parseFloat(p.total).toLocaleString()}</td>
+                <td align="right">$ ${ganP.toLocaleString()}</td>
+            </tr>`;
+        });
+        tablaHtml += `<tr style="font-weight: bold;"><td colspan="5" align="right" style="background-color: #f1f5f9;">TOTALES:</td><td align="right" style="background-color: #f1f5f9;">$ ${sumaV.toLocaleString()}</td><td align="right" style="background-color: #f1f5f9;">$ ${sumaG.toLocaleString()}</td></tr></table>`;
+        descargarExcel(tablaHtml, `Reporte_Ventas_${fIn}`);
+    }
+
+    function exportarConsolidado() {
+        if (listaFiltradaActual.length === 0) return showToast("No hay datos para consolidar.", "warning");
+        const fIn = document.getElementById('f-inicio').value;
+
+        let consolidado = {};
+        listaFiltradaActual.forEach(p => {
+            p.items.forEach(item => {
+                if (!consolidado[item.nombre]) {
+                    const infoDB = productosDB.find(prod => prod.codigo === item.referencia);
+                    consolidado[item.nombre] = { 
+                        cantidad: 0, 
+                        referencia: infoDB ? infoDB.codigo : '---',
+                        unidad: infoDB ? (infoDB.unidad || 'UND') : 'UND' // <-- CORREGIDO: "unidad" en vez de "unidadMedida"
                     };
-                    const hist = await API.getReportes(); hist.push(resumen); await API.saveReportes(hist);
-                    UI.showToast("Reporte guardado", "success");
-                } catch (e) { UI.showToast("Error", "error"); }
+                }
+                consolidado[item.nombre].cantidad += parseInt(item.cantidad);
             });
-        }
+        });
 
-        async function exportarReporte() {
-            if (!listaFiltradaActual.length) return UI.showToast("No hay datos", "warning");
-            const { headerHtml, logoBase64 } = await API.getExcelHeader(6);
-            let html = `<table border="1">${headerHtml}<tr><th colspan="6" style="background:#0f172a; color:#00f2ff; height:40px; font-size:18px;">REPORTE DE VENTAS</th></tr>`;
-            html += `<tr><th style="background:#1e293b; color:white;">FECHA</th><th style="background:#1e293b; color:white;">CLIENTE</th><th style="background:#1e293b; color:white;">ID</th><th style="background:#1e293b; color:white;">PRODUCTOS</th><th style="background:#1e293b; color:white;">TOTAL</th><th style="background:#1e293b; color:white;">GANANCIA</th></tr>`;
-            listaFiltradaActual.forEach(p => {
-                let g = 0; p.items.forEach(i => g += (i.precio - obtenerPrecioCompraHistorico(i)) * i.cantidad);
-                html += `<tr><td>${p.fecha}</td><td>${p.cliente}</td><td>'${p.id}</td><td>${p.items.map(i => i.nombre).join(', ')}</td><td align="right">$${parseFloat(p.total).toLocaleString()}</td><td align="right">$${g.toLocaleString()}</td></tr>`;
-            });
-            API.descargarExcelMHT(html + '</table>', `Ventas_${API.getFechaLocal()}`, logoBase64);
-        }
+        let tablaHtml = `<table border="1">
+            ${obtenerHeaderEmpresa(4)}
+            <tr><th colspan="4" style="background-color: #d97706; color: white; height: 40px;">CONSOLIDADO DE PRODUCTOS PARA ENTREGA</th></tr>
+            <tr><th colspan="4" style="background-color: #f8fafc; color: #334155; text-align: center;">Generado por: ${ADMIN_NAME} | Rango: ${fIn}</th></tr>
+            <tr>
+                <th style="background-color: #e2e8f0;">REF</th><th style="background-color: #e2e8f0;">PRODUCTO</th><th style="background-color: #e2e8f0;">U. MEDIDA</th><th style="background-color: #e2e8f0;">CANT TOTAL</th>
+            </tr>`;
 
-        async function exportarConsolidado() {
-            if (!listaFiltradaActual.length) return UI.showToast("No hay datos", "warning");
-            const { headerHtml, logoBase64 } = await API.getExcelHeader(3);
-            let dict = {};
-            listaFiltradaActual.forEach(p => p.items.forEach(i => {
-                if(!dict[i.nombre]) dict[i.nombre] = { ref: i.referencia || i.codigo, cant: 0, um: i.unidad || 'Und' };
-                dict[i.nombre].cant += i.cantidad;
-            }));
-            let html = `<table border="1">${headerHtml}<tr><th colspan="3" style="background:#0f172a; color:#00f2ff; height:40px; font-size:18px;">CONSOLIDADO DE PRODUCTOS</th></tr><tr><th style="background:#1e293b; color:white;">REF</th><th style="background:#1e293b; color:white;">PRODUCTO</th><th style="background:#1e293b; color:white;">CANTIDAD</th></tr>`;
-            Object.keys(dict).forEach(n => html += `<tr><td>'${dict[n].ref}</td><td>${n}</td><td align="center">${dict[n].cant} ${dict[n].um}</td></tr>`);
-            API.descargarExcelMHT(html + '</table>', `Consolidado_${API.getFechaLocal()}`, logoBase64);
-        }
+        Object.keys(consolidado).sort().forEach(nombre => {
+            const item = consolidado[nombre];
+            tablaHtml += `<tr><td align="center">${item.referencia}</td><td>${nombre}</td><td align="center">${item.unidad}</td><td align="center"><b>${item.cantidad}</b></td></tr>`;
+        });
+        descargarExcel(tablaHtml, `Consolidado_${fIn}`);
+    }
 
-        async function imprimirRecibo(id) {
-            const p = listaFiltradaActual.find(x => x.id == id);
-            if(!p) return;
-            const { headerHtml, logoBase64 } = await API.getExcelHeader(5);
-            let html = `<table border="1">${headerHtml}<tr><th colspan="5" style="background:#0f172a; color:#00f2ff; height:40px; font-size:18px;">RECIBO DE VENTA #${p.id}</th></tr><tr><th style="background:#1e293b; color:white;">PROD</th><th style="background:#1e293b; color:white;">UM</th><th style="background:#1e293b; color:white;">PRECIO</th><th style="background:#1e293b; color:white;">CANT</th><th style="background:#1e293b; color:white;">SUBTOTAL</th></tr>`;
-            p.items.forEach(i => html += `<tr><td>${i.nombre}</td><td>${i.unidad || 'Und'}</td><td align="right">$${parseFloat(i.precio).toLocaleString()}</td><td align="center">${i.cantidad}</td><td align="right">$${(i.precio*i.cantidad).toLocaleString()}</td></tr>`);
-            html += `<tr><th colspan="4" align="right"><b>TOTAL:</b></th><td align="right"><b>$${parseFloat(p.total).toLocaleString()}</b></td></tr></table>`;
-            API.descargarExcelMHT(html, `Recibo_${p.id}`, logoBase64);
+    function descargarExcel(htmlContent, fileName) {
+        let logoBase64 = '';
+        if (config && config.empresa && config.empresa.logoBase64) {
+            logoBase64 = config.empresa.logoBase64;
         }
+        // Usamos la nueva función de la API que soporta MHT
+        API.descargarExcelMHT(htmlContent, fileName, logoBase64);
+    }
 
-        function eliminarPedido(id) {
-            UI.confirm("ELIMINAR", "¿Deseas borrar este registro? Esta acción es irreversible.", async () => {
-                UI.showToast("Eliminación no implementada en backend", "info");
-            });
-        }
+    function verDetalle(id) {
+        const p = listaFiltradaActual.find(x => x.id == id);
+        if(!p) return;
 
-        function cerrarSesion() { localStorage.clear(); window.location.href = 'login.html'; }
-        window.onload = init;
-    </script>
+        document.getElementById('detalle-info').innerHTML = `<div style="display:grid; grid-template-columns: 1fr 1fr;"><div><b>CLIENTE:</b> ${p.cliente}</div><div style="text-align:right"><b>ID:</b> ${p.id}</div><div><b>FECHA:</b> ${p.fecha}</div><div style="text-align:right"><b>HORA:</b> ${p.hora}</div></div>`;
+        
+        let html = '<table style="width:100%; color:white; border-collapse:collapse;"><tr><th style="text-align:left; color:var(--accent)">PRODUCTO</th><th style="text-align:center; color:var(--accent)">VALOR UND.</th><th style="text-align:center; color:var(--accent)">U.M.</th><th style="text-align:center; color:var(--accent)">CANT</th><th style="text-align:right; color:var(--accent)">SUBTOTAL</th></tr>';
+        
+        p.items.forEach(i => { 
+            const infoDB = productosDB.find(prod => prod.codigo === i.referencia);
+            const unidad = infoDB ? (infoDB.unidad || 'UND') : 'UND'; // <-- CORREGIDO: "unidad" en vez de "unidadMedida"
+            html += `<tr style="border-bottom:1px solid #334155">
+                        <td style="padding:10px 0">${i.nombre}</td>
+                        <td align="center">$${parseFloat(i.precio).toLocaleString()}</td>
+                        <td align="center" style="color:#94a3b8; font-size:0.85rem">${unidad}</td>
+                        <td align="center">${i.cantidad}</td>
+                        <td align="right">$${(parseFloat(i.precio)*parseInt(i.cantidad)).toLocaleString()}</td>
+                    </tr>`; 
+        });
+        
+        document.getElementById('detalle-productos').innerHTML = html + '</table>';
+        document.getElementById('detalle-totales').innerText = `TOTAL: $${parseFloat(p.total).toLocaleString()}`;
+        document.getElementById('modal-detalle').style.display = 'flex';
+    }
+
+    function eliminarPedido(id) {
+        showToast("La eliminación de pedidos debe realizarse a través de una solicitud a la API.", "warning");
+        // Nota: El backend ya maneja la eliminación si se implementa el endpoint DELETE /api/pedidos/:id
+    }
+
+    function imprimirRecibo(id) {
+        const p = listaFiltradaActual.find(x => x.id == id);
+        if(!p) return;
+
+        let tablaHtml = `
+        <table border="1" style="border-collapse: collapse; font-family: Arial, sans-serif;">
+            ${obtenerHeaderEmpresa(6)}
+            <tr><th colspan="6" style="background-color: #166534; color: white; height: 40px; font-size: 18px;">RECIBO DE VENTA (COPIA)</th></tr>
+            <tr><td colspan="3"><b>CLIENTE:</b> ${p.cliente}</td><td colspan="3" align="right"><b>ORDEN ID:</b> #${p.id}</td></tr>
+            <tr><td colspan="6"><b>FECHA Y HORA:</b> ${p.fecha} | ${p.hora}</td></tr>
+            <tr style="font-weight: bold; text-align: center;">
+                <th style="background-color: #f1f5f9; width: 80px;">REF</th><th style="background-color: #f1f5f9; width: 250px;">PRODUCTO</th><th style="background-color: #f1f5f9; width: 100px;">U. MEDIDA</th><th style="background-color: #f1f5f9; width: 100px;">VALOR UND.</th><th style="background-color: #f1f5f9; width: 80px;">CANT</th><th style="background-color: #f1f5f9; width: 120px;">SUBTOTAL</th>
+            </tr>`;
+
+        p.items.forEach(i => {
+            const infoDB = productosDB.find(prod => prod.codigo === i.referencia);
+            const ref = infoDB ? infoDB.codigo : '---';
+            const unidad = infoDB ? (infoDB.unidad || 'UND') : 'UND'; // <-- CORREGIDO: "unidad" en vez de "unidadMedida"
+            tablaHtml += `<tr><td align="center">${ref}</td><td>${i.nombre}</td><td align="center">${unidad}</td><td align="right">$ ${parseFloat(i.precio).toLocaleString()}</td><td align="center">${i.cantidad}</td><td align="right">$ ${ (parseFloat(i.precio) * parseInt(i.cantidad)).toLocaleString() }</td></tr>`;
+        });
+
+        tablaHtml += `<tr style="font-weight: bold; font-size: 16px;"><td colspan="5" align="right" style="background-color: #f8fafc;">TOTAL NETO A PAGAR:</td><td align="right" style="background-color: #f0fdf4; color: #16a34a;">$ ${parseFloat(p.total).toLocaleString()}</td></tr>
+            <tr><td colspan="6" style="height: 50px; border-left: none; border-right: none;"></td></tr>
+            <tr><td colspan="6" align="center" style="border: none;"><br>__________________________________________<br><b>FIRMA RESPONSABLE (ADMIN)</b><br>${ADMIN_NAME}<br><small>Sistema de Control de Ventas</small></td></tr></table>`;
+
+        descargarExcel(tablaHtml, `Recibo_${p.id}_${p.cliente.replace(/ /g, "_")}`);
+    }
+
+    function cerrarModal() { document.getElementById('modal-detalle').style.display = 'none'; }
+    function borrarTodo() { 
+        showToast("Esta función requiere permisos especiales de administrador.", "warning");
+    }
+
+    document.getElementById('f-inicio').onchange = cargarReporte;
+    document.getElementById('f-fin').onchange = cargarReporte;
+    
+    document.getElementById('confirm-btn-yes').onclick = function() {
+        if(confirmCallback) confirmCallback();
+        cerrarConfirmacion();
+    };
+
+    cargarReporte();
+</script>
 </body>
 </html>
