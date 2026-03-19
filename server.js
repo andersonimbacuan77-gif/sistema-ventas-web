@@ -25,8 +25,17 @@ app.use(express.static(path.join(__dirname)));
 const MONGO_URI = process.env.MONGO_URI;
 if (MONGO_URI) {
     mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-        .then(() => console.log('Conectado a MongoDB Atlas'))
-        .catch(err => console.error('Error al conectar a MongoDB:', err));
+        .then(async () => {
+            const dbName = mongoose.connection.name;
+            console.log(`✅ Conectado a MongoDB Atlas - Base de datos: ${dbName}`);
+            
+            // Log de conteo para depuración
+            const pedCount = await mongoose.connection.db.collection('pedidos').countDocuments();
+            const repCount = await mongoose.connection.db.collection('reportes').countDocuments();
+            const proCount = await mongoose.connection.db.collection('productos').countDocuments();
+            console.log(`📊 Estado inicial: Pedidos: ${pedCount}, Reportes: ${repCount}, Productos: ${proCount}`);
+        })
+        .catch(err => console.error('❌ Error al conectar a MongoDB:', err));
 } else {
     console.log('ADVERTENCIA: No hay MONGO_URI en .env. Usando archivos JSON locales como respaldo.');
 }
@@ -83,12 +92,17 @@ const reporteSchema = new mongoose.Schema({
 });
 const Reporte = mongoose.models.Reporte || mongoose.model('Reporte', reporteSchema);
 
-const registroFinancieroSchema = new mongoose.Schema({
+const ingresoSchema = new mongoose.Schema({
     fecha: String,
-    tipo: String, // 'ingreso' o 'egreso'
-    registros: Array // Array de objetos con { categoria, monto, descripcion, hora }
+    registros: Array
 });
-const RegistroFinanciero = mongoose.models.RegistroFinanciero || mongoose.model('RegistroFinanciero', registroFinancieroSchema);
+const Ingreso = mongoose.models.Ingreso || mongoose.model('Ingreso', ingresoSchema);
+
+const egresoSchema = new mongoose.Schema({
+    fecha: String,
+    registros: Array
+});
+const Egreso = mongoose.models.Egreso || mongoose.model('Egreso', egresoSchema);
 
 const configSchema = new mongoose.Schema({
     id: { type: String, default: 'main' },
@@ -283,9 +297,7 @@ app.delete('/api/reportes/:id', async (req, res) => {
 // 9. Ingresos
 app.get('/api/ingresos', async (req, res) => {
     try {
-        // En el formato original, ingresos.json guardaba un array de días.
-        // Aquí cada documento es un día de registros.
-        const registros = await RegistroFinanciero.find({ tipo: 'ingreso' });
+        const registros = await Ingreso.find();
         res.json(registros);
     } catch (error) {
         res.status(500).json({ error: 'Error al obtener ingresos' });
@@ -295,12 +307,14 @@ app.get('/api/ingresos', async (req, res) => {
 app.post('/api/ingresos', async (req, res) => {
     try {
         const data = req.body; // Array de registros por día
-        for (const r of data) {
-            await RegistroFinanciero.findOneAndUpdate(
-                { fecha: r.fecha, tipo: 'ingreso' },
-                { ...r, tipo: 'ingreso' },
-                { upsert: true }
-            );
+        if (Array.isArray(data)) {
+            for (const r of data) {
+                await Ingreso.findOneAndUpdate(
+                    { fecha: r.fecha },
+                    r,
+                    { upsert: true }
+                );
+            }
         }
         res.json({ success: true });
     } catch (error) {
@@ -311,7 +325,7 @@ app.post('/api/ingresos', async (req, res) => {
 // 10. Egresos
 app.get('/api/egresos', async (req, res) => {
     try {
-        const registros = await RegistroFinanciero.find({ tipo: 'egreso' });
+        const registros = await Egreso.find();
         res.json(registros);
     } catch (error) {
         res.status(500).json({ error: 'Error al obtener egresos' });
@@ -321,12 +335,14 @@ app.get('/api/egresos', async (req, res) => {
 app.post('/api/egresos', async (req, res) => {
     try {
         const data = req.body;
-        for (const r of data) {
-            await RegistroFinanciero.findOneAndUpdate(
-                { fecha: r.fecha, tipo: 'egreso' },
-                { ...r, tipo: 'egreso' },
-                { upsert: true }
-            );
+        if (Array.isArray(data)) {
+            for (const r of data) {
+                await Egreso.findOneAndUpdate(
+                    { fecha: r.fecha },
+                    r,
+                    { upsert: true }
+                );
+            }
         }
         res.json({ success: true });
     } catch (error) {
@@ -340,7 +356,8 @@ app.post('/api/reset-system', async (req, res) => {
         await Producto.deleteMany({});
         await Pedido.deleteMany({});
         await Reporte.deleteMany({});
-        await RegistroFinanciero.deleteMany({});
+        await Ingreso.deleteMany({});
+        await Egreso.deleteMany({});
         res.json({ success: true });
     } catch (error) {
         res.status(500).json({ error: 'Error al reiniciar sistema' });
