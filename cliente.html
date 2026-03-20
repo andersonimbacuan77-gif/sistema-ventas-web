@@ -876,7 +876,9 @@
                 const it = carrito[ref];
                 const sub = it.precio * it.cantidad;
                 total += sub;
-                msg += `${it.cantidad} x ${it.nombre.substring(0,15)} (${it.unidad || 'Und'}) → *$${sub.toLocaleString()}*\n`;
+                msg += `🔹 *[${it.referencia}]* ${it.nombre}\n`;
+                msg += `    ${it.cantidad} ${it.unidad || 'Und'} x $${it.precio.toLocaleString()} = *$${sub.toLocaleString()}*\n`;
+                msg += `---------------------------------------------------------\n`;
             }
             
             msg += `---------------------------------------------------------\n`;
@@ -975,21 +977,33 @@
                         CLIENTE: ${nom}<br>
                         ${cel ? 'CELULAR: ' + cel : ''}
                     </div>
-                    <table style="width:100%; border-collapse:collapse; font-size:11px;">
-                        <thead style="border-bottom:1px solid #000;">
-                            <tr><th align="center">CANT</th><th align="center">PRODUCTO (UND)</th><th align="center">TOTAL</th></tr>
+                    <table style="width:100%; border-collapse:collapse; font-size:10px; margin-top: 10px;">
+                        <thead style="border-top:1px solid #000; border-bottom:1px solid #000;">
+                            <tr>
+                                <th align="left" style="padding: 4px 2px;">REF</th>
+                                <th align="left" style="padding: 4px 2px;">PRODUCTO</th>
+                                <th align="center" style="padding: 4px 2px;">CANT</th>
+                                <th align="center" style="padding: 4px 2px;">UND</th>
+                                <th align="right" style="padding: 4px 2px;">P.UNIT</th>
+                                <th align="right" style="padding: 4px 2px;">TOTAL</th>
+                            </tr>
                         </thead>
                         <tbody>`;
             
             let total = 0;
             for(let k in carrito) {
                 const it = carrito[k];
-                total += (it.precio * it.cantidad);
-                ticketHtml += `<tr>
-                    <td align="center">${it.cantidad}</td>
-                    <td align="center">${it.nombre.substring(0,15)} (${it.unidad || 'Und'})</td>
-                    <td align="center">$${(it.precio * it.cantidad).toLocaleString()}</td>
-                </tr>`;
+                const sub = it.precio * it.cantidad;
+                total += sub;
+                ticketHtml += `
+                            <tr style="border-bottom: 0.5px solid #eee;">
+                                <td align="left" style="padding: 5px 2px; font-family: monospace;">${it.referencia}</td>
+                                <td align="left" style="padding: 5px 2px;">${it.nombre.toUpperCase().substring(0,12)}</td>
+                                <td align="center" style="padding: 5px 2px;">${it.cantidad}</td>
+                                <td align="center" style="padding: 5px 2px; color: #666;">${it.unidad || 'Und'}</td>
+                                <td align="right" style="padding: 5px 2px;">$${it.precio.toLocaleString()}</td>
+                                <td align="right" style="padding: 5px 2px; font-weight: bold;">$${sub.toLocaleString()}</td>
+                            </tr>`;
             }
 
             ticketHtml += `
@@ -1040,7 +1054,9 @@
                 const it = carrito[k];
                 const sub = it.precio * it.cantidad;
                 total += sub;
-                msg += `${it.cantidad} x ${it.nombre.substring(0,15)} (${it.unidad || 'Und'}) → *$${sub.toLocaleString()}*\n`;
+                msg += `🔹 *[${it.referencia}]* ${it.nombre}\n`;
+                msg += `    ${it.cantidad} ${it.unidad || 'Und'} x $${it.precio.toLocaleString()} = *$${sub.toLocaleString()}*\n`;
+                msg += `---------------------------------------------------------\n`;
             }
             
             msg += `---------------------------------------------------------\n`;
