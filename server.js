@@ -370,17 +370,34 @@ app.post('/api/egresos', async (req, res) => {
     }
 });
 
-// 11. Reiniciar Sistema (Borrar Todo en MongoDB)
+// 11. Reiniciar Sistema (Borrado de Transacciones y Stock a 0)
 app.post('/api/reset-system', async (req, res) => {
     try {
-        await Producto.deleteMany({});
+        // RESETEAR STOCK A 0 (No eliminar productos)
+        await Producto.updateMany({}, { $set: { existencia: 0 } });
+        
+        // ELIMINAR TRANSACCIONES
         await Pedido.deleteMany({});
-        await Reporte.deleteMany({});
         await Ingreso.deleteMany({});
         await Egreso.deleteMany({});
+        
+        // NOTA: reportes, usuarios y configuracion se mantienen intactos
+        
         res.json({ success: true });
     } catch (error) {
+        console.error('Reset system error:', error);
         res.status(500).json({ error: 'Error al reiniciar sistema' });
+    }
+});
+
+// 12. Vaciar Todos los Productos (Borrado Total de la Colección)
+app.post('/api/delete-all-products', async (req, res) => {
+    try {
+        await Producto.deleteMany({});
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Delete all products error:', error);
+        res.status(500).json({ error: 'Error al vaciar productos' });
     }
 });
 

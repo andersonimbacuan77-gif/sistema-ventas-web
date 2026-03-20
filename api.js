@@ -56,6 +56,7 @@ const API = {
     getEgresos: () => apiRequest('/api/egresos'),
     saveEgresos: (data) => apiRequest('/api/egresos', 'POST', data),
     resetSystem: () => apiRequest('/api/reset-system', 'POST'),
+    deleteAllProducts: () => apiRequest('/api/delete-all-products', 'POST'),
 
     getFechaLocal: (timestamp = null) => {
         const d = timestamp ? new Date(timestamp) : new Date();

@@ -486,7 +486,10 @@
         <div>
             <h1>Gestión de Movimientos</h1>
             <p style="color: var(--text-muted); margin: 8px 0 24px 0; font-size: 0.9rem;">Entradas (Recepción Técnica) y Salidas de inventario</p>
-            <button onclick="reiniciarExistencias()" class="btn-reset">⚠️ REINICIAR SISTEMA (BORRADO TOTAL)</button>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="reiniciarExistencias()" class="btn-reset">⚠️ REINICIAR STOCK Y REGISTROS</button>
+                <button onclick="vaciarProductos()" class="btn-reset" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border-color: rgba(239, 68, 68, 0.2);">🚨 VACIAR TODO EL INVENTARIO</button>
+            </div>
         </div>
         <div style="display: flex; gap: 12px; align-items: center;">
             <button onclick="abrirAlertaVencimiento()" class="btn-action btn-vence"><span>📅</span> ALERTAS VENCIMIENTO</button>
@@ -1065,11 +1068,23 @@
         }
 
         function reiniciarExistencias() {
-            abrirConfirmacion("⚠️ ADVERTENCIA CRÍTICA ⚠️", "¿Desea reiniciar TODO? Stock a 0 e historial borrado.", () => {
-                abrirConfirmacion("CONFIRMACIÓN FINAL", "¿REALMENTE desea proceder con el borrado total?", async () => {
+            abrirConfirmacion("⚠️ ADVERTENCIA CRÍTICA ⚠️", "Esto pondrá el STOCK A 0 y BORRARÁ el historial (Ingresos, Egresos y Pedidos). ¿Deseas continuar?", () => {
+                abrirConfirmacion("CONFIRMACIÓN FINAL", "¿REALMENTE desea reiniciar existencias y borrar registros?", async () => {
                     try {
                         await API.resetSystem();
                         showToast("Sistema reiniciado correctamente", "success");
+                        setTimeout(() => location.reload(), 1500);
+                    } catch(e) { console.error(e); }
+                });
+            });
+        }
+
+        function vaciarProductos() {
+            abrirConfirmacion("🚨 ELIMINAR TODO EL INVENTARIO 🚨", "Esto BORRARÁ TODOS LOS PRODUCTOS de la base de datos. Esta acción es IRREVERSIBLE. ¿Continuar?", () => {
+                abrirConfirmacion("⚠️ ÚLTIMO AVISO ⚠️", "¿Confirmas que quieres VACIAR POR COMPLETO tu catálogo de productos?", async () => {
+                    try {
+                        await API.deleteAllProducts();
+                        showToast("Inventario vaciado por completo", "success");
                         setTimeout(() => location.reload(), 1500);
                     } catch(e) { console.error(e); }
                 });
