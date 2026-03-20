@@ -143,17 +143,19 @@ const API = {
     },
 
     applyTheme: (themeId) => {
+        localStorage.setItem('selected-theme', themeId);
+        const root = document.documentElement;
         if (themeId === 'predefinido') {
-            localStorage.setItem('selected-theme', 'predefinido');
-            location.reload(); // Recargar para limpiar variables aplicadas y volver al CSS original
+            // Limpiar variables de temas anteriores si existen
+            const allVars = ['--primary', '--primary-light', '--primary-glow', '--accent', '--bg', '--card-bg', '--header-dark'];
+            allVars.forEach(v => root.style.removeProperty(v));
+            console.log("Tema predefinido activo: Variables limpiadas.");
             return;
         }
         const theme = API.Themes[themeId] || API.Themes.normal;
-        const root = document.documentElement;
         for (const [key, value] of Object.entries(theme)) {
             root.style.setProperty(key, value);
         }
-        localStorage.setItem('selected-theme', themeId);
         console.log(`Tema aplicado y guardado: ${themeId}`);
     }
 };
