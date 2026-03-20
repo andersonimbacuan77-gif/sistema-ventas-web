@@ -877,7 +877,18 @@
 
     function cerrarModal() { document.getElementById('modal-detalle').style.display = 'none'; }
     function borrarTodo() { 
-        showToast("Esta función requiere permisos especiales de administrador.", "warning");
+        abrirConfirmacion("🚨 LIMPIAR BASE DE DATOS 🚨", "Esto BORRARÁ TODOS LOS PEDIDOS del historial. El stock NO se verá afectado. ¿Deseas continuar?", () => {
+             abrirConfirmacion("⚠️ CONFIRMACIÓN FINAL ⚠️", "¿REALMENTE deseas vaciar todo el registro de ventas de la base de datos?", async () => {
+                try {
+                    await API.deleteAllPedidos();
+                    showToast("Base de datos de pedidos limpia.", "success");
+                    cargarReporte();
+                } catch (e) {
+                    console.error(e);
+                    showToast("Error al limpiar la base de datos.", "error");
+                }
+             });
+        });
     }
 
     document.getElementById('f-inicio').onchange = cargarReporte;
