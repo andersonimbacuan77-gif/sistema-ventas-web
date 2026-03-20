@@ -38,6 +38,7 @@ async function apiRequest(endpoint, method = 'GET', body = null) {
 // Funciones para usar en los HTML
 const API = {
     login: (user, pass) => apiRequest('/api/login', 'POST', { user, pass }),
+    register: (data) => apiRequest('/api/register', 'POST', data),
     getProductos: () => apiRequest('/api/productos'),
     getConfig: () => apiRequest('/api/config'),
     saveProducto: (producto) => apiRequest('/api/productos', 'POST', producto),

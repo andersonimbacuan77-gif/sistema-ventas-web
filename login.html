@@ -431,9 +431,18 @@
             if (!nom || !usr || !pss) return showToast("Por favor complete todos los campos", "warning");
             
             try {
-                // Implementación pendiente en el servidor (API.register)
-                showToast("El registro está siendo adaptado para la web. Intente loguear con admin.", "info");
-            } catch (e) { showToast("Error en el registro", "error"); }
+                const response = await API.register({ nombre: nom, user: usr, pass: pss });
+                if (response.success) {
+                    showToast("Registro exitoso. Iniciando sesión...", "success");
+                    // Auto-login
+                    document.getElementById('user-login').value = usr;
+                    document.getElementById('pass-login').value = pss;
+                    setTimeout(login, 1000);
+                }
+            } catch (e) { 
+                console.error(e);
+                showToast(e.message || "Error en el registro", "error"); 
+            }
         }
 
         async function login() {

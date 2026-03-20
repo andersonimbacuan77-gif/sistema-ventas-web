@@ -192,6 +192,22 @@ app.post('/api/usuarios', async (req, res) => {
     }
 });
 
+app.post('/api/register', async (req, res) => {
+    const { nombre, user, pass } = req.body;
+    try {
+        const existe = await Usuario.findOne({ user });
+        if (existe) {
+            return res.status(400).json({ error: 'El nombre de usuario ya existe' });
+        }
+        const nuevo = new Usuario({ nombre, user, pass, rol: 'cliente' });
+        await nuevo.save();
+        res.json({ success: true, user: nuevo });
+    } catch (error) {
+        console.error('Register Error:', error);
+        res.status(500).json({ error: 'Error al registrar usuario' });
+    }
+});
+
 app.post('/api/login', async (req, res) => {
     const { user, pass } = req.body;
     try {
@@ -206,8 +222,6 @@ app.post('/api/login', async (req, res) => {
         res.status(500).json({ error: 'Error en el servidor' });
     }
 });
-
-// 5. Eliminar Producto
 app.delete('/api/productos/:id', async (req, res) => {
     try {
         if (mongoose.connection.readyState === 1) {
