@@ -942,17 +942,26 @@
             const cel = document.getElementById('print-celular').value.trim();
             const fecha = new Date().toLocaleString();
             
-            const logoHtml = config.empresa.logoBase64 ? `<img src="${config.empresa.logoBase64}" style="max-width: 70px; max-height: 70px; filter: grayscale(100%); margin-bottom: 10px; display: block; margin: auto;">` : "";
+            const logoHtml = config.empresa.logoBase64 ? 
+                `<td width="70" valign="middle" style="padding-right:10px;">
+                    <img src="${config.empresa.logoBase64}" style="max-width: 70px; max-height: 70px; filter: grayscale(100%); display: block;">
+                 </td>` : "";
 
             let ticketHtml = `
-                <div style="width:100%; font-family:monospace; font-size:12px; color:black; padding:10px; text-align:center;">
-                    ${logoHtml}
-                    <div style="border-bottom:1px dashed #000; padding-bottom:5px; margin-bottom:5px;">
-                        <strong style="font-size:14px;">${config.empresa.nombre || 'MI EMPRESA'}</strong><br>
-                        NIT: ${config.empresa.nit || ''}<br>
-                        TEL: ${config.empresa.telefono || ''}<br>
-                        ${config.empresa.direccion || ''}
-                    </div>
+                <div style="width:100%; font-family:monospace; font-size:12px; color:black; padding:10px;">
+                    <table style="width:100%; border-bottom:1px dashed #000; margin-bottom:10px; padding-bottom:10px;">
+                        <tr>
+                            ${logoHtml}
+                            <td align="center" valign="middle">
+                                <strong style="font-size:15px;">${config.empresa.nombre || 'MI EMPRESA'}</strong><br>
+                                <span style="font-size:11px;">
+                                    NIT: ${config.empresa.nit || ''}<br>
+                                    TEL: ${config.empresa.telefono || ''}<br>
+                                    ${config.empresa.direccion || ''}
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
                     <div style="margin-bottom:10px; text-align:center;">
                         FECHA: ${fecha}<br>
                         ORDEN: #${idPedidoActual}<br>
