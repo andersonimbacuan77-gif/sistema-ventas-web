@@ -363,8 +363,9 @@
                 let sumaGananciasTotal = 0;
 
                 const filtrados = [...historialGlobal].reverse().filter(rep => {
-                    const r = rep.rango || { desde: '', hasta: '' };
-                    const coincideFecha = (!fIn || r.desde >= fIn) && (!fFi || r.hasta <= fFi);
+                    const r = rep.rango || { desde: '0000-00-00', hasta: '9999-99-99' };
+                    // Lógica de SOLAPAMIENTO: El reporte se muestra si el rango del reporte toca el rango del filtro
+                    const coincideFecha = (!fIn || r.hasta >= fIn) && (!fFi || r.desde <= fFi);
                     const coincideAdmin = !fAdmin || (rep.admin && rep.admin.toLowerCase().includes(fAdmin));
                     return coincideFecha && coincideAdmin;
                 });
@@ -700,13 +701,12 @@
         function cerrarPedidoModal() { document.getElementById('modal-detalle-pedido').style.display = 'none'; }
 
         function inicializarFechas() {
-            const d = new Date();
-            const y = d.getFullYear();
-            const m = (d.getMonth() + 1).toString().padStart(2, '0');
-            document.getElementById('f-inicio').value = `${y}-${m}-01`;
+            const hoy = new Date();
+            const hace30dias = new Date();
+            hace30dias.setDate(hoy.getDate() - 30);
             
-            const ultimoDia = new Date(y, d.getMonth() + 1, 0).getDate();
-            document.getElementById('f-fin').value = `${y}-${m}-${ultimoDia}`;
+            document.getElementById('f-inicio').value = API.getFechaLocal(hace30dias);
+            document.getElementById('f-fin').value = API.getFechaLocal(hoy);
         }
 
         window.onload = () => {
