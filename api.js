@@ -53,8 +53,10 @@ const API = {
     deleteReporte: (id) => apiRequest(`/api/reportes/${id}`, 'DELETE'),
     getIngresos: () => apiRequest('/api/ingresos'),
     saveIngresos: (data) => apiRequest('/api/ingresos', 'POST', data),
+    deleteIngreso: (id) => apiRequest(`/api/ingresos/${id}`, 'DELETE'),
     getEgresos: () => apiRequest('/api/egresos'),
     saveEgresos: (data) => apiRequest('/api/egresos', 'POST', data),
+    deleteEgreso: (id) => apiRequest(`/api/egresos/${id}`, 'DELETE'),
     resetSystem: () => apiRequest('/api/reset-system', 'POST'),
     deleteAllProducts: () => apiRequest('/api/delete-all-products', 'POST'),
 

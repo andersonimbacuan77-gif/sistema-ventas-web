@@ -342,6 +342,15 @@ app.post('/api/ingresos', async (req, res) => {
     }
 });
 
+app.delete('/api/ingresos/:id', async (req, res) => {
+    try {
+        await Ingreso.findOneAndDelete({ id: parseInt(req.params.id) });
+        res.json({ success: true });
+    } catch (error) {
+        res.status(500).json({ error: 'Error al eliminar ingreso' });
+    }
+});
+
 // 10. Egresos
 app.get('/api/egresos', async (req, res) => {
     try {
@@ -367,6 +376,15 @@ app.post('/api/egresos', async (req, res) => {
     } catch (error) {
         console.error('Error saving egresos:', error);
         res.status(500).json({ error: 'Error al guardar egresos' });
+    }
+});
+
+app.delete('/api/egresos/:id', async (req, res) => {
+    try {
+        await Egreso.findOneAndDelete({ id: parseInt(req.params.id) });
+        res.json({ success: true });
+    } catch (error) {
+        res.status(500).json({ error: 'Error al eliminar egreso' });
     }
 });
 

@@ -1044,26 +1044,26 @@
         }
 
         async function eliminarMovimiento(id, tipo, ref, cant) {
-            abrirConfirmacion("¿ELIMINAR MOVIMIENTO?", "¿Desea eliminar este movimiento del historial?", async () => {
+            abrirConfirmacion("¿ELIMINAR MOVIMIENTO?", "¿Desea eliminar este registro del historial? Se revertirá el stock del producto.", async () => {
                 try {
                     const prods = await API.getProductos();
                     const p = prods.find(prod => prod.codigo === ref);
                     if(!p) return;
                     
                     if(tipo === 'INGRESO') {
-                        let ings = await API.getIngresos();
-                        ings = ings.filter(i => i.id !== id);
-                        await API.saveIngresos(ings);
+                        await API.deleteIngreso(id);
                         p.existencia = (parseInt(p.existencia) || 0) - cant;
                     } else {
-                        let egrs = await API.getEgresos();
-                        egrs = egrs.filter(e => e.id !== id);
-                        await API.saveEgresos(egrs);
+                        await API.deleteEgreso(id);
                         p.existencia = (parseInt(p.existencia) || 0) + cant;
                     }
                     await API.saveProducto(p);
-                    location.reload();
-                } catch(e) { console.error(e); }
+                    showToast("Registro eliminado y stock revertido", "success");
+                    setTimeout(() => location.reload(), 800);
+                } catch(e) { 
+                    console.error(e); 
+                    showToast("Error al eliminar registro", "error");
+                }
             });
         }
 
