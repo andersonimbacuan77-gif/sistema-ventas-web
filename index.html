@@ -816,6 +816,7 @@
         document.getElementById('modal-titulo').innerText = "Registrar Producto";
         document.getElementById('edit-index').value = "";
         document.querySelectorAll('#modal-form input:not([type="hidden"])').forEach(i => i.value = '');
+        document.getElementById('foto').value = ""; // Limpiar input de archivo
         document.getElementById('utilidad-tag').innerText = "Utilidad: $0.00";
         document.getElementById('modal-form').style.display = 'flex';
         document.getElementById('nombre').focus();
@@ -948,6 +949,7 @@
         document.getElementById('precio-compra').value = p.precioCompra;
         document.getElementById('precio-venta').value = p.precio;
         document.getElementById('margen').value = p.margen || "";
+        document.getElementById('foto').value = ""; // Limpiar input de archivo para evitar persistencia
         const c = parseFloat(p.precioCompra) || 0;
         const v = parseFloat(p.precio) || 0;
         document.getElementById('utilidad-tag').innerText = `Utilidad: $${(v - c).toFixed(2)}`;
