@@ -832,9 +832,19 @@
         document.getElementById('modal-detalle').style.display = 'flex';
     }
 
-    function eliminarPedido(id) {
-        showToast("La eliminación de pedidos debe realizarse a través de una solicitud a la API.", "warning");
-        // Nota: El backend ya maneja la eliminación si se implementa el endpoint DELETE /api/pedidos/:id
+    async function eliminarPedido(id) {
+        abrirConfirmacion("¿ELIMINAR PEDIDO?", "¿Deseas eliminar este pedido? Las existencias regresarán al inventario automáticamente.", async () => {
+            try {
+                const res = await API.deletePedido(id);
+                if (res.success) {
+                    showToast("Pedido eliminado y stock devuelto.", "success");
+                    cargarReporte(); // Recargar datos
+                }
+            } catch (e) {
+                console.error(e);
+                showToast("Error al eliminar el pedido.", "error");
+            }
+        });
     }
 
     function imprimirRecibo(id) {

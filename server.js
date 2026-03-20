@@ -242,7 +242,7 @@ app.delete('/api/productos/:id', async (req, res) => {
 // 6. Pedidos - Obtener todos
 app.get('/api/pedidos', async (req, res) => {
     try {
-        const pedidos = await Pedido.find();
+        const pedidos = await Pedido.find().sort({ id: -1 });
         res.json(pedidos);
     } catch (error) {
         res.status(500).json({ error: 'Error al obtener pedidos' });
@@ -256,11 +256,9 @@ app.post('/api/pedidos', async (req, res) => {
         if (!p.id) {
             return res.status(400).json({ error: 'Pedido sin ID' });
         }
-
-        // Usar upsert por si el cliente reintenta
         await Pedido.findOneAndUpdate({ id: p.id }, p, { upsert: true });
 
-        // Actualizar existencias de productos en MongoDB
+        // Actualizar existencias de productos
         if (p.items && Array.isArray(p.items)) {
             for (const item of p.items) {
                 if (!item.referencia) continue;
@@ -270,11 +268,46 @@ app.post('/api/pedidos', async (req, res) => {
                 );
             }
         }
-
         res.json({ success: true });
     } catch (error) {
-        console.error('❌ Error fatal al guardar pedido:', error);
-        res.status(500).json({ error: 'Error al guardar pedido: ' + error.message });
+        console.error('Error saving order:', error);
+        res.status(500).json({ error: 'Error al guardar pedido' });
+    }
+});
+
+app.delete('/api/pedidos/:id', async (req, res) => {
+    try {
+        const id = parseInt(req.params.id);
+        const pedido = await Pedido.findOne({ id });
+        if (!pedido) {
+            return res.status(404).json({ error: 'Pedido no encontrado' });
+        }
+
+        // DEVOLVER EXISTENCIAS AL INVENTARIO
+        if (pedido.items && Array.isArray(pedido.items)) {
+            for (const item of pedido.items) {
+                await Producto.findOneAndUpdate(
+                    { codigo: item.referencia },
+                    { $inc: { existencia: (parseInt(item.cantidad) || 0) } }
+                );
+            }
+        }
+
+        await Pedido.findOneAndDelete({ id });
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error deleting order:', error);
+        res.status(500).json({ error: 'Error al eliminar pedido' });
+    }
+});
+
+app.post('/api/delete-all-pedidos', async (req, res) => {
+    try {
+        await Pedido.deleteMany({});
+        // NOTA: Esta acción NO reversa existencias, solo limpia el historial.
+        res.json({ success: true });
+    } catch (error) {
+        res.status(500).json({ error: 'Error al limpiar pedidos' });
     }
 });
 
