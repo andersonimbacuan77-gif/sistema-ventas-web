@@ -403,14 +403,19 @@
         }
 
         #ticket-print-area { display: none; }
+        
+        @page { size: auto; margin: 0; } /* ELIMINA ENCABEZADOS Y PIE DE PÁGINA DEL NAVEGADOR */
+
         @media print {
-            body * { visibility: hidden; }
-            #ticket-print-area, #ticket-print-area * { visibility: visible; }
+            body { background: white !important; color: black !important; }
+            header, .container, .resumen-seccion, .footer-actions, .modal, #toast-container { display: none !important; }
+            
             #ticket-print-area { 
-                display: block; 
+                display: block !important; 
                 position: absolute; 
-                left: 0; top: 0; 
-                width: 75mm;
+                top: 0; left: 0; 
+                width: 75mm; /* Ajustado para impresora térmica estándar */
+                padding: 10px;
                 color: black;
                 font-family: 'Courier New', Courier, monospace;
             }
@@ -937,8 +942,11 @@
             const cel = document.getElementById('print-celular').value.trim();
             const fecha = new Date().toLocaleString();
             
+            const logoHtml = config.empresa.logoBase64 ? `<img src="${config.empresa.logoBase64}" style="max-width: 70px; max-height: 70px; filter: grayscale(100%); margin-bottom: 10px; display: block; margin: auto;">` : "";
+
             let ticketHtml = `
                 <div style="width:100%; font-family:monospace; font-size:12px; color:black; padding:10px; text-align:center;">
+                    ${logoHtml}
                     <div style="border-bottom:1px dashed #000; padding-bottom:5px; margin-bottom:5px;">
                         <strong style="font-size:14px;">${config.empresa.nombre || 'MI EMPRESA'}</strong><br>
                         NIT: ${config.empresa.nit || ''}<br>
