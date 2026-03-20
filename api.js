@@ -12,9 +12,12 @@ const API_URL = (window.location.protocol === 'file:' || window.location.hostnam
         esmeralda: { '--primary': '#10b981', '--primary-light': '#34d399', '--primary-glow': 'rgba(16, 185, 129, 0.4)', '--accent': '#34d399', '--bg': '#020617', '--card-bg': 'rgba(16, 185, 129, 0.05)', '--header-dark': '#000500' },
         atardecer: { '--primary': '#f59e0b', '--primary-light': '#fbbf24', '--primary-glow': 'rgba(245, 158, 11, 0.4)', '--accent': '#fbbf24', '--bg': '#0c0a09', '--card-bg': 'rgba(245, 158, 11, 0.05)', '--header-dark': '#050000' },
         galaxia: { '--primary': '#8b5cf6', '--primary-light': '#a78bfa', '--primary-glow': 'rgba(139, 92, 246, 0.4)', '--accent': '#a78bfa', '--bg': '#0f0720', '--card-bg': 'rgba(139, 92, 246, 0.05)', '--header-dark': '#050010' },
-        rubi: { '--primary': '#ef4444', '--primary-light': '#f87171', '--primary-glow': 'rgba(239, 68, 68, 0.4)', '--accent': '#f87171', '--bg': '#0f0505', '--card-bg': 'rgba(239, 68, 68, 0.05)', '--header-dark': '#100000' }
+        rubi: { '--primary': '#ef4444', '--primary-light': '#f87171', '--primary-glow': 'rgba(239, 68, 68, 0.4)', '--accent': '#f87171', '--bg': '#0f0505', '--card-bg': 'rgba(239, 68, 68, 0.05)', '--header-dark': '#100000' },
+        predefinido: {} // No aplica variables
     };
-    const savedTheme = localStorage.getItem('selected-theme') || 'normal';
+    const savedTheme = localStorage.getItem('selected-theme') || 'predefinido';
+    if (savedTheme === 'predefinido') return; // Bypass completo
+
     const theme = Themes[savedTheme] || Themes.normal;
     for (const [key, value] of Object.entries(theme)) {
         document.documentElement.style.setProperty(key, value);
@@ -135,10 +138,16 @@ const API = {
         esmeralda: { '--primary': '#10b981', '--primary-light': '#34d399', '--primary-glow': 'rgba(16, 185, 129, 0.4)', '--accent': '#34d399', '--bg': '#020617', '--card-bg': 'rgba(16, 185, 129, 0.05)', '--header-dark': '#000500' },
         atardecer: { '--primary': '#f59e0b', '--primary-light': '#fbbf24', '--primary-glow': 'rgba(245, 158, 11, 0.4)', '--accent': '#fbbf24', '--bg': '#0c0a09', '--card-bg': 'rgba(245, 158, 11, 0.05)', '--header-dark': '#050000' },
         galaxia: { '--primary': '#8b5cf6', '--primary-light': '#a78bfa', '--primary-glow': 'rgba(139, 92, 246, 0.4)', '--accent': '#a78bfa', '--bg': '#0f0720', '--card-bg': 'rgba(139, 92, 246, 0.05)', '--header-dark': '#050010' },
-        rubi: { '--primary': '#ef4444', '--primary-light': '#f87171', '--primary-glow': 'rgba(239, 68, 68, 0.4)', '--accent': '#f87171', '--bg': '#0f0505', '--card-bg': 'rgba(239, 68, 68, 0.05)', '--header-dark': '#100000' }
+        rubi: { '--primary': '#ef4444', '--primary-light': '#f87171', '--primary-glow': 'rgba(239, 68, 68, 0.4)', '--accent': '#f87171', '--bg': '#0f0505', '--card-bg': 'rgba(239, 68, 68, 0.05)', '--header-dark': '#100000' },
+        predefinido: {}
     },
 
     applyTheme: (themeId) => {
+        if (themeId === 'predefinido') {
+            localStorage.setItem('selected-theme', 'predefinido');
+            location.reload(); // Recargar para limpiar variables aplicadas y volver al CSS original
+            return;
+        }
         const theme = API.Themes[themeId] || API.Themes.normal;
         const root = document.documentElement;
         for (const [key, value] of Object.entries(theme)) {
