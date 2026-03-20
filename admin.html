@@ -596,6 +596,9 @@
             const pedidos = await API.getPedidos();
             productosDB = await API.getProductos();
             config = await API.getConfig();
+            if(config.empresa && config.empresa.tema) {
+                API.applyTheme(config.empresa.tema);
+            }
             
             const fIn = document.getElementById('f-inicio').value;
             const fFi = document.getElementById('f-fin').value;

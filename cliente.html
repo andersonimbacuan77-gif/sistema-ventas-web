@@ -649,6 +649,9 @@
             try {
                 productos = await API.getProductos();
                 config = await API.getConfig();
+                if(config.empresa && config.empresa.tema) {
+                    API.applyTheme(config.empresa.tema);
+                }
                 
                 const container = document.getElementById('categorias');
                 let html = `<button class="cat-btn ${categoriaActual === 'Todas' ? 'active' : ''}" onclick="filtrar('Todas')">Todas</button>`;

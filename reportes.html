@@ -352,6 +352,10 @@
 
         async function cargarHistorial() {
             try {
+                const config = await API.getConfig();
+                if(config.empresa && config.empresa.tema) {
+                    API.applyTheme(config.empresa.tema);
+                }
                 historialGlobal = await API.getReportes();
                 productosDB = await API.getProductos();
                 const fIn = document.getElementById('f-inicio').value;

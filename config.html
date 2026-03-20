@@ -394,6 +394,19 @@
                             <img id="logo-preview" style="max-height: 60px; margin-top: 10px; display: none; border-radius: 8px; border: 1px solid var(--border);">
                             <input type="hidden" id="emp-logo-b64">
                         </div>
+                        <div>
+                            <label style="font-size:0.7rem; color:var(--accent); text-transform:uppercase; font-weight:700;">Tema Visual del Sistema</label>
+                            <select id="emp-tema" style="border-color: var(--accent);">
+                                <option value="normal">Normal (Actual)</option>
+                                <option value="natural">Natural (Atenuado)</option>
+                                <option value="vivido">Vívido (Saturado)</option>
+                                <option value="cibernetico">Cibernético (Azul Neón)</option>
+                                <option value="esmeralda">Esmeralda (Verde Vivo)</option>
+                                <option value="atardecer">Atardecer (Naranja/Oro)</option>
+                                <option value="galaxia">Galaxia (Morado Eléctrico)</option>
+                                <option value="rubi">Rubí (Rojo Intenso)</option>
+                            </select>
+                        </div>
                         <button class="btn-save-user" onclick="guardarDatosEmpresa()" style="background: var(--primary);">GUARDAR DATOS EMPRESA</button>
                     </div>
                 </div>
@@ -426,7 +439,12 @@
                     document.getElementById('emp-telefono').value = configData.empresa.telefono || '';
                     document.getElementById('emp-proveedor').value = configData.empresa.proveedor || '';
                     document.getElementById('emp-logo-b64').value = configData.empresa.logoBase64 || '';
+                    document.getElementById('emp-tema').value = configData.empresa.tema || 'normal';
                     
+                    if (configData.empresa.tema) {
+                        API.applyTheme(configData.empresa.tema);
+                    }
+
                     if (configData.empresa.logoBase64) {
                         const preview = document.getElementById('logo-preview');
                         preview.src = configData.empresa.logoBase64;
@@ -449,7 +467,8 @@
                     direccion: document.getElementById('emp-direccion').value.trim(),
                     telefono: document.getElementById('emp-telefono').value.trim(),
                     proveedor: document.getElementById('emp-proveedor').value.trim(),
-                    logoBase64: document.getElementById('emp-logo-b64').value
+                    logoBase64: document.getElementById('emp-logo-b64').value,
+                    tema: document.getElementById('emp-tema').value
                 };
                 
                 const res = await API.saveConfig(configData);

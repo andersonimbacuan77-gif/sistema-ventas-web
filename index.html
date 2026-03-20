@@ -779,6 +779,9 @@
     async function aplicarConfig() {
         try {
             const config = await API.getConfig();
+            if(config.empresa && config.empresa.tema) {
+                API.applyTheme(config.empresa.tema);
+            }
             
             document.getElementById('categoria').innerHTML = (config.categorias || []).map(c => `<option value="${c}">${c}</option>`).join('');
             document.getElementById('unidad').innerHTML = (config.unidades || []).map(u => `<option value="${u}">${u}</option>`).join('');

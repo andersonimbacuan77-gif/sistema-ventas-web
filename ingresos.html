@@ -975,6 +975,10 @@
 
         async function filtrarHistorial() {
             try {
+                const config = await API.getConfig();
+                if(config.empresa && config.empresa.tema) {
+                    API.applyTheme(config.empresa.tema);
+                }
                 const inicio = document.getElementById('f-inicio').value;
                 const fin = document.getElementById('f-fin').value;
                 const refFiltro = document.getElementById('f-ref').value.toLowerCase();

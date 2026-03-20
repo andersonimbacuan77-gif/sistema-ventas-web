@@ -296,6 +296,10 @@
         async function cargarInventario() {
             const tbody = document.getElementById('lista-inventario');
             try {
+                const config = await API.getConfig();
+                if(config && config.empresa && config.empresa.tema) {
+                    API.applyTheme(config.empresa.tema);
+                }
                 const productos = await API.getProductos();
                 if (!productos || productos.length === 0) {
                     tbody.innerHTML = '<tr><td colspan="8" class="empty-msg">El inventario está vacío.</td></tr>';
