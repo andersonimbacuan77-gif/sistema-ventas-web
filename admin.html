@@ -874,8 +874,9 @@
     document.getElementById('f-fin').onchange = cargarReporte;
     
     document.getElementById('confirm-btn-yes').onclick = function() {
-        if(confirmCallback) confirmCallback();
+        const cb = confirmCallback;
         cerrarConfirmacion();
+        if(cb) cb();
     };
 
     cargarReporte();
