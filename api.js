@@ -2,6 +2,25 @@ const API_URL = (window.location.protocol === 'file:' || window.location.hostnam
     ? 'http://localhost:3000' 
     : '';
 
+// --- LÓGICA DE TEMA INMEDIATA (Para evitar parpadeo) ---
+(function() {
+    const Themes = {
+        normal: { '--primary': '#6366f1', '--primary-light': '#818cf8', '--primary-glow': 'rgba(99, 102, 241, 0.2)', '--accent': '#38bdf8', '--bg': '#0a0b14', '--card-bg': 'rgba(255, 255, 255, 0.03)', '--header-dark': '#020617' },
+        natural: { '--primary': '#64748b', '--primary-light': '#94a3b8', '--primary-glow': 'rgba(100, 116, 139, 0.1)', '--accent': '#94a3b8', '--bg': '#0f172a', '--card-bg': 'rgba(255, 255, 255, 0.02)', '--header-dark': '#020617' },
+        vivido: { '--primary': '#2563eb', '--primary-light': '#3b82f6', '--primary-glow': 'rgba(37, 99, 235, 0.4)', '--accent': '#00e0ff', '--bg': '#00040d', '--card-bg': 'rgba(255, 255, 255, 0.05)', '--header-dark': '#000000' },
+        cibernetico: { '--primary': '#0084ff', '--primary-light': '#00c3ff', '--primary-glow': 'rgba(0, 132, 255, 0.5)', '--accent': '#00f2ff', '--bg': '#05060f', '--card-bg': 'rgba(0, 132, 255, 0.05)', '--header-dark': '#000814' },
+        esmeralda: { '--primary': '#10b981', '--primary-light': '#34d399', '--primary-glow': 'rgba(16, 185, 129, 0.4)', '--accent': '#34d399', '--bg': '#020617', '--card-bg': 'rgba(16, 185, 129, 0.05)', '--header-dark': '#000500' },
+        atardecer: { '--primary': '#f59e0b', '--primary-light': '#fbbf24', '--primary-glow': 'rgba(245, 158, 11, 0.4)', '--accent': '#fbbf24', '--bg': '#0c0a09', '--card-bg': 'rgba(245, 158, 11, 0.05)', '--header-dark': '#050000' },
+        galaxia: { '--primary': '#8b5cf6', '--primary-light': '#a78bfa', '--primary-glow': 'rgba(139, 92, 246, 0.4)', '--accent': '#a78bfa', '--bg': '#0f0720', '--card-bg': 'rgba(139, 92, 246, 0.05)', '--header-dark': '#050010' },
+        rubi: { '--primary': '#ef4444', '--primary-light': '#f87171', '--primary-glow': 'rgba(239, 68, 68, 0.4)', '--accent': '#f87171', '--bg': '#0f0505', '--card-bg': 'rgba(239, 68, 68, 0.05)', '--header-dark': '#100000' }
+    };
+    const savedTheme = localStorage.getItem('selected-theme') || 'normal';
+    const theme = Themes[savedTheme] || Themes.normal;
+    for (const [key, value] of Object.entries(theme)) {
+        document.documentElement.style.setProperty(key, value);
+    }
+})();
+
 async function apiRequest(endpoint, method = 'GET', body = null) {
     const options = {
         method,
@@ -109,78 +128,14 @@ const API = {
 
     // --- SISTEMA DE TEMAS ---
     Themes: {
-        normal: {
-            '--primary': '#6366f1',
-            '--primary-light': '#818cf8',
-            '--primary-glow': 'rgba(99, 102, 241, 0.2)',
-            '--accent': '#38bdf8',
-            '--bg': '#0a0b14',
-            '--card-bg': 'rgba(255, 255, 255, 0.03)',
-            '--header-dark': '#020617'
-        },
-        natural: {
-            '--primary': '#64748b',
-            '--primary-light': '#94a3b8',
-            '--primary-glow': 'rgba(100, 116, 139, 0.1)',
-            '--accent': '#94a3b8',
-            '--bg': '#0f172a',
-            '--card-bg': 'rgba(255, 255, 255, 0.02)',
-            '--header-dark': '#020617'
-        },
-        vivido: {
-            '--primary': '#2563eb',
-            '--primary-light': '#3b82f6',
-            '--primary-glow': 'rgba(37, 99, 235, 0.4)',
-            '--accent': '#00e0ff',
-            '--bg': '#00040d',
-            '--card-bg': 'rgba(255, 255, 255, 0.05)',
-            '--header-dark': '#000000'
-        },
-        cibernetico: {
-            '--primary': '#0084ff',
-            '--primary-light': '#00c3ff',
-            '--primary-glow': 'rgba(0, 132, 255, 0.5)',
-            '--accent': '#00f2ff',
-            '--bg': '#05060f',
-            '--card-bg': 'rgba(0, 132, 255, 0.05)',
-            '--header-dark': '#000814'
-        },
-        esmeralda: {
-            '--primary': '#10b981',
-            '--primary-light': '#34d399',
-            '--primary-glow': 'rgba(16, 185, 129, 0.4)',
-            '--accent': '#34d399',
-            '--bg': '#020617',
-            '--card-bg': 'rgba(16, 185, 129, 0.05)',
-            '--header-dark': '#000500'
-        },
-        atardecer: {
-            '--primary': '#f59e0b',
-            '--primary-light': '#fbbf24',
-            '--primary-glow': 'rgba(245, 158, 11, 0.4)',
-            '--accent': '#fbbf24',
-            '--bg': '#0c0a09',
-            '--card-bg': 'rgba(245, 158, 11, 0.05)',
-            '--header-dark': '#050000'
-        },
-        galaxia: {
-            '--primary': '#8b5cf6',
-            '--primary-light': '#a78bfa',
-            '--primary-glow': 'rgba(139, 92, 246, 0.4)',
-            '--accent': '#a78bfa',
-            '--bg': '#0f0720',
-            '--card-bg': 'rgba(139, 92, 246, 0.05)',
-            '--header-dark': '#050010'
-        },
-        rubi: {
-            '--primary': '#ef4444',
-            '--primary-light': '#f87171',
-            '--primary-glow': 'rgba(239, 68, 68, 0.4)',
-            '--accent': '#f87171',
-            '--bg': '#0f0505',
-            '--card-bg': 'rgba(239, 68, 68, 0.05)',
-            '--header-dark': '#100000'
-        }
+        normal: { '--primary': '#6366f1', '--primary-light': '#818cf8', '--primary-glow': 'rgba(99, 102, 241, 0.2)', '--accent': '#38bdf8', '--bg': '#0a0b14', '--card-bg': 'rgba(255, 255, 255, 0.03)', '--header-dark': '#020617' },
+        natural: { '--primary': '#64748b', '--primary-light': '#94a3b8', '--primary-glow': 'rgba(100, 116, 139, 0.1)', '--accent': '#94a3b8', '--bg': '#0f172a', '--card-bg': 'rgba(255, 255, 255, 0.02)', '--header-dark': '#020617' },
+        vivido: { '--primary': '#2563eb', '--primary-light': '#3b82f6', '--primary-glow': 'rgba(37, 99, 235, 0.4)', '--accent': '#00e0ff', '--bg': '#00040d', '--card-bg': 'rgba(255, 255, 255, 0.05)', '--header-dark': '#000000' },
+        cibernetico: { '--primary': '#0084ff', '--primary-light': '#00c3ff', '--primary-glow': 'rgba(0, 132, 255, 0.5)', '--accent': '#00f2ff', '--bg': '#05060f', '--card-bg': 'rgba(0, 132, 255, 0.05)', '--header-dark': '#000814' },
+        esmeralda: { '--primary': '#10b981', '--primary-light': '#34d399', '--primary-glow': 'rgba(16, 185, 129, 0.4)', '--accent': '#34d399', '--bg': '#020617', '--card-bg': 'rgba(16, 185, 129, 0.05)', '--header-dark': '#000500' },
+        atardecer: { '--primary': '#f59e0b', '--primary-light': '#fbbf24', '--primary-glow': 'rgba(245, 158, 11, 0.4)', '--accent': '#fbbf24', '--bg': '#0c0a09', '--card-bg': 'rgba(245, 158, 11, 0.05)', '--header-dark': '#050000' },
+        galaxia: { '--primary': '#8b5cf6', '--primary-light': '#a78bfa', '--primary-glow': 'rgba(139, 92, 246, 0.4)', '--accent': '#a78bfa', '--bg': '#0f0720', '--card-bg': 'rgba(139, 92, 246, 0.05)', '--header-dark': '#050010' },
+        rubi: { '--primary': '#ef4444', '--primary-light': '#f87171', '--primary-glow': 'rgba(239, 68, 68, 0.4)', '--accent': '#f87171', '--bg': '#0f0505', '--card-bg': 'rgba(239, 68, 68, 0.05)', '--header-dark': '#100000' }
     },
 
     applyTheme: (themeId) => {
@@ -189,6 +144,7 @@ const API = {
         for (const [key, value] of Object.entries(theme)) {
             root.style.setProperty(key, value);
         }
-        console.log(`Tema aplicado: ${themeId}`);
+        localStorage.setItem('selected-theme', themeId);
+        console.log(`Tema aplicado y guardado: ${themeId}`);
     }
 };
