@@ -367,7 +367,7 @@
                 let sumaGananciasTotal = 0;
 
                 const filtrados = [...historialGlobal].reverse().filter(rep => {
-                    const fRepo = API.getFechaLocal(rep.idReporte);
+                    const fRepo = API.getFechaLocal(Number(rep.idReporte));
                     const coincideFecha = (!fIn || fRepo >= fIn) && (!fFi || fRepo <= fFi);
                     const coincideAdmin = !fAdmin || (rep.admin && rep.admin.toLowerCase().includes(fAdmin));
                     return coincideFecha && coincideAdmin;
