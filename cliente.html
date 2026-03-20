@@ -829,6 +829,8 @@
         }
 
         function abrirModalPago() {
+            document.getElementById('pago-recibido').value = "";
+            document.getElementById('pago-cambio').innerText = "$ 0";
             document.getElementById('modalPago').style.display = 'flex';
             document.getElementById('pago-total').innerText = document.getElementById('total-dinero').innerText;
             document.getElementById('pago-recibido').focus();
