@@ -306,9 +306,10 @@
                 <h2 id="total-g-filtro" style="color: var(--profit);">$ 0</h2>
             </div>
         </div>
-        <div style="display: flex; gap: 10px; width: 100%; grid-column: span 1;">
-            <button class="btn btn-view" onclick="exportarResumenExcel()" style="padding:15px; background:#1D6F42; color:white; font-family:'Orbitron', sans-serif; border:none; border-radius:12px; cursor:pointer; flex: 1; font-size: 0.75rem; justify-content:center;">📊 RESUMEN GENERAL</button>
-            <button class="btn btn-view" onclick="exportarResumenFiltrado()" style="padding:15px; background:#0ea5e9; color:white; font-family:'Orbitron', sans-serif; border:none; border-radius:12px; cursor:pointer; flex: 1; font-size: 0.75rem; justify-content:center;">📊 EXPORTAR FILTRADOS</button>
+        <div style="display: flex; gap: 10px; width: 100%; grid-column: span 1; flex-direction: column;">
+            <button class="btn btn-view" onclick="exportarResumenExcel()" style="padding:10px; background:#1D6F42; color:white; font-family:'Orbitron', sans-serif; border:none; border-radius:12px; cursor:pointer; font-size: 0.7rem; justify-content:center;">📊 RESUMEN GENERAL</button>
+            <button class="btn btn-view" onclick="exportarResumenFiltrado()" style="padding:10px; background:#0ea5e9; color:white; font-family:'Orbitron', sans-serif; border:none; border-radius:12px; cursor:pointer; font-size: 0.7rem; justify-content:center;">📊 EXPORTAR FILTRADOS</button>
+            <button class="btn btn-del" onclick="borrarTodoElHistorial()" style="padding:10px; font-size: 0.7rem; justify-content:center;">🗑️ BORRAR HISTORIAL</button>
         </div>
     </div>
 
@@ -690,14 +691,55 @@
 
 
         async function eliminarReporte(id) {
-            if (confirm("¿Eliminar este reporte permanentemente?")) {
-                try {
-                    const res = await API.deleteReporte(id);
-                    if(res.success) {
-                        cargarHistorial();
-                    }
-                } catch(e) { alert("Error al eliminar"); }
+            if (confirm(`¿Está seguro de eliminar el reporte #${id}?`)) {
+                if (confirm("¡ADVERTENCIA! Esta acción borrará el registro de forma permanente. ¿Desea continuar?")) {
+                    try {
+                        const res = await API.deleteReporte(id);
+                        if(res.success) {
+                            showToast("Reporte eliminado", "success");
+                            cargarHistorial();
+                        }
+                    } catch(e) { alert("Error al eliminar"); }
+                }
             }
+        }
+
+        async function borrarTodoElHistorial() {
+            if (confirm("¿ESTÁ REALMENTE SEGURO de querer borrar TODO el historial de reportes?")) {
+                if (confirm("¡ATENCIÓN! Se eliminarán todos los reportes guardados hasta la fecha. ¿Confirmar borrado masivo?")) {
+                    const pass = prompt("Para confirmar la eliminación total, escriba 'BORRAR TODO' (en mayúsculas):");
+                    if (pass === 'BORRAR TODO') {
+                        try {
+                            const res = await API.deleteAllReportes();
+                            if(res.success) {
+                                showToast("Historial vaciado", "success");
+                                cargarHistorial();
+                            }
+                        } catch(e) { alert("Error al vaciar historial"); }
+                    } else {
+                        showToast("Acción cancelada", "warning");
+                    }
+                }
+            }
+        }
+
+        // Función auxiliar para notificaciones (usada en otras páginas)
+        function showToast(msg, type = "success") {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed; bottom: 20px; right: 20px; padding: 15px 25px; 
+                border-radius: 12px; color: white; z-index: 10000; font-family: 'Inter';
+                background: ${type === 'success' ? 'var(--success)' : (type === 'error' ? 'var(--danger)' : 'var(--info)')};
+                box-shadow: 0 10px 30px rgba(0,0,0,0.5); transform: translateY(100px);
+                transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            `;
+            toast.innerText = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.style.transform = 'translateY(0)', 10);
+            setTimeout(() => {
+                toast.style.transform = 'translateY(100px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
         }
 
         function cerrarModal() { document.getElementById('modal-detalle').style.display = 'none'; }

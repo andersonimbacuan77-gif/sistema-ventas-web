@@ -21,26 +21,7 @@ app.get('/', (req, res) => {
 
 app.use(express.static(path.join(__dirname)));
 
-// Conexión a MongoDB (Opcional por ahora para que no falle si no hay URI)
-const MONGO_URI = process.env.MONGO_URI;
-if (MONGO_URI) {
-    mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-        .then(async () => {
-            const dbName = mongoose.connection.name;
-            console.log(`✅ Conectado a MongoDB Atlas - Base de datos: ${dbName}`);
-            
-            // Log de conteo para depuración
-            const pedCount = await mongoose.connection.db.collection('pedidos').countDocuments();
-            const repCount = await mongoose.connection.db.collection('reportes').countDocuments();
-            const proCount = await mongoose.connection.db.collection('productos').countDocuments();
-            console.log(`📊 Estado inicial: Pedidos: ${pedCount}, Reportes: ${repCount}, Productos: ${proCount}`);
-        })
-        .catch(err => console.error('❌ Error al conectar a MongoDB:', err));
-} else {
-    console.log('ADVERTENCIA: No hay MONGO_URI en .env. Usando archivos JSON locales como respaldo.');
-}
-
-// Modelos (Placeholder para esquemas de Mongoose)
+// --- MODELOS DE DATOS ---
 const productoSchema = new mongoose.Schema({
     nombre: String,
     categoria: String,
@@ -52,7 +33,6 @@ const productoSchema = new mongoose.Schema({
     existencia: { type: Number, default: 0 },
     imagen: String
 });
-
 const Producto = mongoose.models.Producto || mongoose.model('Producto', productoSchema, 'productos');
 
 const usuarioSchema = new mongoose.Schema({
@@ -109,6 +89,54 @@ const configSchema = new mongoose.Schema({
     empresa: Object
 }, { strict: false });
 const Config = mongoose.models.Config || mongoose.model('Config', configSchema, 'configuracion');
+
+// --- CONEXIÓN A MONGODB ---
+const MONGO_URI = process.env.MONGO_URI;
+if (MONGO_URI) {
+    mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+        .then(async () => {
+            console.log(`✅ Conectado a MongoDB Atlas`);
+            
+            // INICIALIZACIÓN: Crear administrador por defecto si no hay usuarios
+            try {
+                const userCount = await Usuario.countDocuments();
+                if (userCount === 0) {
+                    const defaultAdmin = new Usuario({
+                        nombre: "Administrador Inicial",
+                        user: "admin",
+                        pass: "1234",
+                        rol: "admin"
+                    });
+                    await defaultAdmin.save();
+                    console.log("🚀 Base de datos nueva: Se ha creado el usuario 'admin' con clave '1234'");
+                }
+
+                const configCount = await Config.countDocuments();
+                if (configCount === 0) {
+                    const defaultConfig = new Config({
+                        id: 'main',
+                        categorias: ["General"],
+                        unidades: ["Und", "Kg", "Lt"],
+                        empresa: {
+                            nombre: "Mi Nueva Empresa",
+                            nit: "000-000",
+                            telefono: "000000",
+                            direccion: "Calle Falsa 123",
+                            tema: "predefinido"
+                        }
+                    });
+                    await defaultConfig.save();
+                    console.log("⚙️ Configuración inicial creada.");
+                }
+            } catch (err) {
+                console.error("Error al inicializar datos:", err);
+            }
+        })
+        .catch(err => console.error('❌ Error al conectar a MongoDB:', err));
+} else {
+    console.log('ADVERTENCIA: No hay MONGO_URI en .env. Usando archivos JSON locales como respaldo.');
+}
+
 
 // --- RUTAS API ---
 
@@ -256,9 +284,27 @@ app.post('/api/pedidos', async (req, res) => {
         if (!p.id) {
             return res.status(400).json({ error: 'Pedido sin ID' });
         }
+
+        // 1. VALIDACIÓN PREVIA DE STOCK
+        if (p.items && Array.isArray(p.items)) {
+            for (const item of p.items) {
+                if (!item.referencia) continue;
+                const prod = await Producto.findOne({ codigo: item.referencia });
+                if (!prod) {
+                    return res.status(400).json({ error: `Producto no encontrado: ${item.referencia}` });
+                }
+                if (prod.existencia < item.cantidad) {
+                    return res.status(400).json({ 
+                        error: `Stock insuficiente para ${prod.nombre}. Disponible: ${prod.existencia}, Pedido: ${item.cantidad}` 
+                    });
+                }
+            }
+        }
+
+        // 2. GUARDAR PEDIDO
         await Pedido.findOneAndUpdate({ id: p.id }, p, { upsert: true });
 
-        // Actualizar existencias de productos
+        // 3. ACTUALIZAR EXISTENCIAS
         if (p.items && Array.isArray(p.items)) {
             for (const item of p.items) {
                 if (!item.referencia) continue;
@@ -343,6 +389,15 @@ app.delete('/api/reportes/:id', async (req, res) => {
         res.json({ success: true });
     } catch (error) {
         res.status(500).json({ error: 'Error al eliminar reporte' });
+    }
+});
+
+app.post('/api/delete-all-reportes', async (req, res) => {
+    try {
+        await Reporte.deleteMany({});
+        res.json({ success: true });
+    } catch (error) {
+        res.status(500).json({ error: 'Error al eliminar todo el historial' });
     }
 });
 

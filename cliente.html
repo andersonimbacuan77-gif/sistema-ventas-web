@@ -765,7 +765,17 @@
 
         function editarCant(ref, val) {
             const n = parseInt(val);
-            if (n > 0) carrito[ref].cantidad = n;
+            if (n <= 0) return eliminarItem(ref);
+            
+            const p = productos.find(x => x.codigo === ref);
+            const stock = p ? (parseInt(p.existencia) || 0) : 0;
+            
+            if (n > stock) {
+                showToast(`Solo hay ${stock} en stock`, "warning");
+                carrito[ref].cantidad = stock;
+            } else {
+                carrito[ref].cantidad = n;
+            }
             actualizarTabla();
         }
 
@@ -781,8 +791,19 @@
         }
 
         async function guardarPedidoFinal() {
-            const total = parseFloat(document.getElementById('total-dinero').innerText.replace(/[^\d]/g, ""));
+            const totalText = document.getElementById('total-dinero').innerText.replace(/[^\d]/g, "");
+            const total = parseFloat(totalText);
             if (total <= 0) return showToast("Carrito vacío", "warning");
+
+            // VALIDACIÓN FINAL DE STOCK
+            for (let ref in carrito) {
+                const item = carrito[ref];
+                const prod = productos.find(x => x.codigo === ref);
+                const stockVal = prod ? (parseInt(prod.existencia) || 0) : 0;
+                if (item.cantidad > stockVal) {
+                    return showToast(`Stock insuficiente para ${item.nombre}: ${stockVal} disp.`, "error");
+                }
+            }
 
             const pedido = {
                 id: Date.now(),

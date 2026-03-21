@@ -75,6 +75,7 @@ const API = {
     getReportes: () => apiRequest('/api/reportes'),
     saveReportes: (data) => apiRequest('/api/reportes', 'POST', data),
     deleteReporte: (id) => apiRequest(`/api/reportes/${id}`, 'DELETE'),
+    deleteAllReportes: () => apiRequest('/api/delete-all-reportes', 'POST'),
     getIngresos: () => apiRequest('/api/ingresos'),
     saveIngresos: (data) => apiRequest('/api/ingresos', 'POST', data),
     deleteIngreso: (id) => apiRequest(`/api/ingresos/${id}`, 'DELETE'),
