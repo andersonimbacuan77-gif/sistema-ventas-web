@@ -367,15 +367,25 @@
                 let sumaVentasTotal = 0;
                 let sumaGananciasTotal = 0;
 
-                const filtrados = [...historialGlobal].reverse().filter(rep => {
-                    const fRepo = API.getFechaLocal(Number(rep.idReporte));
-                    const coincideFecha = (!fIn || fRepo >= fIn) && (!fFi || fRepo <= fFi);
-                    const coincideAdmin = !fAdmin || (rep.admin && rep.admin.toLowerCase().includes(fAdmin));
-                    return coincideFecha && coincideAdmin;
-                });
+                const filtrados = [...historialGlobal]
+                    .sort((a, b) => (b.idReporte || 0) - (a.idReporte || 0)) // Orden descendente (más recientes arriba)
+                    .filter(rep => {
+                        // Filtramos por fecha de creación (idReporte), que es la "fecha de registro" oficial
+                        const fRepo = API.getFechaLocal(Number(rep.idReporte));
+                        
+                        const coincideFecha = (!fIn || fRepo >= fIn) && (!fFi || fRepo <= fFi);
+                        const coincideAdmin = !fAdmin || (rep.admin && rep.admin.toLowerCase().includes(fAdmin));
+                        
+                        return coincideFecha && coincideAdmin;
+                    });
+
+                console.log(`Filtrados: ${filtrados.length} reportes de ${historialGlobal.length} totales.`);
 
                 filtrados.forEach(rep => {
-                    // Si faltan los valores raw, intentamos obtenerlos del texto formateado o poner 0
+                    // Soportar reportes sin rango definido para que no choque el código
+                    const rangoDesde = (rep.rango && rep.rango.desde) ? rep.rango.desde : "---";
+                    const rangoHasta = (rep.rango && rep.rango.hasta) ? rep.rango.hasta : "---";
+
                     const vCorregido = parseFloat(rep.ventasRaw) || 
                                      (rep.totalVentas ? parseFloat(rep.totalVentas.replace(/[^0-9.-]+/g,"")) : 0);
                     const gCorregido = parseFloat(rep.gananciaRaw) || 
@@ -388,8 +398,8 @@
                     <div class="report-card">
                         <div style="flex: 1;">
                             <span class="tag">ID: ${rep.idReporte}</span>
-                            <h3 style="margin: 8px 0 4px 0;">${rep.rango.desde} al ${rep.rango.hasta}</h3>
-                            <small style="color: #94a3b8;">Admin: ${rep.admin} | ${rep.fechaCreacion}</small>
+                            <h3 style="margin: 8px 0 4px 0;">${rangoDesde} al ${rangoHasta}</h3>
+                            <small style="color: #94a3b8;">Admin: ${rep.admin} | ${rep.fechaCreacion || '---'}</small>
                         </div>
                         <div style="text-align: right; margin-right: 25px;">
                             <div style="color: var(--info); font-weight: bold;">Venta: $${vCorregido.toLocaleString()}</div>
