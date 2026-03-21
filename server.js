@@ -293,9 +293,14 @@ app.post('/api/pedidos', async (req, res) => {
                 if (!prod) {
                     return res.status(400).json({ error: `Producto no encontrado: ${item.referencia}` });
                 }
-                if (prod.existencia < item.cantidad) {
+                
+                const stockDisponible = Number(prod.existencia) || 0;
+                const cantidadPedida = Number(item.cantidad) || 0;
+
+                if (stockDisponible < cantidadPedida) {
+                    console.warn(`[STOCK ERROR] Producto: ${prod.nombre}, Disponible: ${stockDisponible}, Pedido: ${cantidadPedida}`);
                     return res.status(400).json({ 
-                        error: `Stock insuficiente para ${prod.nombre}. Disponible: ${prod.existencia}, Pedido: ${item.cantidad}` 
+                        error: `Stock insuficiente para ${prod.nombre}. Disponible: ${stockDisponible}, Pedido: ${cantidadPedida}` 
                     });
                 }
             }

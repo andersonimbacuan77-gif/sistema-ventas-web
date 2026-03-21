@@ -751,7 +751,7 @@
                         <td>${ref}</td>
                         <td>${item.nombre}</td>
                         <td><input type="number" value="${item.precio}" ${puedeEditarPrecio ? '' : 'readonly'} onchange="editarPrecio('${ref}', this.value)"></td>
-                        <td><input type="number" value="${item.cantidad}" onchange="editarCant('${ref}', this.value)"></td>
+                        <td><input type="number" value="${item.cantidad}" class="cart-qty-input" data-ref="${ref}" onchange="editarCant('${ref}', this.value)"></td>
                         <td style="font-weight:bold">$${sub.toLocaleString()}</td>
                         <td><button onclick="eliminarItem('${ref}')">✕</button></td>
                     </tr>
@@ -791,6 +791,24 @@
         }
 
         async function guardarPedidoFinal() {
+            // SINCRONIZAR CANTIDADES MANUALES (Por si no se disparó onchange)
+            const inputs = document.querySelectorAll('.cart-qty-input');
+            inputs.forEach(inp => {
+                const ref = inp.getAttribute('data-ref');
+                const val = parseInt(inp.value) || 0;
+                if (carrito[ref]) {
+                    // Validamos aquí también para corregir antes de procesar
+                    const p = productos.find(x => x.codigo === ref);
+                    const stock = p ? (parseInt(p.existencia) || 0) : 0;
+                    if (val > stock) {
+                        carrito[ref].cantidad = stock;
+                    } else if (val > 0) {
+                        carrito[ref].cantidad = val;
+                    }
+                }
+            });
+            actualizarTabla();
+
             const totalText = document.getElementById('total-dinero').innerText.replace(/[^\d]/g, "");
             const total = parseFloat(totalText);
             if (total <= 0) return showToast("Carrito vacío", "warning");
