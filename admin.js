@@ -213,9 +213,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         const itemName = name.toLowerCase();
 
         // VALIDACIÓN DE USO: No permitir borrar si hay productos usándola
-        const isUsed = products.some(p => {
-            if (type === 'categories') return p.category.toLowerCase() === itemName;
-            return p.subCategory.toLowerCase() === itemName;
+        const isUsed = (products || []).some(p => {
+            if (!p) return false;
+            const pCat = String(p.category || '').trim().toLowerCase();
+            const pSub = String(p.subCategory || '').trim().toLowerCase();
+            const target = itemName.trim();
+
+            if (type === 'categories') return pCat === target;
+            return pSub === target;
         });
 
         if (isUsed) {
@@ -2085,7 +2090,9 @@ window.openEditUserModal = async (username) => {
         const usernameInput = document.getElementById('edit-user-username');
         
         let isMasterUnlocked = false;
-        if (username === 'admin') {
+        const normalizedUsername = String(username).trim().toLowerCase();
+        
+        if (normalizedUsername === 'admin') {
             const masterKey = prompt("⚠️ ACCESO NIVEL 10: Ingresa la clave maestra para DESBLOQUEAR la cuenta 'admin':");
             if (masterKey === "1512Aa2017") {
                 isMasterUnlocked = true;
@@ -2095,7 +2102,7 @@ window.openEditUserModal = async (username) => {
             }
         }
 
-        if (username === 'admin' && !isMasterUnlocked) {
+        if (normalizedUsername === 'admin' && !isMasterUnlocked) {
             roleSelect.disabled = true;
             usernameInput.disabled = true;
             roleSelect.title = "Usa la clave maestra para editar.";
