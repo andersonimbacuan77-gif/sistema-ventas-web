@@ -2059,16 +2059,15 @@ window.renderUsers = async function() {
 const userEditModal = document.getElementById('user-edit-modal');
 const userEditForm = document.getElementById('user-edit-form');
 
+window.originalEditingUsername = null;
 window.openEditUserModal = async (username) => {
     try {
         const users = await window.electronAPI.readData('users.json') || [];
-        const userList = users.map(u => u.username).join(', ');
-        
         const user = users.find(u => String(u.username).trim() === String(username).trim());
         
-        if (!user) {
-            return;
-        }
+        if (!user) return;
+
+        window.originalEditingUsername = user.username;
 
         // Llenar campos con datos existentes
         document.getElementById('edit-user-username').value = user.username;
@@ -2081,14 +2080,31 @@ window.openEditUserModal = async (username) => {
         document.getElementById('edit-user-address').value = user.address || '';
         document.getElementById('edit-user-pass').value = ''; // Password siempre vacío por seguridad
 
-        // Protección especial para Admin Maestro
+        // Protección especial para Admin Maestro con Clave Maestra
         const roleSelect = document.getElementById('edit-user-role');
+        const usernameInput = document.getElementById('edit-user-username');
+        
+        let isMasterUnlocked = false;
         if (username === 'admin') {
+            const masterKey = prompt("⚠️ ACCESO NIVEL 10: Ingresa la clave maestra para DESBLOQUEAR la cuenta 'admin':");
+            if (masterKey === "1512Aa2017") {
+                isMasterUnlocked = true;
+                alert("🔓 ACCESO CONCEDIDO: Ahora puedes editar todos los campos del Administrador Principal.");
+            } else {
+                alert("❌ Clave incorrecta. Los campos críticos permanecerán bloqueados.");
+            }
+        }
+
+        if (username === 'admin' && !isMasterUnlocked) {
             roleSelect.disabled = true;
-            roleSelect.title = "El rol del Super Administrador no puede ser modificado.";
+            usernameInput.disabled = true;
+            roleSelect.title = "Usa la clave maestra para editar.";
+            usernameInput.title = "Usa la clave maestra para editar.";
         } else {
             roleSelect.disabled = false;
+            usernameInput.disabled = false;
             roleSelect.title = "";
+            usernameInput.title = "";
         }
 
         const modal = document.getElementById('user-edit-modal');
@@ -2101,21 +2117,36 @@ window.openEditUserModal = async (username) => {
 if (userEditForm) {
     userEditForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const username = document.getElementById('edit-user-username').value;
+        const originalUsername = window.originalEditingUsername;
+        const newUsername = document.getElementById('edit-user-username').value.trim();
         const newPass = document.getElementById('edit-user-pass').value;
+
+        if (!newUsername) return alert('El nombre de usuario es obligatorio.');
 
         try {
             let users = await window.electronAPI.readData('users.json') || [];
-            const index = users.findIndex(u => String(u.username).trim() === String(username).trim());
+            
+            // Si el username cambió, validar duplicados y borrar el anterior
+            if (newUsername !== originalUsername) {
+                const exists = users.find(u => u.username.toLowerCase() === newUsername.toLowerCase());
+                if (exists) return alert(`⚠️ El nombre de usuario "${newUsername}" ya está en uso. Elige otro.`);
+                
+                // Borrar el registro anterior en MongoDB para evitar duplicados
+                await fetch(`/api/data/users.json/${originalUsername}`, { method: 'DELETE' });
+            }
+
+            const index = users.findIndex(u => String(u.username).trim() === String(originalUsername).trim());
 
             if (index !== -1) {
                 // Actualización de campos
+                users[index].username = newUsername;
                 users[index].fullname = document.getElementById('edit-user-fullname').value;
                 users[index].name = users[index].fullname; 
                 users[index].nit = document.getElementById('edit-user-nit').value;
                 
-                // Solo cambiar rol si no es el admin principal
-                if (username !== 'admin') {
+                // Role update protection (only for original 'admin' if NOT authorized, but here we assume if they got this far with admin they can)
+                // We'll keep the admin role check based on the originalUsername
+                if (originalUsername !== 'admin' || document.getElementById('edit-user-role').disabled === false) {
                     users[index].role = document.getElementById('edit-user-role').value;
                 }
                 
@@ -2124,23 +2155,22 @@ if (userEditForm) {
                 users[index].city = document.getElementById('edit-user-city').value;
                 users[index].address = document.getElementById('edit-user-address').value;
 
-                // Cambio de password opcional
                 if (newPass.trim() !== "") {
                     users[index].password = newPass;
                 }
 
                 await window.electronAPI.writeData('users.json', users);
                 
-                // Actualizar la sesión si el usuario editado es el que está logueado actualmente
+                // Actualizar la sesión si el usuario editado es el actual
                 const session = await window.electronAPI.readData('session.json');
-                if (session && session.currentUser && String(username).trim() === String(session.currentUser.username).trim()) {
+                if (session && session.currentUser && String(originalUsername).trim() === String(session.currentUser.username).trim()) {
                     session.currentUser = { ...session.currentUser, ...users[index] };
                     await window.electronAPI.writeData('session.json', session);
                 }
 
-                alert('✅ Cambios guardados correctamente');
+                alert('✅ Usuario actualizado correctamente');
                 userEditModal.classList.remove('active');
-                renderUsers(); // Refrescar la tabla en Ajustes
+                renderUsers();
             }
         } catch (error) {
             alert('❌ Error al guardar datos: ' + error.message);
