@@ -1,19 +1,17 @@
 {
-  "name": "app-ventas-web",
+  "name": "sistema-contable-ventas",
   "version": "1.0.0",
-  "description": "Sistema de Ventas Web (Migrado de Electron)",
+  "license": "ISC",
+  "description": "App de Ventas por Catálogo - Modo Localhost NATIVO",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
+    "start": "node server.js"
   },
   "dependencies": {
     "express": "^4.18.2",
-    "mongoose": "^7.5.0",
-    "cors": "^2.8.5",
+    "mongoose": "^7.5.2",
     "dotenv": "^16.3.1",
-    "body-parser": "^1.20.2",
-    "bcryptjs": "^2.4.3",
-    "jsonwebtoken": "^9.0.2"
-  }
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {}
 }

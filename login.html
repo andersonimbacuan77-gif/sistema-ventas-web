@@ -1,479 +1,302 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <script>
-        // Forzar cierre de sesión real y completo al entrar a la pantalla de login
-        localStorage.removeItem('userLogin');
-        localStorage.removeItem('userRol');
-        localStorage.removeItem('adminLogueado');
-        localStorage.removeItem('nombreCliente');
-    </script>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SISCONTED - Acceso Profesional</title>
-    <script src="api.js"></script>
+    <title>Catálogo Premium | Autenticación</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <script>
+        // FASE 74: Sincronización Universal (Fix Definitivo)
+        (async function() {
+            const root = document.documentElement;
+            const apply = (data) => {
+                if(!data) return;
+                Object.keys(data).forEach(k => root.style.setProperty(k, data[k]));
+            };
+
+            // 1. LocalStorage (Inmediato)
+            const local = localStorage.getItem('app-theme-data');
+            if (local) apply(JSON.parse(local));
+
+            // 2. MongoDB via API (Anti-Cache)
+            try {
+                const ver = Date.now();
+                // FASE 74 FIX: Leer de la API del servidor (MongoDB), no del archivo estático
+                const r = await fetch('/api/data/config.json?v=' + ver);
+                const config = await r.json();
+                
+                if (config && config.theme && config.theme.data) {
+                    apply(config.theme.data);
+                    localStorage.setItem('app-theme-key', config.theme.key);
+                    localStorage.setItem('app-theme-data', JSON.stringify(config.theme.data));
+                }
+                
+                // Actualizar branding
+                if (config.company && config.company.name) {
+                    const brandEl = document.querySelector('.brand-name');
+                    if(brandEl) brandEl.textContent = config.company.name;
+                }
+            } catch(e) {}
+        })();
+    </script>
     <style>
         :root {
-            --primary: #6366f1;
-            --primary-light: #818cf8;
-            --primary-glow: rgba(99, 102, 241, 0.4);
-            --bg: #010103;
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --border: rgba(255, 255, 255, 0.1);
-            --text: #ffffff;
-            --text-muted: #a0aec0;
+            --primary: #3b82f6;
+            --primary-glow: rgba(59, 130, 246, 0.4);
+            --bg-black: #000000;
+            --glass-bg: rgba(15, 23, 42, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --text-main: #f8fafc;
+            --accent: #38bdf8;
         }
 
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Orbitron:wght@700&family=Bodoni+Moda:ital,wght@0,400..900;1,400..900&family=Playfair+Display:wght@700;900&display=swap');
-
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background: var(--bg);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            color: var(--text);
-        }
-
-        /* --- FONDO GALÁCTICO --- */
-        #canvas-stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
-
-        /* --- CONTENEDOR PRINCIPAL --- */
-        .container {
-            position: relative;
-            z-index: 10;
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-black);
+            height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 100vh;
-            perspective: 2000px;
-            padding: 20px;
-            box-sizing: border-box;
+            overflow: hidden;
+            color: var(--text-main);
         }
 
-        /* --- TÍTULO ELEGANTE (BODONI MODA) --- */
-        .system-title {
-            font-family: 'Bodoni Moda', serif;
-            font-size: 5.5rem;
-            font-weight: 800;
-            margin-bottom: 1.2rem;
-            letter-spacing: 12px;
-            display: flex;
-            gap: 2px;
-            text-align: center;
-            flex-wrap: wrap;
-            justify-content: center;
-            text-transform: uppercase;
-            filter: drop-shadow(0 0 15px rgba(99, 102, 241, 0.3));
-            position: relative;
-            margin-top: 20px;
-        }
-
-        .letter {
-            display: inline-block;
-            position: relative;
-            transform: translateY(-150vh) rotate(540deg) scale(0);
-            opacity: 0;
-            animation: 
-                dropSwirl 2.2s cubic-bezier(0.22, 1, 0.36, 1) forwards,
-                waveTenue 4s ease-in-out infinite;
-            background: linear-gradient(180deg, #94a3b8 20%, #1e293b 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            -webkit-text-stroke: 0.8px rgba(255, 255, 255, 0.25);
-        }
-
-        .letter::after {
-            content: attr(data-letter);
-            position: absolute;
-            left: 0;
-            top: 0;
+        /* FONDO GALAXIA ANIMADO (NEGRO PURO) */
+        #stars-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--bg-black);
             z-index: -1;
-            -webkit-text-stroke: 2px transparent;
-            background: linear-gradient(90deg, transparent 40%, rgba(255,255,255,0.4) 50%, transparent 60%);
-            background-size: 200% 100%;
-            -webkit-background-clip: text;
-            animation: shineBorderEffect 5s linear infinite;
         }
 
-        @keyframes shineBorderEffect {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.4;
+            animation: moveStar linear infinite;
         }
 
-        @keyframes dropSwirl {
-            0% { transform: translateY(-150vh) rotate(720deg) scale(0.1); opacity: 0; }
-            70% { transform: translateY(20px) rotate(-20deg) scale(1.1); opacity: 1; }
-            100% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+        @keyframes moveStar {
+            from { transform: translateY(0); }
+            to { transform: translateY(-110vh); }
         }
 
-        @keyframes waveTenue {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-5px) rotate(1deg); }
+        /* AUTH CARD - REDISEÑO PROFESIONAL */
+        .auth-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(30px) saturate(200%);
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
+            padding: 45px;
+            width: 95%;
+            max-width: 550px; /* Un poco más ancho para el registro */
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 1), 0 0 40px rgba(59, 130, 246, 0.1);
+            text-align: center;
+            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
-        .system-title span.accent { 
-            background: linear-gradient(135deg, #312e81, #5b21b6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            -webkit-text-stroke: 0.8px rgba(99, 102, 241, 0.4);
-        }
-
-        /* --- TARJETA --- */
-        .card {
-            background: var(--card-bg);
-            backdrop-filter: blur(40px);
-            border: 1px solid var(--border);
-            border-radius: 30px;
-            padding: 35px;
-            width: 380px;
-            max-width: 95vw;
-            box-shadow: 0 40px 80px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,255,255,0.05);
-            animation: fadeIn 1s ease forwards 2s;
-            opacity: 0;
-            position: relative;
-            margin-bottom: 100px;
-        }
+        /* Scrollbar personalizado para la card */
+        .auth-card::-webkit-scrollbar { width: 6px; }
+        .auth-card::-webkit-scrollbar-track { background: transparent; }
+        .auth-card::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(30px); scale: 0.95; }
+            to { opacity: 1; transform: translateY(0); scale: 1; }
         }
 
-        .input-group { margin-bottom: 15px; }
-        label {
-            display: block;
-            font-size: 0.65rem;
-            color: var(--text-muted);
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 700;
+        /* LOGO ONDAS EN LOGIN - FORZADO AZUL-VERDE */
+        .wave-text {
+            font-family: 'Montserrat', sans-serif !important;
+            font-size: 3.2rem !important;
+            font-weight: 900 !important;
+            letter-spacing: -1.5px !important;
+            margin-bottom: 10px !important;
         }
+        .wave-text span {
+            display: inline-block;
+            animation: wave 2.5s ease-in-out infinite;
+            animation-delay: calc(0.1s * var(--i));
+            background: var(--primary-gradient) !important;
+            -webkit-background-clip: text !important;
+            background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            text-shadow: 0 10px 20px rgba(0,0,0,0.3) !important;
+        }
+        @keyframes wave {
+            0%, 100% { transform: translateY(0) rotate(0); }
+            50% { transform: translateY(-12px) rotate(2deg); }
+        }
+
+        #auth-subtitle {
+            color: #94a3b8;
+            font-size: 1.05rem;
+            margin-bottom: 35px;
+            font-weight: 400;
+        }
+
+        /* INPUTS Y BOTONES */
+        .form-group { text-align: left; margin-bottom: 18px; }
+        .form-group label { display: block; margin-bottom: 8px; font-size: 0.85rem; color: #94a3b8; font-weight: 500; }
+        
+        .input-wrapper { position: relative; }
+        .input-wrapper i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--primary); font-size: 0.9rem; }
+        
         input {
             width: 100%;
-            padding: 13px 18px;
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid var(--border);
-            border-radius: 12px;
+            padding: 14px 18px 14px 42px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
             color: white;
-            font-size: 0.9rem;
-            outline: none;
-            transition: 0.3s;
-            box-sizing: border-box;
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
         }
+
         input:focus {
+            outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 15px var(--primary-glow);
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(30, 41, 59, 0.8);
+            box-shadow: 0 0 20px var(--primary-glow);
+            transform: scale(1.01);
         }
 
-        button {
+        .btn-primary-auth {
             width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, var(--primary), #7c3aed);
-            color: white;
+            padding: 18px;
+            background: var(--primary);
             border: none;
-            border-radius: 12px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-            transition: 0.3s;
-            margin-top: 10px;
-            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
-        }
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 30px var(--primary-glow);
-        }
-
-        .link {
-            display: block;
-            margin-top: 20px;
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 0.7rem;
-            text-decoration: none;
-            transition: 0.3s;
-            cursor: pointer;
-            font-weight: 600;
-        }
-        .link:hover { color: var(--primary-light); }
-
-        .hidden { display: none !important; }
-
-        /* --- FOOTER --- */
-        footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 15px 0;
-            text-align: center;
-            font-size: 0.6rem;
-            color: var(--text-muted);
-            z-index: 100;
-            background: linear-gradient(to top, rgba(0,0,0,0.95), transparent);
-            pointer-events: none;
-        }
-        .footer-content { pointer-events: auto; }
-        .footer-line {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            opacity: 0.7;
-            margin-bottom: 4px;
-        }
-        footer b { color: #f3f4f6; letter-spacing: 0.5px; font-weight: 800; }
-        footer a {
-            color: #22c55e;
-            text-decoration: none;
-            font-weight: 800;
-            transition: 0.3s;
-            pointer-events: auto;
-        }
-        footer a:hover { color: #4ade80; text-shadow: 0 0 10px rgba(34, 197, 94, 0.4); }
-
-        /* --- TOASTS --- */
-        #toast-container { position: fixed; top: 20px; right: 20px; z-index: 20000; display: flex; flex-direction: column; gap: 8px; }
-        .login-card {
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(20px);
-            padding: 50px;
-            border-radius: 30px;
-            width: 90%;
-            max-width: 450px;
-            border: 1px solid var(--border);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            position: relative;
-            z-index: 2;
-            animation: card-entry 1s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .toast {
-            background: rgba(10, 10, 25, 0.95);
-            backdrop-filter: blur(10px);
+            border-radius: 16px;
             color: white;
-            padding: 12px 20px;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 600;
-            font-size: 0.8rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            animation: slideIn 0.4s ease-out forwards;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 25px -5px var(--primary-glow);
+            margin-top: 15px;
         }
-        @keyframes slideIn { from { transform: translateX(120%); } to { transform: translateX(0); } }
+
+        .btn-primary-auth:hover {
+            transform: translateY(-4px);
+            filter: brightness(1.15);
+            box-shadow: 0 20px 35px -5px var(--primary-glow);
+        }
+
+        .auth-switch { margin-top: 30px; font-size: 0.95rem; color: #64748b; }
+        .auth-switch a { color: var(--accent); text-decoration: none; font-weight: 600; transition: 0.3s; }
+        .auth-switch a:hover { color: white; text-shadow: 0 0 10px var(--accent); }
+
+        .row { display: flex; gap: 15px; }
+        .col { flex: 1; }
+
+        @media (max-width: 480px) {
+            .auth-card { padding: 30px 20px; }
+            .row { flex-direction: column; gap: 0; }
+            .wave-text { font-size: 2.2rem; }
+        }
     </style>
 </head>
 <body>
+    <div id="stars-container"></div>
 
-    <canvas id="canvas-stars"></canvas>
-
-    <div class="container">
-        <div class="system-title" id="title-anim">
-            <!-- Letras generadas por JS -->
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1 id="dynamic-branding" class="wave-text"></h1>
+            <p id="auth-subtitle">Ingresa para ver el catálogo</p>
         </div>
-
-        <!-- Vista Login -->
-        <div id="vista-login" class="card">
-            <div class="input-group">
+        
+        <!-- FORMULARIO DE LOGIN -->
+        <form id="login-form" class="auth-form">
+            <div class="form-group">
                 <label>Usuario</label>
-                <input type="text" id="user-login" placeholder="Usuario" spellcheck="false">
+                <div class="input-wrapper">
+                    <i class="fas fa-user"></i>
+                    <input type="text" name="username" required placeholder="Tu usuario">
+                </div>
             </div>
-            <div class="input-group">
+            <div class="form-group">
                 <label>Contraseña</label>
-                <input type="password" id="pass-login" placeholder="••••••••">
+                <div class="input-wrapper">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" name="password" required placeholder="••••••••">
+                </div>
             </div>
-            <button onclick="login()">ACCEDER</button>
-            <a class="link" onclick="mostrarRegistro()">¿No tiene cuenta? Regístrese</a>
-        </div>
+            <button type="submit" class="btn-primary-auth">Iniciar Sesión Ahora</button>
+            <p class="auth-switch">¿Eres nuevo aquí? <a href="#" id="go-to-register">Crea una cuenta</a></p>
+        </form>
 
-        <!-- Vista Registro -->
-        <div id="vista-registro" class="card hidden">
-            <div class="input-group">
-                <label>Nombre Completo</label>
-                <input type="text" id="reg-nombre" placeholder="Nombre y Apellido">
+        <!-- FORMULARIO DE REGISTRO COMPLETO (RESTAURADO) -->
+        <form id="register-form" class="auth-form" style="display: none; flex-direction: column;">
+            <div class="row">
+                <div class="form-group col">
+                    <label>Nombre Completo</label>
+                    <div class="input-wrapper"><i class="fas fa-id-badge"></i><input type="text" name="name" required placeholder="Nombre"></div>
+                </div>
+                <div class="form-group col">
+                    <label>Documento / NIT</label>
+                    <div class="input-wrapper"><i class="fas fa-fingerprint"></i><input type="text" name="nit" required placeholder="NIT"></div>
+                </div>
             </div>
-            <div class="input-group">
-                <label>Nombre de Usuario</label>
-                <input type="text" id="reg-user" placeholder="Usuario">
+
+            <div class="row">
+                <div class="form-group col">
+                    <label>Departamento</label>
+                    <div class="input-wrapper"><i class="fas fa-map"></i><input type="text" name="department" required placeholder="Depto"></div>
+                </div>
+                <div class="form-group col">
+                    <label>Municipio / Ciudad</label>
+                    <div class="input-wrapper"><i class="fas fa-city"></i><input type="text" name="city" required placeholder="Ciudad"></div>
+                </div>
             </div>
-            <div class="input-group">
-                <label>Definir Contraseña</label>
-                <input type="password" id="reg-pass" placeholder="••••••••">
+
+            <div class="form-group">
+                <label>Dirección de Envío</label>
+                <div class="input-wrapper"><i class="fas fa-home"></i><input type="text" name="address" required placeholder="Calle 123..."></div>
             </div>
-            <button onclick="registrarYEntrar()">REGISTRARSE</button>
-            <a class="link" onclick="mostrarLogin()">Volver al Login</a>
-        </div>
+
+            <div class="form-group">
+                <label>Teléfono de Contacto</label>
+                <div class="input-wrapper"><i class="fas fa-phone"></i><input type="tel" name="phone" required placeholder="310..."></div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col">
+                    <label>Nuevo Usuario</label>
+                    <div class="input-wrapper"><i class="fas fa-user-plus"></i><input type="text" name="username" required placeholder="Usuario"></div>
+                </div>
+                <div class="form-group col">
+                    <label>Contraseña</label>
+                    <div class="input-wrapper"><i class="fas fa-key"></i><input type="password" name="password" required placeholder="••••"></div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-primary-auth">Registrarme Gratis</button>
+            <p class="auth-switch">¿Ya tienes cuenta? <a href="#" id="go-to-login">Inicia Sesión</a></p>
+        </form>
     </div>
 
-    <footer>
-        <div class="footer-content">
-            <div class="footer-line">
-                <span>&copy; 2026 DERECHOS RESERVADOS</span>
-                <span>|</span>
-                <span>DESARROLLADOR: <b>EDUAR ANDERSON IMBACUÁN</b></span>
-            </div>
-            <a href="https://wa.me/573182744758" target="_blank">
-                SOPORTE TÉCNICO: 3182744758
-            </a>
-        </div>
-    </footer>
-
     <script>
-        // --- ANIMACIÓN TÍTULO (SISCONTED) ---
-        const titleContainer = document.getElementById('title-anim');
-        const titleText = "SISCONTED";
-        titleText.split('').forEach((l, i) => {
-            const span = document.createElement('span');
-            span.textContent = l;
-            span.setAttribute('data-letter', l);
-            span.className = 'letter';
-            if (i >= 3) span.classList.add('accent');
-            span.style.animationDelay = `${i * 0.15}s, ${i * 0.2}s`; 
-            titleContainer.appendChild(span);
-        });
-
-        // --- CANVA STARS ---
-        const canvas = document.getElementById('canvas-stars');
-        const ctx = canvas.getContext('2d');
-        let stars = [];
-
-        function initStars() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            stars = [];
-            for (let i = 0; i < 400; i++) {
-                stars.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    size: Math.random() * 1.5,
-                    speed: Math.random() * 0.1,
-                    opacity: Math.random(),
-                    blink: Math.random() * 0.01 + 0.005
-                });
-            }
-        }
-
-        function animateStars() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height); 
-            ctx.fillStyle = "#010103";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            stars.forEach(s => {
-                ctx.globalAlpha = s.opacity;
-                ctx.fillStyle = "white";
-                ctx.beginPath();
-                ctx.arc(Math.round(s.x), Math.round(s.y), s.size, 0, Math.PI * 2);
-                ctx.fill();
-                
-                s.y -= s.speed;
-                if (s.y < 0) s.y = canvas.height;
-                
-                s.opacity += s.blink;
-                if (s.opacity > 1 || s.opacity < 0.2) s.blink *= -1;
-            });
-            requestAnimationFrame(animateStars);
-        }
-
-        window.addEventListener('resize', initStars);
-        initStars(); animateStars();
-
-        function showToast(msg, type = 'info') {
-            let container = document.getElementById('toast-container');
-            if (!container) {
-                container = document.createElement('div');
-                container.id = 'toast-container';
-                document.body.appendChild(container);
-            }
-            const toast = document.createElement('div');
-            toast.className = `toast`;
-            const icon = type === 'success' ? '✅' : (type === 'error' ? '❌' : '⚠️');
-            toast.innerHTML = `<span>${icon}</span> <span>${msg}</span>`;
-            container.appendChild(toast);
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateX(120%)';
-                setTimeout(() => toast.remove(), 500);
-            }, 3000);
-        }
-
-        function mostrarRegistro() {
-            document.getElementById('vista-login').classList.add('hidden');
-            document.getElementById('vista-registro').classList.remove('hidden');
-        }
-
-        function mostrarLogin() {
-            document.getElementById('vista-registro').classList.add('hidden');
-            document.getElementById('vista-login').classList.remove('hidden');
-        }
-
-        async function registrarYEntrar() {
-            const nom = document.getElementById('reg-nombre').value.trim();
-            const usr = document.getElementById('reg-user').value.trim();
-            const pss = document.getElementById('reg-pass').value.trim();
-            if (!nom || !usr || !pss) return showToast("Por favor complete todos los campos", "warning");
-            
-            try {
-                const response = await API.register({ nombre: nom, user: usr, pass: pss });
-                if (response.success) {
-                    showToast("Registro exitoso. Iniciando sesión...", "success");
-                    // Auto-login
-                    document.getElementById('user-login').value = usr;
-                    document.getElementById('pass-login').value = pss;
-                    setTimeout(login, 1000);
-                }
-            } catch (e) { 
-                console.error(e);
-                showToast(e.message || "Error en el registro", "error"); 
-            }
-        }
-
-        async function login() {
-            const u = document.getElementById('user-login').value.trim();
-            const p = document.getElementById('pass-login').value.trim();
-            try {
-                const response = await API.login(u, p);
-                if (response.success) {
-                    const cuenta = response.user;
-                    // Guardar todos los datos y permisos de la cuenta
-                    localStorage.setItem('nombreCliente', cuenta.nombre);
-                    localStorage.setItem('userLogin', cuenta.user);
-                    localStorage.setItem('userRol', cuenta.rol);
-                    localStorage.setItem('canEditPrice', cuenta.canEditPrice || false);
-                    localStorage.setItem('permExcel', cuenta.permExcel || false);
-                    localStorage.setItem('permPrint', cuenta.permPrint || false);
-                    localStorage.setItem('permTicket', cuenta.permTicket || false);
-                    localStorage.setItem('permWA', cuenta.permWA || false);
-                    
-                    if (cuenta.rol === 'admin') {
-                        localStorage.setItem('adminLogueado', cuenta.nombre); 
-                        window.location.href = 'index.html';
-                    } else { 
-                        window.location.href = 'cliente.html'; 
-                    }
-                } else { 
-                    showToast("Usuario o clave incorrectos", "error"); 
-                }
-            } catch (error) { 
-                showToast(error.message || "Error de acceso al servidor", "error"); 
-            }
+        const container = document.getElementById('stars-container');
+        for (let i = 0; i < 180; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            const size = Math.random() * 2.5 + 'px';
+            star.style.width = size;
+            star.style.height = size;
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDuration = (Math.random() * 40 + 40) + 's';
+            star.style.animationDelay = (Math.random() * -100) + 's';
+            container.appendChild(star);
         }
     </script>
+    <script src="api-adapter.js"></script>
+    <script src="login.js"></script>
 </body>
 </html>

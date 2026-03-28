@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo Premium | Ventas Directas</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    <script>
+        // FASE 74: Sincronización Universal (Fix Definitivo)
+        (async function() {
+            const root = document.documentElement;
+            const apply = (data) => {
+                if(!data) return;
+                Object.keys(data).forEach(k => root.style.setProperty(k, data[k]));
+            };
+
+            // 1. LocalStorage (Inmediato)
+            const local = localStorage.getItem('app-theme-data');
+            if (local) apply(JSON.parse(local));
+
+            // 2. MongoDB via API (Anti-Cache, mira el servidor real)
+            try {
+                const ver = Date.now();
+                // FASE 74 FIX: Leer de la API del servidor (MongoDB), no del archivo estático
+                const r = await fetch('/api/data/config.json?v=' + ver);
+                const config = await r.json();
+                
+                if (config && config.theme && config.theme.data) {
+                    apply(config.theme.data);
+                    localStorage.setItem('app-theme-key', config.theme.key);
+                    localStorage.setItem('app-theme-data', JSON.stringify(config.theme.data));
+                }
+                
+                // Actualizar branding dinámico
+                if (config.company && config.company.name) {
+                    document.title = config.company.name + " - Catálogo";
+                    const brandEl = document.getElementById('catalog-title');
+                    if(brandEl) brandEl.textContent = config.company.name;
+                }
+            } catch(e) {
+                console.error("Sync error:", e);
+            }
+        })();
+    </script>
+    <style>
+        /* FASE 65: ESTILOS CRÍTICOS GALÁCTICOS Y CORRECCIÓN PARPADEO */
+        #app-container { opacity: 0; transition: opacity 0.5s ease; }
+        #app-container.loaded { opacity: 1; }
+        
+        #stars-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: -1;
+        }
+        .star {
+            position: absolute; background: white; border-radius: 50%; opacity: 0.3;
+            animation: moveStar linear infinite;
+        }
+        @keyframes moveStar { from { transform: translateY(0); } to { transform: translateY(-110vh); } }
+        
+        /* LOGO ONDAS EN CATÁLOGO - FORZADO AZUL-VERDE */
+        .wave-text {
+            font-family: 'Montserrat', sans-serif !important;
+            font-size: 3.2rem !important; 
+            font-weight: 900 !important;
+            letter-spacing: -1.5px !important;
+            filter: drop-shadow(0 0 20px rgba(56, 189, 248, 0.4)) !important;
+        }
+        .wave-text span {
+            display: inline-block;
+            animation: wave 2.5s ease-in-out infinite;
+            animation-delay: calc(0.1s * var(--i));
+            background: var(--primary-gradient) !important;
+            -webkit-background-clip: text !important;
+            background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+        }
+        @keyframes wave { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-10px) scale(1.05); } }
+        
+        /* TEXTOS HERO / BANNER - DINÁMICOS POR TEMA */
+        .hero h2 {
+            font-family: 'Outfit', sans-serif !important;
+            font-size: 3.5rem !important;
+            font-weight: 900 !important;
+            background: var(--hero-title-grad) !important;
+            -webkit-background-clip: text !important;
+            background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            text-shadow: 0 10px 40px rgba(0, 0, 0, 0.4) !important;
+            margin-bottom: 25px !important;
+            letter-spacing: -2px !important;
+        }
+        .hero p {
+            font-family: 'Outfit', sans-serif !important;
+            text-transform: uppercase !important;
+            letter-spacing: 4px !important;
+            font-weight: 800 !important;
+            color: var(--hero-sub-color) !important;
+            background: var(--hero-sub-bg) !important;
+            padding: 10px 30px !important;
+            border-radius: 50px !important;
+            display: inline-block !important;
+            border: 1px solid var(--hero-sub-border) !important;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1) !important;
+        }
+        
+        /* TARJETAS PREMIUM */
+        .product-card {
+            background: rgba(15, 23, 42, 0.7) !important;
+            backdrop-filter: blur(20px) !important;
+            padding: 20px !important;
+            border-radius: 24px !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5) !important;
+        }
+        .product-card:hover {
+            transform: translateY(-10px) scale(1.02) !important;
+            box-shadow: 0 20px 50px -10px rgba(59, 130, 246, 0.3) !important;
+            border-color: var(--primary) !important;
+        }
+    </style>
+</head>
+<body style="background: #000;">
+    <div id="stars-container"></div>
+    <div id="app-container">
+        <header>
+            <div class="logo">
+                <h1 id="dynamic-branding-catalog" class="wave-text"></h1>
+            </div>
+            <div class="search-container" style="flex: 1; max-width: 400px; margin: 0 20px; position: relative;">
+                <input type="text" id="catalog-search" placeholder="Buscar por nombre o referencia..." 
+                    style="width: 100%; padding: 12px 20px 12px 45px; border-radius: 25px; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: white; font-family: 'Outfit', sans-serif; transition: var(--transition); outline: none;">
+                <i class="fas fa-search" style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none;"></i>
+            </div>
+            <div class="header-actions" style="display: flex; gap: 15px; align-items: center;">
+                <button id="btn-catalog-support" class="btn-premium-p" style="background: rgba(37, 211, 102, 0.1); color: #22c55e; border-color: rgba(37, 211, 102, 0.2); border-radius: 25px;" title="Soporte para compras">
+                    <i class="fab fa-whatsapp"></i> <span class="hide-mobile">Soporte</span>
+                </button>
+                <button id="admin-toggle-btn" class="header-btn" title="Panel Administrativo" style="height: 45px; width: 45px; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: white; cursor:pointer; transition:0.3s; display:flex; align-items:center; justify-content:center;">
+                    <i class="fas fa-cog" style="font-size: 1.1rem;"></i>
+                </button>
+                <div class="cart-icon" id="cart-toggle" style="height: 45px; padding: 0 20px; border-radius: 25px; background: var(--primary); border: none; box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4); cursor:pointer; display:flex; align-items:center; gap:10px; position:relative; transition:0.3s;">
+                    <i class="fas fa-shopping-bag" style="font-size: 1.1rem;"></i>
+                    <span style="font-weight: 700; font-size: 1rem;">Resumen De Pedido</span>
+                    <span class="cart-count" style="position: static; transform: none; background: white; color: var(--primary); font-weight: 800; min-width: 22px; height: 22px; border-radius: 50%; padding: 0 5px; font-size: 0.85rem;">0</span>
+                </div>
+                <div id="user-header-widget" style="display: flex; align-items: center; gap: 10px; padding: 5px 15px; border-radius: 20px; background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border);">
+                    <div id="user-header-avatar" style="width: 32px; height: 32px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 700; color: white; font-size: 0.85rem; border: 2px solid rgba(255,255,255,0.1);">
+                        <!-- Inicial del usuario -->
+                    </div>
+                    <div style="display: flex; flex-direction: column; line-height: 1.2;">
+                        <span id="user-header-name" style="color: white; font-weight: 700; font-size: 0.9rem;">Cargando...</span>
+                        <span id="user-header-role" style="color: var(--primary-light); font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Usuario</span>
+                    </div>
+                </div>
+                <button id="logout-btn" class="btn-premium-d" title="Salir">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </header>
+
+        <main id="user-view" class="glass-container" style="padding: 20px;">
+            <section class="hero" style="text-align: center; margin-bottom: 40px; padding: 60px 40px; border-radius: 30px; background: rgba(59, 130, 246, 0.1); border: 1px solid var(--glass-border); color: white; box-shadow: var(--shadow-lg); backdrop-filter: blur(10px);">
+                <h2 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 10px;">Descubre nuestra nueva colección</h2>
+                <p style="font-size: 1.1rem; opacity: 0.9;">Productos exclusivos a un click de distancia.</p>
+            </section>
+
+            <div id="catalog-filter-bar" class="filter-bar" style="margin-bottom: 15px;">
+                <!-- Dynamic categories loaded from JS -->
+            </div>
+            
+            <div id="subcategory-filter-bar" class="filter-bar" style="margin-bottom: 30px; display: none; gap: 10px; flex-wrap: wrap; justify-content: center; padding: 10px; background: rgba(255,255,255,0.02); border-radius: 20px;">
+                <!-- Dynamic subcategories loaded from JS -->
+            </div>
+            
+            <div class="product-grid" id="product-grid">
+                <!-- Productos se cargan aquí vía JS -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal del Carrito -->
+    <div class="cart-modal" id="cart-modal">
+        <div class="cart-content" style="background: var(--glass-bg) !important; backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);">
+            <div class="cart-header">
+                <h3>Tu Pedido</h3>
+                <button id="close-cart"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="cart-items" id="cart-items">
+                <!-- Ítems del carrito dinámicos -->
+            </div>
+            <div class="cart-footer">
+                <div class="total" style="margin-bottom: 20px;">
+                    <span>Total a Pagar:</span>
+                    <span id="cart-total">$0.00</span>
+                </div>
+
+                <!-- SECCIÓN DE PAGO Y DATOS RECTIFICADA FASE 57 -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;" class="cart-responsive-grid">
+                    <!-- Pago -->
+                    <div style="background: rgba(255,255,255,0.03); padding: 18px; border-radius: 16px; border: 1px solid var(--glass-border); display: flex; flex-direction: column; gap: 12px;">
+                        <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--primary-light); text-transform: uppercase;">1. Método de Pago:</label>
+                        <div id="payment-methods-selector" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                            <!-- Inyectado por catalog.js -->
+                        </div>
+                        
+                        <div id="qr-display-container" style="display: none; text-align: center; padding: 10px; background: white; border-radius: 12px;">
+                            <p style="color: #0f172a; font-size: 0.7rem; font-weight: 800; margin-bottom: 5px;">TOCA PARA AMPLIAR QR</p>
+                            <img id="qr-payment-img" src="" style="width: 100%; max-width: 120px; border-radius: 8px; cursor: zoom-in;" onclick="window.openLightbox(this.src)">
+                        </div>
+
+                        <div id="receipt-upload-section" style="margin-top: 5px;">
+                            <label for="receipt-file" style="display: flex; align-items: center; justify-content: center; gap: 8px; background: #10b981; color: white; padding: 12px; border-radius: 12px; cursor: pointer; font-size: 0.85rem; font-weight: 700; transition: 0.3s; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);" id="receipt-label">
+                                <i class="fas fa-file-upload"></i> SUBIR RECIBO
+                            </label>
+                            <input type="file" id="receipt-file" accept="image/*" style="display: none;">
+                            <div id="receipt-preview-container" style="display: none; margin-top: 8px; text-align: center;">
+                                <img id="receipt-preview-img" src="" style="max-width: 100%; max-height: 80px; border-radius: 8px;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Datos y Confirmación -->
+                    <div style="background: rgba(255,255,255,0.01); padding: 10px; display: flex; flex-direction: column; gap: 15px;">
+                        <div>
+                            <label style="display: block; margin-bottom: 8px; font-size: 0.85rem; font-weight: 700; color: var(--text-muted);">2. Datos del Cliente:</label>
+                            <input type="text" id="customer-name" placeholder="Nombre completo..." style="width: 100%; padding: 12px; border-radius: 12px; border: 1.5px solid var(--glass-border); background: rgba(255,255,255,0.05); color: white;">
+                        </div>
+
+                        <button id="btn-confirm-order" class="btn-primary" style="width: 100%; padding: 16px; background: var(--secondary-gradient); border-radius: 14px; color: white; font-weight: 700; font-size: 1rem; box-shadow: var(--shadow-primary);">
+                            <i class="fas fa-check-circle"></i> Confirmar Pedido
+                        </button>
+
+                        <button id="btn-new-sale-anytime" style="width: 100%; background: transparent; border: 1px solid var(--glass-border); padding: 8px; border-radius: 12px; color: var(--text-muted); font-size: 0.75rem; cursor: pointer; opacity: 0.6;">
+                            <i class="fas fa-trash-alt"></i> Limpiar Carrito
+                        </button>
+                    </div>
+                </div>
+
+                        <!-- Acciones Post-Confirmación -->
+                        <div id="confirmed-actions" style="display: none; border-top: 1px dashed var(--glass-border); padding-top: 15px; margin-top: 10px;">
+                            <button class="btn-whatsapp" id="send-order" style="margin-bottom: 10px; width: 100%; padding: 12px; font-size: 0.95rem;">
+                                <i class="fab fa-whatsapp"></i> Enviar Pedido
+                            </button>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                <button class="btn-primary" id="btn-print-direct-catalog" style="background: #f43f5e; padding: 10px; font-size: 0.85rem;">
+                                    <i class="fas fa-print"></i> Ticket
+                                </button>
+                                <button class="btn-primary" onclick="location.reload()" style="background: rgba(255,255,255,0.1); padding: 10px; font-size: 0.85rem; color:white; border: 1px solid var(--glass-border);">
+                                    <i class="fas fa-plus"></i> Nueva
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Detalle de Producto -->
+    <div class="product-modal" id="product-modal">
+        <div class="modal-body" style="max-width: 900px; position: relative; border: 1.5px solid var(--glass-border); box-shadow: 0 0 50px rgba(0,0,0,0.6); overflow: visible;">
+            <button class="close-modal" id="close-product-modal" style="position: absolute; top: 15px; right: 15px; width: 45px; height: 45px; border-radius: 50%; background: rgba(255,255,255,0.1); backdrop-filter: blur(15px); border: 2px solid rgba(255,255,255,0.2); color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 1000; box-shadow: 0 5px 15px rgba(0,0,0,0.3); transition: 0.3s; font-size: 1.2rem; animation: modalBtnEntry 0.5s ease-out forwards;">
+                <i class="fas fa-times"></i>
+            </button>
+            <div id="product-detail-content">
+                <!-- Detalle del producto se carga aquí -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Lightbox de Imágenes -->
+    <div id="image-lightbox" onclick="this.style.display='none'" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:9999; justify-content:center; align-items:center; cursor:zoom-out; flex-direction:column; padding:20px;">
+        <span class="close-lightbox" style="position:absolute; top:20px; right:30px; color:white; font-size:2.5rem; font-weight:bold;">&times;</span>
+        <img id="lightbox-img" src="" style="max-width:100%; max-height:90vh; border-radius:8px; box-shadow:0 10px 40px rgba(0,0,0,0.5); object-fit:contain;">
+    </div>
+
+    <!-- Sistema de Notificaciones Toast -->
+    <div id="toast-container" style="position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 10000; display: flex; flex-direction: column; gap: 10px; pointer-events: none;"></div>
+
+    <script src="api-adapter.js"></script>
+    <script src="catalog.js"></script>
+</body>
+</html>
