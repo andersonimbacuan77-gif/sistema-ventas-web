@@ -319,6 +319,250 @@
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
 
+        /* ===== PANEL DE RESPALDO ===== */
+        .btn-backup-open {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            padding: 18px 24px;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(14, 165, 233, 0.08));
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 16px;
+            color: var(--success);
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 8px;
+        }
+        .btn-backup-open:hover {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(14, 165, 233, 0.15));
+            border-color: var(--success);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.2);
+        }
+        .btn-backup-open:active { transform: scale(0.97); }
+
+        .backup-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.2s ease;
+        }
+        .backup-modal-overlay.show { display: flex; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        .backup-modal {
+            background: #111827;
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            border-radius: 24px;
+            padding: 36px;
+            width: 100%;
+            max-width: 680px;
+            max-height: 88vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(16,185,129,0.1);
+        }
+
+        .backup-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 28px;
+        }
+        .backup-modal-header h2 {
+            margin: 0;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            color: var(--success);
+            letter-spacing: 2px;
+        }
+        .backup-modal-header p {
+            margin: 6px 0 0;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+        .btn-close-backup {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: 0.2s;
+            flex-shrink: 0;
+        }
+        .btn-close-backup:hover { background: var(--danger); color: white; border-color: var(--danger); }
+
+        .backup-collection-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 18px 20px;
+            margin-bottom: 10px;
+            transition: all 0.25s ease;
+            gap: 16px;
+        }
+        .backup-collection-card:hover {
+            border-color: rgba(16,185,129,0.3);
+            background: rgba(16, 185, 129, 0.04);
+            transform: translateX(4px);
+        }
+        .backup-col-info {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex: 1;
+        }
+        .backup-col-icon {
+            font-size: 1.8rem;
+            width: 44px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        .backup-col-name {
+            font-weight: 700;
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+        .backup-col-desc {
+            color: var(--text-muted);
+            font-size: 0.72rem;
+            margin-top: 3px;
+        }
+        .btn-download-col {
+            background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(14,165,233,0.1));
+            border: 1px solid rgba(16,185,129,0.3);
+            color: var(--success);
+            padding: 10px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: inherit;
+        }
+        .btn-download-col:hover {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+            box-shadow: 0 4px 12px rgba(16,185,129,0.3);
+            transform: scale(1.05);
+        }
+        .btn-download-col:active { transform: scale(0.96); }
+        .btn-download-col.loading {
+            opacity: 0.6;
+            pointer-events: none;
+            cursor: default;
+        }
+        .btn-download-all {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(14,165,233,0.1));
+            border: 1px solid rgba(99,102,241,0.3);
+            color: var(--primary-light);
+            border-radius: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 18px;
+            transition: all 0.25s ease;
+            font-family: inherit;
+        }
+        .btn-download-all:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 8px 20px var(--primary-glow);
+            transform: translateY(-2px);
+        }
+
+        /* Botones de acción específicos */
+        .btn-import-col {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.15), rgba(56, 189, 248, 0.1));
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            color: var(--accent);
+            padding: 10px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: inherit;
+        }
+        .btn-import-col:hover {
+            background: var(--secondary);
+            color: white;
+            border-color: var(--secondary);
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+            transform: scale(1.05);
+        }
+
+        .btn-clear-col {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(220, 38, 38, 0.1));
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: var(--danger);
+            padding: 10px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: inherit;
+        }
+        .btn-clear-col:hover {
+            background: var(--danger);
+            color: white;
+            border-color: var(--danger);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+            transform: scale(1.05);
+        }
+
+        .backup-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
         @media (max-width: 768px) {
             body { flex-direction: column; overflow-y: auto; height: auto; }
             .sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border); padding: 20px; box-sizing: border-box; }
@@ -360,6 +604,21 @@
         </div>
 
         <div class="section-card">
+            <h2>🛡️ Seguridad del Sistema</h2>
+            <div class="permiso-row" style="background: rgba(255, 255, 255, 0.05); margin-top: 10px;">
+                <div>
+                    <span style="font-weight:700; color:var(--warning); display:block;">Bloquear Registro</span>
+                    <small style="color:var(--text-muted); font-size:0.7rem;">Impide que nuevos usuarios se registren desde el catálogo.</small>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="lock-reg-switch">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <button class="btn-save-user" onclick="guardarSeguridad()" style="background: var(--warning); color: #000; margin-top: 15px;">ACTUALIZAR SEGURIDAD</button>
+        </div>
+
+        <div class="section-card">
             <h2>🏢 Datos de la Empresa</h2>
             <div class="user-row" style="margin-top: 0;">
                 <div class="user-header" onclick="toggleEmpresa()">
@@ -388,6 +647,98 @@
                             <label style="font-size:0.7rem; color:var(--whatsapp); text-transform:uppercase; font-weight:700;">Teléfono Proveedor (Pedidos WhatsApp)</label>
                             <input type="number" id="emp-proveedor" placeholder="Ej: 573215122980" style="border-color: var(--whatsapp);">
                         </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div>
+                                <label style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Régimen Fiscal</label>
+                                <select id="emp-regimen">
+                                    <option value="no-responsable">No Responsable de IVA</option>
+                                    <option value="responsable">Responsable de IVA</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Modo de Cálculo IVA</label>
+                                <select id="emp-iva-modo" style="border-color: var(--warning);">
+                                    <option value="incluido">IVA Incluido en Precio (Desglose)</option>
+                                    <option value="adicionado">IVA Adicionado al Precio (Suma)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <label style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Correo Fiscal</label>
+                            <input type="email" id="emp-correo" placeholder="factura@empresa.com">
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div>
+                                <label style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Municipio</label>
+                                <input type="text" id="emp-municipio" placeholder="Ej: Pasto">
+                            </div>
+                            <div>
+                                <label style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Departamento</label>
+                                <input type="text" id="emp-depto" placeholder="Ej: Nariño">
+                            </div>
+                        </div>
+
+                        <!-- SECCIÓN DIAN PROFESIONAL -->
+                        <div style="margin-top: 15px; padding: 20px; background: rgba(99, 102, 241, 0.05); border-radius: 16px; border: 1px solid var(--primary-glow);">
+                            <h3 style="font-size: 0.8rem; color: var(--primary-light); margin-top: 0; text-transform: uppercase; font-family: 'Orbitron'; letter-spacing: 1px; display: flex; align-items: center; gap: 8px;">
+                                ⚡ Facturación Electrónica DIAN
+                            </h3>
+                            
+                            <!-- Datos de Resolución -->
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border);">
+                                <div style="grid-column: span 2;">
+                                    <label style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Nro. Resolución Autorización</label>
+                                    <input type="text" id="dian-resolucion" placeholder="Ej: 18760000001">
+                                </div>
+                                <div>
+                                    <label style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Prefijo</label>
+                                    <input type="text" id="dian-prefijo" placeholder="Ej: SETT">
+                                </div>
+                                <div>
+                                    <label style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Vigencia (Meses)</label>
+                                    <input type="number" id="dian-vigencia" placeholder="Ej: 12">
+                                </div>
+                                <div>
+                                    <label style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Desde No.</label>
+                                    <input type="number" id="dian-desde" placeholder="1">
+                                </div>
+                                <div>
+                                    <label style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Hasta No.</label>
+                                    <input type="number" id="dian-hasta" placeholder="5000">
+                                </div>
+                                <div style="grid-column: span 2;">
+                                    <label style="font-size:0.65rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Fecha de Resolución</label>
+                                    <input type="date" id="dian-fecha-res">
+                                </div>
+                            </div>
+
+                            <!-- Proveedor Tecnológico -->
+                            <div style="margin-bottom: 15px;">
+                                <label style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Proveedor Tecnológico (API)</label>
+                                <select id="dian-proveedor" onchange="actualizarInterfazDian()">
+                                    <!-- Se llena vía script -->
+                                </select>
+                            </div>
+
+                            <div style="margin-bottom: 15px;">
+                                <label style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Ambiente de Trabajo</label>
+                                <select id="dian-ambiente">
+                                    <option value="test">🧪 Pruebas (Set de Habilitación)</option>
+                                    <option value="prod">🚀 Producción (Salida en Vivo)</option>
+                                </select>
+                            </div>
+
+                            <!-- Campos Dinámicos según Proveedor -->
+                            <div id="campos-dinamicos-dian" style="padding: 15px; background: rgba(0,0,0,0.2); border-radius: 12px; margin-bottom: 15px;">
+                                <!-- Se llena dinámicamente -->
+                            </div>
+
+                            <div style="margin-bottom: 10px;">
+                                <label style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">URL API Final (Manual)</label>
+                                <input type="text" id="dian-url" placeholder="https://api.proveedor.com/v1">
+                            </div>
+                        </div>
+
                         <div>
                             <label style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Logo de la Empresa (Para Reportes Excel)</label>
                             <input type="file" id="emp-logo" accept="image/*" onchange="previewLogo(event)" style="padding: 8px;">
@@ -413,6 +764,39 @@
                 </div>
             </div>
         </div>
+
+        <!-- TARJETA DE RESPALDO DE BASE DE DATOS -->
+        <div class="section-card" style="border-color: rgba(16, 185, 129, 0.2);">
+            <h2 style="color: var(--success);">💾 Respaldo de Base de Datos</h2>
+            <p style="color: var(--text-muted); font-size: 0.8rem; margin: 0 0 20px;">Descarga una copia de seguridad JSON de cualquier tabla almacenada en el sistema. Los archivos incluyen todos los registros actuales y reciben el nombre con la fecha exacta de descarga.</p>
+            <button class="btn-backup-open" onclick="abrirPanelBackup()">
+                <span style="font-size: 1.4rem;">🗄️</span>
+                <span>Ver Tablas y Descargar Respaldo</span>
+            </button>
+        </div>
+
+    </div>
+
+    <!-- MODAL DE RESPALDO -->
+    <div class="backup-modal-overlay" id="modalBackup">
+        <div class="backup-modal">
+            <div class="backup-modal-header">
+                <div>
+                    <h2>💾 Copias de Seguridad</h2>
+                    <p>Selecciona una colección para descargar su respaldo en formato JSON</p>
+                </div>
+                <button class="btn-close-backup" onclick="cerrarPanelBackup()">✕</button>
+            </div>
+            <div id="backup-colecciones-lista">
+                <p style="text-align:center; color:var(--text-muted); padding: 40px 0;">⏳ Cargando colecciones...</p>
+            </div>
+            <!-- Input oculto para importación -->
+            <input type="file" id="import-json-input" accept=".json" style="display:none;" onchange="importarDatosJSON(event)">
+            
+            <button class="btn-download-all" onclick="descargarTodoElBackup()">
+                📦 Descargar Todas las Tablas (ZIP Completo)
+            </button>
+        </div>
     </div>
 
 
@@ -427,8 +811,11 @@
                 configData = {
                     categorias: Array.isArray(data.categorias) ? data.categorias : [],
                     unidades: Array.isArray(data.unidades) ? data.unidades : [],
-                    empresa: data.empresa || {}
+                    empresa: data.empresa || {},
+                    bloquearRegistro: data.bloquearRegistro || false
                 };
+                
+                document.getElementById('lock-reg-switch').checked = configData.bloquearRegistro;
                 
                 renderListaSimple(configData.categorias, 'lista-categorias', 'categorias');
                 renderListaSimple(configData.unidades, 'lista-unidades', 'unidades');
@@ -439,6 +826,36 @@
                     document.getElementById('emp-direccion').value = configData.empresa.direccion || '';
                     document.getElementById('emp-telefono').value = configData.empresa.telefono || '';
                     document.getElementById('emp-proveedor').value = configData.empresa.proveedor || '';
+                    document.getElementById('emp-regimen').value = configData.empresa.regimen || 'no-responsable';
+                    document.getElementById('emp-iva-modo').value = configData.empresa.ivaModo || 'incluido';
+                    document.getElementById('emp-correo').value = configData.empresa.correoFiscal || '';
+                    document.getElementById('emp-municipio').value = configData.empresa.municipio || '';
+                    document.getElementById('emp-depto').value = configData.empresa.departamento || '';
+                    
+                    // DIAN
+                    const dProv = document.getElementById('dian-proveedor');
+                    dProv.innerHTML = API.DIAN_PROVIDERS.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+                    dProv.value = configData.empresa.dianProveedor || 'custom';
+                    
+                    // Resolución
+                    document.getElementById('dian-resolucion').value = configData.empresa.dianResolucion || '';
+                    document.getElementById('dian-prefijo').value = configData.empresa.dianPrefijo || '';
+                    document.getElementById('dian-vigencia').value = configData.empresa.dianVigencia || '';
+                    document.getElementById('dian-desde').value = configData.empresa.dianDesde || '';
+                    document.getElementById('dian-hasta').value = configData.empresa.dianHasta || '';
+                    document.getElementById('dian-fecha-res').value = configData.empresa.dianFechaRes || '';
+                    
+                    // Datos API
+                    document.getElementById('dian-url').value = configData.empresa.dianUrl || '';
+                    document.getElementById('dian-ambiente').value = configData.empresa.dianAmbiente || 'test';
+                    
+                    // Cargar campos dinámicos primero y luego poner sus valores
+                    actualizarInterfazDian();
+                    for (const key in (configData.empresa.dianCampos || {})) {
+                        const el = document.getElementById(`dian-f-${key}`);
+                        if (el) el.value = configData.empresa.dianCampos[key];
+                    }
+
                     document.getElementById('emp-logo-b64').value = configData.empresa.logoBase64 || '';
                     document.getElementById('emp-tema').value = configData.empresa.tema || 'normal';
                     
@@ -462,15 +879,44 @@
         async function guardarDatosEmpresa() {
             try {
                 const nuevoNombre = document.getElementById('emp-nombre').value.trim();
+                const dianProvId = document.getElementById('dian-proveedor').value;
+                const provMeta = API.DIAN_PROVIDERS.find(p => p.id === dianProvId);
+                const camposDian = {};
+                if (provMeta && provMeta.fields) {
+                    provMeta.fields.forEach(f => {
+                        camposDian[f] = document.getElementById(`dian-f-${f}`).value.trim();
+                    });
+                }
+
                 configData.empresa = {
                     nombre: nuevoNombre,
                     nit: document.getElementById('emp-nit').value.trim(),
                     direccion: document.getElementById('emp-direccion').value.trim(),
                     telefono: document.getElementById('emp-telefono').value.trim(),
                     proveedor: document.getElementById('emp-proveedor').value.trim(),
+                    regimen: document.getElementById('emp-regimen').value,
+                    ivaModo: document.getElementById('emp-iva-modo').value,
+                    correoFiscal: document.getElementById('emp-correo').value.trim(),
+                    municipio: document.getElementById('emp-municipio').value.trim(),
+                    departamento: document.getElementById('emp-depto').value.trim(),
+                    
+                    // DIAN
+                    dianProveedor: dianProvId,
+                    dianUrl: document.getElementById('dian-url').value.trim(),
+                    dianAmbiente: document.getElementById('dian-ambiente').value,
+                    dianResolucion: document.getElementById('dian-resolucion').value.trim(),
+                    dianPrefijo: document.getElementById('dian-prefijo').value.trim(),
+                    dianVigencia: document.getElementById('dian-vigencia').value.trim(),
+                    dianDesde: document.getElementById('dian-desde').value.trim(),
+                    dianHasta: document.getElementById('dian-hasta').value.trim(),
+                    dianFechaRes: document.getElementById('dian-fecha-res').value,
+                    dianCampos: camposDian,
+
                     logoBase64: document.getElementById('emp-logo-b64').value,
                     tema: document.getElementById('emp-tema').value
                 };
+                
+                configData.bloquearRegistro = document.getElementById('lock-reg-switch').checked;
                 
                 const res = await API.saveConfig(configData);
                 if(res.success) {
@@ -481,9 +927,61 @@
             } catch (e) { alert("Error al guardar datos de la empresa: " + e.message); }
         }
 
+        async function guardarSeguridad() {
+            try {
+                const status = document.getElementById('lock-reg-switch').checked;
+                configData.bloquearRegistro = status;
+                
+                const res = await API.saveConfig(configData);
+                if(res.success) {
+                    alert("Configuración de seguridad actualizada correctamente.\nEstado: " + (status ? "BLOQUEADO" : "ABIERTO"));
+                }
+            } catch (e) { alert("Error al guardar seguridad: " + e.message); }
+        }
+
         function toggleEmpresa() {
             const el = document.getElementById('panel-empresa');
             el.classList.toggle('visible');
+        }
+
+        function actualizarInterfazDian() {
+            const id = document.getElementById('dian-proveedor').value;
+            const prov = API.DIAN_PROVIDERS.find(p => p.id === id);
+            const container = document.getElementById('campos-dinamicos-dian');
+            
+            if (prov) {
+                // Actualizar URL sugerida
+                if (id !== 'custom') {
+                    document.getElementById('dian-url').value = prov.url;
+                }
+                
+                // Generar campos dinámicos
+                let html = '';
+                const fieldNames = {
+                    token: 'Auth-Token / API Key (Alegra Token)',
+                    account_id: 'Account ID (Dataico)',
+                    email: 'Correo Electrónico Alegra',
+                    user: 'Usuario de Acceso',
+                    pass: 'Contraseña / Secret',
+                    api_key: 'API Key (Siigo)'
+                };
+
+                const helpText = {
+                    alegra: '<p style="font-size:0.65rem; color:var(--primary-light); margin-top:5px; opacity:0.8;">Obtén tu token en Alegra: <b>Configuración > API</b></p>'
+                };
+
+                if (prov.fields) {
+                    prov.fields.forEach(f => {
+                        html += `
+                            <div style="margin-bottom: 10px;">
+                                <label style="font-size:0.6rem; color:var(--warning); text-transform:uppercase; font-weight:700;">${fieldNames[f] || f}</label>
+                                <input type="text" id="dian-f-${f}" placeholder="Ingrese ${f}" style="background: rgba(255,255,255,0.05);">
+                            </div>
+                        `;
+                    });
+                }
+                container.innerHTML = (html + (helpText[id] || '')) || '<p style="font-size:0.7rem; color:var(--text-muted);">No requiere campos adicionales.</p>';
+            }
         }
 
         function previewLogo(event) {
@@ -546,6 +1044,10 @@
                                     <span style="font-size:0.75rem;">WhatsApp</span>
                                     <label class="switch"><input type="checkbox" id="edit-wa-${i}" ${u.permWA ? 'checked' : ''}><span class="slider"></span></label>
                                 </div>
+                                <div class="permiso-row">
+                                    <span style="font-size:0.75rem; color:var(--accent);">Dian [F11]</span>
+                                    <label class="switch"><input type="checkbox" id="edit-dian-${i}" ${u.permDian ? 'checked' : ''}><span class="slider"></span></label>
+                                </div>
                             </div>
 
                             <label style="font-size:0.65rem; color:var(--text-muted);">ID USUARIO / LOGIN</label>
@@ -577,21 +1079,38 @@
         }
 
         async function agregarConfig(key, inputId) {
-            const input = document.getElementById(inputId);
-            const val = input.value.trim();
-            if (!val) return;
-            configData[key].push(val);
-            const res = await API.saveConfig(configData);
-            if(res.success) {
-                input.value = '';
-                cargarConfig();
+            try {
+                const input = document.getElementById(inputId);
+                const val = input.value.trim();
+                if (!val) return;
+                configData[key].push(val);
+                const res = await API.saveConfig(configData);
+                if(res.success) {
+                    input.value = '';
+                    cargarConfig();
+                } else {
+                    throw new Error(res.error || "No se pudo guardar la configuración");
+                }
+            } catch (e) {
+                alert("Error al agregar: " + e.message);
+                cargarConfig(); // Recargar para limpiar cambios fallidos en memoria
             }
         }
 
         async function eliminarConfig(key, index) {
-            configData[key].splice(index, 1);
-            const res = await API.saveConfig(configData);
-            if(res.success) cargarConfig();
+            try {
+                if(!confirm("¿Estás seguro de eliminar este elemento?")) return;
+                configData[key].splice(index, 1);
+                const res = await API.saveConfig(configData);
+                if(res.success) {
+                  cargarConfig();
+                } else {
+                    throw new Error(res.error || "No se pudo eliminar");
+                }
+            } catch (e) {
+                alert("Error al eliminar: " + e.message);
+                cargarConfig();
+            }
         }
 
         function toggleEdit(idx) {
@@ -603,7 +1122,7 @@
 
         async function guardarUsuario(idx) {
             try {
-                usuariosData[idx] = {
+                const updatedUser = {
                     nombre: document.getElementById(`edit-nom-${idx}`).value.trim(),
                     user: document.getElementById(`edit-user-${idx}`).value.trim(),
                     pass: document.getElementById(`edit-pass-${idx}`).value.trim(),
@@ -612,22 +1131,221 @@
                     permExcel: document.getElementById(`edit-excel-${idx}`).checked,
                     permPrint: document.getElementById(`edit-print-${idx}`).checked,
                     permTicket: document.getElementById(`edit-ticket-${idx}`).checked,
-                    permWA: document.getElementById(`edit-wa-${idx}`).checked
+                    permWA: document.getElementById(`edit-wa-${idx}`).checked,
+                    permDian: document.getElementById(`edit-dian-${idx}`).checked
                 };
+                
+                // Backup por si falla
+                const oldUser = {...usuariosData[idx]};
+                usuariosData[idx] = updatedUser;
 
                 const res = await API.saveUsuarios(usuariosData);
                 if(res.success) {
-                    alert("Usuario actualizado");
+                    alert("Usuario actualizado correctamente.");
                     cargarUsuarios();
+                } else {
+                    usuariosData[idx] = oldUser; // Revertir
+                    throw new Error(res.error || "Error en el servidor");
                 }
-            } catch (error) { alert("Error al guardar: " + error.message); }
+            } catch (error) { 
+                console.error(error);
+                alert("Error al guardar: " + error.message); 
+                cargarUsuarios();
+            }
         }
 
         async function eliminarUsuario(idx) {
-            if(!confirm("¿Eliminar?")) return;
-            usuariosData.splice(idx, 1);
-            await API.saveUsuarios(usuariosData);
-            cargarUsuarios();
+            try {
+                const u = usuariosData[idx];
+                if(u.user === 'admin') return alert("No se puede eliminar el administrador principal.");
+                if(!confirm(`¿Estás seguro de eliminar al usuario "${u.nombre}"?`)) return;
+                
+                // Hacer una copia local por si falla la sincronización
+                const backup = [...usuariosData];
+                usuariosData.splice(idx, 1);
+                
+                const res = await API.saveUsuarios(usuariosData);
+                if(res.success) {
+                    alert("Usuario eliminado correctamente.");
+                    cargarUsuarios();
+                } else {
+                    usuariosData = backup; // Revertir
+                    throw new Error(res.error || "Error en el servidor");
+                }
+            } catch (e) {
+                console.error(e);
+                alert("No se pudo eliminar el usuario: " + e.message + "\nVerifique la conexión con el servidor.");
+                cargarUsuarios(); // Recargar estado real del servidor
+            }
+        }
+
+        // ===== PANEL DE RESPALDO =====
+        let coleccionesBackup = [];
+
+        async function abrirPanelBackup() {
+            document.getElementById('modalBackup').classList.add('show');
+            await cargarColeccionesBackup();
+        }
+
+        function cerrarPanelBackup() {
+            document.getElementById('modalBackup').classList.remove('show');
+        }
+
+        // Cerrar al hacer clic en el fondo oscuro del overlay
+        document.getElementById('modalBackup').addEventListener('click', function(e) {
+            if (e.target === this) cerrarPanelBackup();
+        });
+
+        async function cargarColeccionesBackup() {
+            const lista = document.getElementById('backup-colecciones-lista');
+            lista.innerHTML = '<p style="text-align:center; color:var(--text-muted); padding: 30px 0;">⏳ Cargando...</p>';
+            try {
+                coleccionesBackup = await apiRequest('/api/backup/colecciones');
+                lista.innerHTML = coleccionesBackup.map(col => `
+                    <div class="backup-collection-card" id="card-${col.id}">
+                        <div class="backup-col-info">
+                            <div class="backup-col-icon">${col.icono}</div>
+                            <div style="flex:1;">
+                                <div class="backup-col-name">${col.nombre}</div>
+                                <div class="backup-col-desc">${col.descripcion}</div>
+                            </div>
+                        </div>
+                        <div class="backup-actions">
+                            <button class="btn-download-col" id="btn-dl-${col.id}" title="Descargar Copia JSON" onclick="descargarColeccion('${col.id}', '${col.nombre}')">
+                                ⬇️
+                            </button>
+                            <button class="btn-import-col" id="btn-up-${col.id}" title="Subir / Importar JSON" onclick="seleccionarArchivoJSON('${col.id}')">
+                                📤
+                            </button>
+                            ${col.id !== 'usuarios' ? `
+                                <button class="btn-clear-col" id="btn-cl-${col.id}" title="Vaciar Tabla" onclick="vaciarColeccion('${col.id}', '${col.nombre}')">
+                                    🗑️
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `).join('');
+            } catch(e) {
+                lista.innerHTML = `<p style="text-align:center; color:var(--danger); padding:30px 0;">❌ Error al cargar colecciones: ${e.message}</p>`;
+            }
+        }
+
+        // --- LÓGICA DE IMPORTACIÓN ---
+        let coleccionSeleccionada = null;
+
+        function seleccionarArchivoJSON(id) {
+            coleccionSeleccionada = id;
+            document.getElementById('import-json-input').click();
+        }
+
+        async function importarDatosJSON(event) {
+            const file = event.target.files[0];
+            if (!file || !coleccionSeleccionada) return;
+
+            const btn = document.getElementById(`btn-up-${coleccionSeleccionada}`);
+            const originalText = btn.innerHTML;
+            
+            try {
+                btn.innerHTML = '⏳';
+                const content = await file.text();
+                const data = JSON.parse(content);
+
+                if (!confirm(`¿Estás seguro de importar ${data.length || 0} registros en "${coleccionSeleccionada}"?\nLos datos existentes con el mismo ID se actualizarán.`)) {
+                    btn.innerHTML = originalText;
+                    event.target.value = '';
+                    return;
+                }
+
+                const res = await API.restoreColeccion(coleccionSeleccionada, data);
+                if (res.success) {
+                    alert(`✅ Éxito: Se han procesado ${res.count} registros en "${coleccionSeleccionada}".`);
+                    btn.innerHTML = '✅';
+                }
+            } catch (e) {
+                console.error(e);
+                alert("Error al importar archivo: " + e.message);
+                btn.innerHTML = '❌';
+            } finally {
+                event.target.value = '';
+                setTimeout(() => { btn.innerHTML = originalText; }, 3000);
+            }
+        }
+
+        // --- LÓGICA DE VACIADO ---
+        async function vaciarColeccion(id, nombre) {
+            if (id === 'usuarios') return; // Blindaje extra
+
+            const msj = `⚠️ ¡PELIGRO! Vas a eliminar TODOS los registros de la tabla "${nombre}".\nEsta acción no se puede deshacer.\n\n¿Estás completamente seguro?`;
+            if (!confirm(msj)) return;
+            
+            const confirm2 = confirm(`ÚLTIMA ADVERTENCIA:\n¿Realmente deseas dejar la tabla "${nombre}" totalmente VACÍA?`);
+            if (!confirm2) return;
+
+            const btn = document.getElementById(`btn-cl-${id}`);
+            const originalText = btn.innerHTML;
+
+            try {
+                btn.innerHTML = '⏳';
+                const res = await API.clearColeccion(id);
+                if (res.success) {
+                    alert(`🗑️ La tabla "${nombre}" ha sido vaciada correctamente.`);
+                    btn.innerHTML = '✅';
+                }
+            } catch (e) {
+                alert("Error al vaciar tabla: " + e.message);
+                btn.innerHTML = '❌';
+            } finally {
+                setTimeout(() => { btn.innerHTML = originalText; }, 3000);
+            }
+        }
+
+        async function descargarColeccion(id, nombre) {
+            const btn = document.getElementById(`btn-dl-${id}`);
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '⏳';
+            btn.classList.add('loading');
+            try {
+                // Usamos fetch para obtener el JSON y forzar descarga desde el cliente
+                const resp = await fetch(`${API_URL}/api/backup/${id}`);
+                if (!resp.ok) {
+                    const err = await resp.json();
+                    throw new Error(err.error || `Error ${resp.status}`);
+                }
+                const blob = await resp.blob();
+                const ts = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+                const filename = `backup_${id}_${ts}.json`;
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                a.click();
+                URL.revokeObjectURL(url);
+                btn.innerHTML = '✅';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.remove('loading');
+                }, 2500);
+            } catch(e) {
+                btn.innerHTML = '❌';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.remove('loading');
+                }, 2500);
+                alert('Error al descargar "' + nombre + '": ' + e.message);
+            }
+        }
+
+        async function descargarTodoElBackup() {
+            if (!coleccionesBackup || coleccionesBackup.length === 0) {
+                await cargarColeccionesBackup();
+            }
+            if (coleccionesBackup.length === 0) return alert('No hay colecciones para descargar.');
+            if (!confirm(`¿Descargar las ${coleccionesBackup.length} colecciones individualmente?\nSe descargará un archivo JSON por cada tabla.`)) return;
+            for (let i = 0; i < coleccionesBackup.length; i++) {
+                const col = coleccionesBackup[i];
+                await new Promise(r => setTimeout(r, 600 * i)); // Evitar bloqueo del navegador
+                descargarColeccion(col.id, col.nombre);
+            }
         }
 
         window.onload = () => {

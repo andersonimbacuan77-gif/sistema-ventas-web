@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <script>
+        if(localStorage.getItem('userRol') !== 'admin') {
+            window.location.href = 'login.html';
+        }
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Facturas de Compra - SISCONTED</title>
+    <script src="api.js"></script>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --primary-glow: rgba(99, 102, 241, 0.2);
+            --secondary: #0ea5e9;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --bg: #0a0b14;
+            --sidebar-bg: #111827;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
+            --text: #f3f4f6;
+            --text-muted: #94a3b8;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Orbitron:wght@500;700&display=swap');
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg);
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(99, 102, 241, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 100% 100%, rgba(14, 165, 233, 0.05) 0%, transparent 40%);
+            color: var(--text);
+            padding: 40px 60px;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(20px);
+            padding: 24px 40px;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        .header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: white;
+            letter-spacing: 2px;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .header h1::before {
+            content: '';
+            width: 8px;
+            height: 32px;
+            background: var(--secondary);
+            border-radius: 4px;
+        }
+
+        .nav-buttons { display: flex; gap: 12px; }
+
+        .btn {
+            padding: 12px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: 0.2s;
+            border: 1px solid var(--border);
+            display: flex; 
+            align-items: center; 
+            gap: 8px;
+        }
+        
+        .btn-back { background: rgba(255, 255, 255, 0.05); color: var(--text-muted); }
+        .btn-back:hover { background: rgba(255, 255, 255, 0.1); color: white; transform: translateY(-2px); }
+
+        .btn-primary { background: var(--primary); color: white; border: none; }
+        .btn-primary:hover { background: var(--primary-light); transform: translateY(-2px); box-shadow: 0 8px 16px var(--primary-glow); }
+
+        .btn-excel { background: var(--success); color: white; border: none; }
+        .btn-excel:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 8px 16px rgba(16, 185, 129, 0.3); }
+
+        .main-container {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 32px;
+            align-items: start;
+        }
+
+        /* FORMULARIO */
+        .card-form {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 32px;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group label {
+            display: block;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: white;
+            outline: none;
+            box-sizing: border-box;
+            transition: 0.3s;
+        }
+        .form-group input:focus { border-color: var(--secondary); box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.2); }
+
+        .row-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+        /* TABLA Y FILTROS */
+        .content-area { display: flex; flex-direction: column; gap: 24px; }
+
+        .filters-bar {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 20px 32px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .filter-item { display: flex; align-items: center; gap: 12px; }
+        .filter-item label { font-size: 0.75rem; font-weight: 600; color: var(--text-muted); }
+        .filter-item input {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px 12px;
+            color: white;
+            font-size: 0.85rem;
+        }
+
+        .table-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .data-table th {
+            background: rgba(255,255,255,0.02);
+            padding: 16px 20px;
+            text-align: left;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .data-table td {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            transition: 0.2s;
+        }
+
+        .data-table tr:last-child td { border-bottom: none; }
+        .data-table tr:hover { background: rgba(255,255,255,0.02); }
+
+        /* TOASTS */
+        #toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 20000;
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 12px;
+            pointer-events: none;
+        }
+        .toast {
+            background: rgba(15, 23, 42, 0.95);
+            color: white;
+            padding: 14px 24px;
+            border-radius: 16px;
+            border-left: 6px solid var(--primary);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            animation: slideIn 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+            min-width: 300px;
+            max-width: 450px;
+            /* Eliminamos backdrop-filter para evitar errores de renderizado que bloquean el mouse */
+            border: 1px solid var(--border);
+            pointer-events: auto;
+            cursor: pointer;
+        }
+        .toast.success { border-left-color: var(--success); border-left-width: 6px; }
+        .toast.danger { border-left-color: var(--danger); border-left-width: 6px; }
+        .toast.warning { border-left-color: var(--warning); border-left-width: 6px; }
+        
+        @keyframes slideIn {
+            from { transform: translateX(120%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes fadeOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateY(20px); opacity: 0; }
+        }
+
+        .price-base { color: var(--text); font-weight: 600; }
+        .price-total { color: var(--success); font-weight: 700; font-family: 'Orbitron', sans-serif; }
+
+        .btn-delete {
+            width: 32px; height: 32px;
+            border-radius: 8px;
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border: none;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: 0.2s;
+        }
+        .btn-delete:hover { background: var(--danger); color: white; transform: scale(1.1); }
+
+        /* RESUMEN INFERIOR */
+        .totals-bar {
+            display: flex;
+            justify-content: flex-end;
+            gap: 40px;
+            padding: 24px 40px;
+            background: var(--sidebar-bg);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            margin-top: auto;
+        }
+
+        .total-item { display: flex; flex-direction: column; align-items: flex-end; }
+        .total-item label { font-size: 0.65rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700; }
+        .total-item span { font-size: 1.5rem; font-weight: 700; color: white; font-family: 'Orbitron', sans-serif; }
+
+        /* LOADING */
+        .shimmer {
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+
+        /* ANIMACIONES */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade { animation: fadeIn 0.4s ease forwards; }
+
+        .empty-state { text-align: center; padding: 60px; color: var(--text-muted); font-style: italic; }
+
+        /* MODAL STYLES */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(4px);
+            z-index: 10000; display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: all; }
+        .modal-content {
+            background: #111827; width: 95%; max-width: 650px;
+            padding: 32px; border-radius: 24px; border: 1px solid var(--border);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            transform: translateY(20px); transition: 0.3s;
+        }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+
+        @media (max-width: 1024px) {
+            .main-container { grid-template-columns: 1fr; }
+            body { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div>
+            <h1>🧾 RECEPCION - FACTURAS DE COMPRAS</h1>
+            <p style="margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem;">Gestión contable de compras y gastos indirectos</p>
+        </div>
+        <div class="nav-buttons">
+            <button onclick="exportarExcel()" class="btn btn-excel">📊 EXPORTAR REPORTE</button>
+            <a href="inventario.html" class="btn btn-back">⬅ REGRESAR</a>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <div class="main-container">
+        <!-- FORMULARIO DE REGISTRO -->
+        <div class="card-form animate-fade">
+            <h2 style="font-size: 1.1rem; margin-top: 0; margin-bottom: 24px; color: var(--secondary);">Registrar Nueva Factura</h2>
+            <form id="facturaForm" onsubmit="event.preventDefault(); return false;">
+                <input type="hidden" id="f-id">
+                
+                <div class="form-group">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                        <label>Nombre del Proveedor</label>
+                        <button type="button" onclick="abrirModalProvedores()" style="background:none; border:none; color:var(--secondary); font-size: 0.7rem; cursor:pointer; font-weight:bold; margin-bottom: 8px; transition: 0.3s;">⚙️ GESTIONAR</button>
+                    </div>
+                    <input type="text" id="f-proveedor" list="provedores-list" placeholder="Escriba o seleccione..." required autocomplete="off">
+                    <datalist id="provedores-list"></datalist>
+                </div>
+
+                <div class="form-group">
+                    <label>NIT del Proveedor</label>
+                    <input type="text" id="f-nit" placeholder="Ej: 900.123.456-1" required>
+                </div>
+
+                <div class="row-grid">
+                    <div class="form-group">
+                        <label>Número de Factura</label>
+                        <input type="text" id="f-numero" placeholder="Ej: FE-1234" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Tipo de Factura</label>
+                        <select id="f-tipo" required>
+                            <option value="Electrónica">Electrónica</option>
+                            <option value="Física">Física</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Fecha de Emisión</label>
+                    <input type="date" id="f-fecha" required>
+                </div>
+
+                <div style="margin: 20px 0; padding: 20px; background: rgba(255,255,255,0.02); border-radius: 16px; border: 1px solid var(--border);">
+                    <div class="form-group">
+                        <label>Valor Base (Subtotal)</label>
+                        <input type="number" id="f-base" placeholder="0" step="0.01" required oninput="calcularTotal()">
+                    </div>
+                    <div class="form-group">
+                        <label>Valor IVA</label>
+                        <input type="number" id="f-iva" placeholder="0" step="0.01" required oninput="calcularTotal()">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label style="color: var(--success);">Valor Total Factura</label>
+                        <input type="number" id="f-total" placeholder="0" step="0.01" required 
+                               style="background: rgba(16, 185, 129, 0.05); border-color: var(--success); color: var(--success); font-weight: bold; font-size: 1.1rem;">
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 10px;">
+                    <button type="button" onclick="guardarFactura()" class="btn btn-primary" style="flex: 1; justify-content: center;">✅ GUARDAR REGISTRO</button>
+                    <button type="button" onclick="limpiarFormulario()" class="btn btn-back">Limpiar</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- LISTADO Y FILTROS -->
+        <div class="content-area animate-fade" style="animation-delay: 0.1s;">
+            <div class="filters-bar">
+                <div class="filter-item">
+                    <label>Desde:</label>
+                    <input type="date" id="filtro-desde" onchange="renderFacturas()">
+                </div>
+                <div class="filter-item">
+                    <label>Hasta:</label>
+                    <input type="date" id="filtro-hasta" onchange="renderFacturas()">
+                </div>
+                <div class="filter-item">
+                    <label>Tipo:</label>
+                    <select id="filtro-tipo" onchange="renderFacturas()" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; color: white; font-size: 0.85rem; outline: none; cursor: pointer;">
+                        <option value="General">General</option>
+                        <option value="Electrónica">Electrónica</option>
+                        <option value="Física">Física</option>
+                    </select>
+                </div>
+                <div class="filter-item" style="flex: 1;">
+                    <input type="text" id="filtro-busqueda" placeholder="Buscar por proveedor o # factura..." 
+                           style="width: 100%; padding: 8px 16px;" onkeyup="renderFacturas()">
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Tipo</th>
+                            <th>Proveedor / NIT</th>
+                            <th># Factura</th>
+                            <th style="text-align: right;">Base</th>
+                            <th style="text-align: right;">IVA</th>
+                            <th style="text-align: right;">TOTAL</th>
+                            <th style="width: 50px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="lista-facturas">
+                        <!-- Se llena dinámicamente -->
+                    </tbody>
+                </table>
+                <div id="no-data" class="empty-state" style="display: none;">No hay registros que coincidan con los filtros.</div>
+            </div>
+
+            <div class="totals-bar">
+                <div class="total-item">
+                    <label>Total Base</label>
+                    <span id="resumen-base">$ 0</span>
+                </div>
+                <div class="total-item">
+                    <label>Total IVA</label>
+                    <span id="resumen-iva" style="color: var(--secondary);">$ 0</span>
+                </div>
+                <div class="total-item">
+                    <label>Gran Total Compras</label>
+                    <span id="resumen-total" style="color: var(--success);">$ 0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let facturasGlobal = [];
+        let proveedoresGlobal = [];
+
+        // Inicialización
+        async function init() {
+            try {
+                const config = await API.getConfig();
+                if(config?.empresa?.tema) API.applyTheme(config.empresa.tema);
+                
+                await Promise.all([cargarFacturas(), cargarProveedores()]);
+                
+                // Set default dates for filters (current month)
+                const now = new Date();
+                const firstDay = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
+                const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString().split('T')[0];
+                document.getElementById('filtro-desde').value = firstDay;
+                document.getElementById('filtro-hasta').value = lastDay;
+                
+                renderFacturas();
+            } catch (error) {
+                console.error("Init error:", error);
+            }
+        }
+
+        async function cargarFacturas() {
+            facturasGlobal = await API.getFacturasCompras();
+        }
+
+        async function cargarProveedores() {
+            proveedoresGlobal = await API.getProvedoresCompras();
+            const list = document.getElementById('provedores-list');
+            list.innerHTML = proveedoresGlobal.map(p => `<option value="${p.nombre}">${p.nit}</option>`).join('');
+        }
+
+        // Auto-completar NIT al seleccionar proveedor
+        document.getElementById('f-proveedor').addEventListener('input', (e) => {
+            const val = e.target.value.trim().toUpperCase();
+            const encontrado = proveedoresGlobal.find(p => p.nombre === val);
+            if (encontrado) {
+                document.getElementById('f-nit').value = encontrado.nit;
+            }
+        });
+
+        function calcularTotal() {
+            const base = parseFloat(document.getElementById('f-base').value) || 0;
+            const iva = parseFloat(document.getElementById('f-iva').value) || 0;
+            document.getElementById('f-total').value = (base + iva).toFixed(2);
+        }
+
+        async function guardarFactura() {
+            console.log("Iniciando guardado...");
+            const f = {
+                id: document.getElementById('f-id').value || null,
+                proveedor: document.getElementById('f-proveedor').value.trim().toUpperCase(),
+                nit: document.getElementById('f-nit').value.trim(),
+                numero: document.getElementById('f-numero').value.trim(),
+                tipo: document.getElementById('f-tipo').value,
+                fecha: document.getElementById('f-fecha').value,
+                base: parseFloat(document.getElementById('f-base').value) || 0,
+                iva: parseFloat(document.getElementById('f-iva').value) || 0,
+                total: parseFloat(document.getElementById('f-total').value) || 0
+            };
+
+            if (!f.proveedor || !f.nit || !f.numero || !f.fecha) {
+                showToast("Por favor complete todos los campos obligatorios", "warning");
+                return;
+            }
+
+            try {
+                await API.saveFacturaCompra(f);
+                showToast("Factura guardada correctamente", "success");
+                limpiarFormulario();
+                await Promise.all([cargarFacturas(), cargarProveedores()]);
+                renderFacturas();
+            } catch (err) {
+                showToast("Error: " + err.message, "danger");
+            }
+        }
+
+        function renderFacturas() {
+            const tbody = document.getElementById('lista-facturas');
+            const desde = document.getElementById('filtro-desde').value;
+            const hasta = document.getElementById('filtro-hasta').value;
+            const tipo = document.getElementById('filtro-tipo').value;
+            const busca = document.getElementById('filtro-busqueda').value.toLowerCase();
+
+            let filtradas = facturasGlobal.filter(f => {
+                const cumpleFecha = (!desde || f.fecha >= desde) && (!hasta || f.fecha <= hasta);
+                const cumpleTipo = tipo === "General" || f.tipo === tipo;
+                const cumpleTexto = !busca || f.proveedor.toLowerCase().includes(busca) || f.numero.toLowerCase().includes(busca);
+                return cumpleFecha && cumpleTipo && cumpleTexto;
+            });
+
+            // Ordenar por fecha desc
+            filtradas.sort((a,b) => b.fecha.localeCompare(a.fecha));
+
+            tbody.innerHTML = "";
+            let tBase = 0, tIva = 0, tTotal = 0;
+
+            if (filtradas.length === 0) {
+                document.getElementById('no-data').style.display = 'block';
+            } else {
+                document.getElementById('no-data').style.display = 'none';
+                filtradas.forEach(f => {
+                    tBase += f.base; tIva += f.iva; tTotal += f.total;
+                    tbody.innerHTML += `
+                        <tr ondblclick="editarFactura('${f.id}')">
+                            <td style="color: var(--text-muted);">${f.fecha}</td>
+                            <td><span style="font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; background: rgba(255,255,255,0.05); color: ${f.tipo === 'Electrónica' ? 'var(--secondary)' : 'var(--warning)'}; border: 1px solid rgba(255,255,255,0.1);">${f.tipo || 'Electrónica'}</span></td>
+                            <td>
+                                <div>${f.proveedor}</div>
+                                <div style="font-size: 0.65rem; color: var(--text-muted);">NIT: ${f.nit}</div>
+                            </td>
+                            <td style="font-weight: bold; color: var(--secondary);">${f.numero}</td>
+                            <td align="right" class="price-base">$ ${API.formatNumber(f.base)}</td>
+                            <td align="right" style="color: var(--warning);">$ ${API.formatNumber(f.iva)}</td>
+                            <td align="right" class="price-total">$ ${API.formatNumber(f.total)}</td>
+                            <td>
+                                <button class="btn-delete" onclick="eliminarFactura('${f.id}')">🗑</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+
+            document.getElementById('resumen-base').innerText = `$ ${API.formatNumber(tBase)}`;
+            document.getElementById('resumen-iva').innerText = `$ ${API.formatNumber(tIva)}`;
+            document.getElementById('resumen-total').innerText = `$ ${API.formatNumber(tTotal)}`;
+        }
+
+        function editarFactura(id) {
+            const f = facturasGlobal.find(x => x.id === id);
+            if (!f) return;
+            document.getElementById('f-id').value = f.id;
+            document.getElementById('f-proveedor').value = f.proveedor;
+            document.getElementById('f-nit').value = f.nit;
+            document.getElementById('f-numero').value = f.numero;
+            document.getElementById('f-tipo').value = f.tipo || "Electrónica";
+            document.getElementById('f-fecha').value = f.fecha;
+            document.getElementById('f-base').value = f.base;
+            document.getElementById('f-iva').value = f.iva;
+            document.getElementById('f-total').value = f.total;
+            document.querySelector('.card-form h2').innerText = "Editando Factura " + f.numero;
+            document.getElementById('f-proveedor').focus();
+        }
+
+        async function eliminarFactura(id) {
+            if (!confirm("¿Está seguro de eliminar este registro?")) return;
+            try {
+                await API.deleteFacturaCompra(id);
+                showToast("Registro eliminado", "success");
+                await cargarFacturas();
+                renderFacturas();
+            } catch (err) { 
+                showToast("Error al eliminar compra: " + err.message, "danger"); 
+            }
+        }
+
+        function showToast(msg, type = 'info') {
+            let container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            let icon = 'ℹ️';
+            if(type === 'success') icon = '✅';
+            if(type === 'danger') icon = '❌';
+            if(type === 'warning') icon = '⚠️';
+
+            toast.innerHTML = `<div>${icon}</div> <div>${msg}</div>`;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'fadeOut 0.4s ease forwards';
+                setTimeout(() => toast.remove(), 400);
+            }, 3500);
+        }
+
+        function limpiarFormulario() {
+            document.getElementById('facturaForm').reset();
+            document.getElementById('f-id').value = "";
+            document.querySelector('.card-form h2').innerText = "Registrar Nueva Factura";
+        }
+
+        async function exportarExcel() {
+            const desde = document.getElementById('filtro-desde').value;
+            const hasta = document.getElementById('filtro-hasta').value;
+            const tipoFilter = document.getElementById('filtro-tipo').value;
+            const busca = document.getElementById('filtro-busqueda').value;
+
+            // Obtenemos datos de la empresa para el encabezado
+            let emp = { nombre: 'MI EMPRESA', nit: '', direccion: '', telefono: '', logoBase64: '' };
+            try {
+                const config = await API.getConfig();
+                if (config?.empresa) emp = { ...emp, ...config.empresa };
+            } catch(e) {}
+
+            let filtradas = facturasGlobal.filter(f => {
+                const cumpleFecha = (!desde || f.fecha >= desde) && (!hasta || f.fecha <= hasta);
+                const cumpleTipo = tipoFilter === "General" || f.tipo === tipoFilter;
+                const cumpleTexto = !busca || f.proveedor.toLowerCase().includes(busca.toLowerCase()) || f.numero.toLowerCase().includes(busca.toLowerCase());
+                return cumpleFecha && cumpleTipo && cumpleTexto;
+            });
+
+            // Título dinámico
+            let titulo = "REPORTE DE FACTURAS DE COMPRA " + tipoFilter.toUpperCase();
+            if (tipoFilter === 'Física') titulo = "REPORTE DE FACTURAS DE COMPRA FÍSICAS";
+            if (tipoFilter === 'Electrónica') titulo = "REPORTE DE FACTURAS DE COMPRA ELECTRÓNICAS";
+
+            let logoHtml = emp.logoBase64 ? `<th rowspan="3" style="background:white; border:1px solid #ccc;"><img src="cid:logo" width="80"></th>` : '';
+            let mainHeaderCols = emp.logoBase64 ? 7 : 8;
+
+            let html = `
+                <table border="1" style="border-collapse: collapse; width: auto;">
+                    <tr>
+                        ${logoHtml}
+                        <th colspan="${mainHeaderCols}" style="font-size:18px; padding:10px; background: white;">${emp.nombre}</th>
+                    </tr>
+                    <tr>
+                        <th colspan="${mainHeaderCols}" style="background: white;">NIT: ${emp.nit} | TEL: ${emp.telefono}</th>
+                    </tr>
+                    <tr>
+                        <th colspan="${mainHeaderCols}" style="background: white;">${emp.direccion}</th>
+                    </tr>
+                    <tr>
+                        <th colspan="8" style="height:35px; font-size:14px; text-align:center; background:#1e293b; color:white; border: 1px solid #1e293b;">${titulo}</th>
+                    </tr>
+                    <tr>
+                        <th colspan="8" style="background:#f8fafc; padding:8px; border: 1px solid #ccc;">Periodo: ${desde || 'Inicio'} hasta ${hasta || 'Hoy'}</th>
+                    </tr>
+                    <tr><td colspan="8" style="border:none; height:10px;"></td></tr>
+                    <tr style="background:#e2e8f0; font-weight:bold; height:30px;">
+                        <th style="width:100px; border: 1px solid #ccc;">FECHA</th>
+                        <th style="width:100px; border: 1px solid #ccc;">TIPO</th>
+                        <th style="width:250px; border: 1px solid #ccc;">PROVEEDOR</th>
+                        <th style="width:120px; border: 1px solid #ccc;">NIT</th>
+                        <th style="width:120px; border: 1px solid #ccc;">N° FACTURA</th>
+                        <th style="width:120px; border: 1px solid #ccc;">BASE (NETO)</th>
+                        <th style="width:120px; border: 1px solid #ccc;">IVA</th>
+                        <th style="width:150px; border: 1px solid #ccc;">TOTAL (BRUTO)</th>
+                    </tr>
+            `;
+
+            let sumB = 0, sumI = 0, sumT = 0;
+            filtradas.forEach(f => {
+                sumB += f.base; sumI += f.iva; sumT += f.total;
+                html += `
+                    <tr>
+                        <td align="center">${f.fecha}</td>
+                        <td align="center">${f.tipo || 'Electrónica'}</td>
+                        <td>${f.proveedor}</td>
+                        <td align="center">${f.nit}</td>
+                        <td align="center">${f.numero}</td>
+                        <td align="right">$ ${Math.round(f.base).toLocaleString()}</td>
+                        <td align="right">$ ${Math.round(f.iva).toLocaleString()}</td>
+                        <td align="right" style="font-weight:bold;">$ ${Math.round(f.total).toLocaleString()}</td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                <tr><td colspan="8" style="border:none; height:10px;"></td></tr>
+                <tr style="font-weight:bold;">
+                    <td colspan="5" align="right" style="background:#f8fafc; border: 1px solid #ccc;">TOTALES GENERALES:</td>
+                    <td align="right" style="background:#f8fafc; border: 1px solid #ccc;">$ ${Math.round(sumB).toLocaleString()}</td>
+                    <td align="right" style="background:#f8fafc; border: 1px solid #ccc;">$ ${Math.round(sumI).toLocaleString()}</td>
+                    <td align="right" style="color:#10b981; background:#f8fafc; border: 1px solid #ccc;">$ ${Math.round(sumT).toLocaleString()}</td>
+                </tr>
+            </table>`;
+
+            API.descargarExcelMHT(html, `Facturas_Compra_${new Date().toISOString().split('T')[0]}`, emp.logoBase64);
+        }
+
+        // --- GESTIÓN DE PROVEEDORES MODAL ---
+        function abrirModalProvedores() {
+            document.getElementById('modal-provedores').classList.add('active');
+            renderListaModalProvedores();
+        }
+
+        function cerrarModalProvedores() {
+            document.getElementById('modal-provedores').classList.remove('active');
+            cargarProveedores(); // Refrescar datalist principal
+        }
+
+        function renderListaModalProvedores() {
+            const tbody = document.getElementById('lista-modal-provedores');
+            tbody.innerHTML = proveedoresGlobal.map(p => `
+                <tr>
+                    <td>${p.nombre}</td>
+                    <td>${p.nit}</td>
+                    <td align="right" id="actions-prov-${p._id || p.id}">
+                        <button class="btn-delete" title="Eliminar" onclick="confirmarEliminar('${p._id || p.id}')">🗑</button>
+                    </td>
+                </tr>
+            `).join('');
+            if(proveedoresGlobal.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="3" align="center" style="padding:20px; color:var(--text-muted);">No hay proveedores registrados.</td></tr>';
+            }
+        }
+
+        async function guardarNuevoProveedor() {
+            const nombre = document.getElementById('m-prov-nombre').value.trim();
+            const nit = document.getElementById('m-prov-nit').value.trim();
+            
+            if(!nombre || !nit) {
+                showToast("Complete nombre y NIT", "warning");
+                return;
+            }
+
+            try {
+                await API.saveProvedorCompra({ nombre, nit });
+                showToast("Proveedor guardado", "success");
+                document.getElementById('m-prov-nombre').value = "";
+                document.getElementById('m-prov-nit').value = "";
+                await cargarProveedores();
+                renderListaModalProvedores();
+                // Forzamos el foco de vuelta para asegurar que la UI responda
+                setTimeout(() => document.getElementById('m-prov-nombre').focus(), 100);
+            } catch (err) {
+                showToast("Error al guardar: " + err.message, "danger");
+            }
+        }
+
+        function confirmarEliminar(id) {
+            const td = document.getElementById(`actions-prov-${id}`);
+            td.innerHTML = `
+                <button class="btn-delete" style="background:var(--success); color:white; width:auto; padding:0 8px; font-size:0.6rem;" onclick="eliminarProveedor('${id}')">CONFIRMAR</button>
+                <button class="btn-back" style="padding:4px 8px; font-size:0.6rem;" onclick="renderListaModalProvedores()">X</button>
+            `;
+        }
+
+        async function eliminarProveedor(id) {
+            try {
+                await API.deleteProvedorCompra(id);
+                showToast("Proveedor eliminado", "success");
+                await cargarProveedores();
+                renderListaModalProvedores();
+                // Forzamos el foco de vuelta al panel
+                setTimeout(() => document.getElementById('m-prov-nombre').focus(), 100);
+            } catch (err) {
+                showToast("Error al eliminar proveedor: " + err.message, "danger");
+            }
+        }
+
+        window.onload = init;
+    </script>
+
+    <!-- MODAL GESTIONAR PROVEEDORES -->
+    <div id="modal-provedores" class="modal-overlay">
+        <div class="modal-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                <h2 style="margin:0; font-size: 1.2rem; color: var(--secondary); font-family: 'Orbitron', sans-serif;">Gestión de Proveedores</h2>
+                <button onclick="cerrarModalProvedores()" class="btn-delete" style="background: rgba(255,255,255,0.05); color: white; width:35px; height:35px;">✕</button>
+            </div>
+            
+            <div style="background: rgba(255,255,255,0.02); padding: 24px; border-radius: 20px; border: 1px solid var(--border); margin-bottom: 24px;">
+                <h3 style="font-size: 0.75rem; margin-top:0; margin-bottom:15px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Añadir Nuevo Proveedor</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 12px; align-items: flex-end;">
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label>Nombre / Razón Social</label>
+                        <input type="text" id="m-prov-nombre" placeholder="Nombre...">
+                    </div>
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label>NIT / Documento</label>
+                        <input type="text" id="m-prov-nit" placeholder="NIT...">
+                    </div>
+                    <button onclick="guardarNuevoProveedor()" class="btn btn-primary" style="height: 42px;">Añadir</button>
+                </div>
+            </div>
+
+            <div style="max-height: 350px; overflow-y: auto; border: 1px solid var(--border); border-radius: 20px; background: rgba(0,0,0,0.2);">
+                <table class="data-table" style="margin-bottom:0;">
+                    <thead style="position: sticky; top:0; z-index: 10;">
+                        <tr>
+                            <th style="background: #111827;">Nombre</th>
+                            <th style="background: #111827;">NIT</th>
+                            <th style="width: 50px; background: #111827;"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="lista-modal-provedores">
+                        <!-- Se llena dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -12,21 +12,24 @@
     <script src="api.js"></script>
     <style>
         :root { 
-            --primary: #3b82f6; 
-            --primary-glow: rgba(59, 130, 246, 0.4);
+            --primary: #6366f1; 
+            --primary-glow: rgba(99, 102, 241, 0.4);
             --whatsapp: #22c55e; 
-            --bg: #05060f; 
-            --card-bg: rgba(31, 41, 55, 0.4);
-            --header-dark: #020617; 
+            --bg: #030712; 
+            --card-bg: rgba(31, 41, 55, 0.3);
+            --header-dark: #0f172a; 
             --accent: #00f2ff;
-            --accent-glow: rgba(0, 242, 255, 0.3);
-            --confirm: #6366f1; 
-            --text-main: #f1f5f9;
+            --accent-glow: rgba(0, 242, 255, 0.4);
+            --confirm: #8b5cf6; 
+            --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --border: rgba(255, 255, 255, 0.08);
             --ticket: #f59e0b;
-            --print: #a855f7;
+            --print: #ec4899;
+            --shadow-lux: 0 10px 40px rgba(0,0,0,0.6);
         }
+
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Orbitron:wght@500;700&display=swap');
 
         /* --- TOAST NOTIFICATIONS --- */
         #toast-container {
@@ -77,10 +80,12 @@
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.85);
             backdrop-filter: blur(8px);
-            z-index: 10000;
+            z-index: 10001; /* Mayor que otros modales */
             justify-content: center;
             align-items: center;
+            pointer-events: none; 
         }
+        #modalConfirm[style*="flex"] { pointer-events: auto; }
         .confirm-content {
             background: var(--header-dark);
             border: 1px solid var(--primary);
@@ -230,32 +235,44 @@
         .cat-btn.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 0 15px var(--primary-glow); }
 
         /* MODOS DE VISTA */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 15px; }
         
         .list { display: flex; flex-direction: column; gap: 12px; }
         .list .card { flex-direction: row; height: 85px; align-items: center; }
         .list .card img { width: 85px; height: 85px; border-bottom: none; border-right: 1px solid var(--border); }
         .list .info { display: flex; flex-direction: row; align-items: center; justify-content: space-between; padding: 0 20px; }
-        .list .info h3 { height: auto; white-space: nowrap; width: 220px; font-size: 0.8rem; }
+        .list .info h3 { height: auto; white-space: nowrap; width: 180px; font-size: 0.8rem; }
         .list .order-zone { border-top: none; border-left: 1px solid var(--border); display: flex; align-items: center; gap: 12px; padding: 10px; }
         .list .qty-box { margin-bottom: 0; }
 
         .card { 
             background: var(--card-bg); 
-            border-radius: 20px; 
+            border-radius: 16px; 
             overflow: hidden; 
             border: 1px solid var(--border); 
             display: flex; flex-direction: column; 
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.3s;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
             backdrop-filter: blur(10px);
+            position: relative;
         }
-        .card:hover { transform: translateY(-8px); border-color: var(--accent); box-shadow: 0 15px 35px rgba(0,0,0,0.4); }
-        .card img { width: 100%; height: 150px; object-fit: cover; cursor: zoom-in; opacity: 0.9; transition: 0.5s; }
-        .card:hover img { opacity: 1; transform: scale(1.05); }
+        .card:hover { 
+            transform: translateY(-10px); 
+            border-color: var(--accent); 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 20px var(--accent-glow);
+        }
+        .card img { 
+            width: 100%; height: 130px; 
+            object-fit: cover; cursor: zoom-in; opacity: 0.85; 
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.4s; 
+        }
+        .card:hover img { 
+            opacity: 1; 
+            transform: scale(1.1); 
+        }
 
-        .info { padding: 15px; flex: 1; }
-        .info h3 { margin: 0; font-size: 0.9rem; color: var(--text-main); height: 40px; overflow: hidden; line-height: 1.3; font-weight: 600; }
-        .price { font-size: 1.3rem; color: var(--accent); font-weight: 800; margin: 10px 0; font-family: 'Orbitron', sans-serif; text-shadow: 0 0 10px var(--accent-glow); }
+        .info { padding: 12px; flex: 1; }
+        .info h3 { margin: 0; font-size: 0.82rem; color: var(--text-main); height: 36px; overflow: hidden; line-height: 1.2; font-weight: 600; }
+        .price { font-size: 1.15rem; color: var(--accent); font-weight: 800; margin: 8px 0; font-family: 'Orbitron', sans-serif; text-shadow: 0 0 10px var(--accent-glow); }
         .unit-label { font-size: 0.65rem; color: var(--text-muted); font-weight: 800; text-transform: uppercase; margin-bottom: 5px; display: block; letter-spacing: 1px; }
         .badge-unit { background: var(--primary); color: white; font-size: 0.65rem; padding: 4px 10px; border-radius: 6px; display: inline-block; margin-top: 5px; font-weight: 700; }
         .ref-label { font-size: 0.65rem; background: rgba(0,0,0,0.3); padding: 3px 8px; border-radius: 6px; color: var(--text-muted); border: 1px solid var(--border); }
@@ -294,12 +311,20 @@
             border-radius: 8px; text-align: center; color: white; font-size: 1rem; font-weight: 700;
         }
         .btn-add { 
-            width: 100%; background: linear-gradient(135deg, var(--primary), #4f46e5); color: white; border: none; padding: 12px; 
-            border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 0.85rem; transition: 0.3s;
-            text-transform: uppercase; letter-spacing: 1px; font-family: 'Orbitron', sans-serif;
+            width: 100%; background: linear-gradient(135deg, var(--primary), #4338ca); color: white; border: none; padding: 14px; 
+            border-radius: 14px; cursor: pointer; font-weight: 700; font-size: 0.85rem; transition: 0.3s;
+            text-transform: uppercase; letter-spacing: 1.5px; font-family: 'Orbitron', sans-serif;
             box-shadow: 0 4px 15px var(--primary-glow);
+            position: relative; overflow: hidden;
         }
-        .btn-add:hover { transform: translateY(-2px); filter: brightness(1.1); box-shadow: 0 8px 10px var(--primary-glow); }
+        .btn-add::after {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: rgba(255,255,255,0.1); transform: rotate(45deg) translate(-100%, -100%);
+            transition: 0.6s;
+        }
+        .btn-add:hover { transform: translateY(-3px); filter: brightness(1.15); box-shadow: 0 8px 25px var(--primary-glow); }
+        .btn-add:hover::after { transform: rotate(45deg) translate(100%, 100%); }
+        .btn-add:active { transform: translateY(-1px) scale(0.98); }
 
         /* --- MINI CARRITO ABAJO --- */
         .resumen-seccion { background: #05060f; border-top: 1px solid var(--accent); max-height: 150px; overflow-y: auto; backdrop-filter: blur(20px); }
@@ -404,6 +429,9 @@
 
         #ticket-print-area { display: none; }
         
+        .btn-dian { background: #0f172a; color: #00f2ff; border: 1px solid #00f2ff; box-shadow: 0 4px 15px rgba(0, 242, 255, 0.2); }
+        .btn-dian:hover { background: #00f2ff; color: #000; }
+
         @page { size: auto; margin: 0; } /* ELIMINA ENCABEZADOS Y PIE DE PÁGINA DEL NAVEGADOR */
 
         @media print {
@@ -515,8 +543,8 @@
 
 <div class="container">
     <div class="controls">
-        <div class="search-row">
-            <input type="text" id="buscador" class="search-bar" placeholder="🔍 F1 para buscar o escanear..." onkeyup="render()" onkeydown="handleSearchKey(event)" autofocus>
+        <div class="search-row" style="gap:10px;">
+            <input type="text" id="buscador" class="search-bar" placeholder="🔍 F1: Buscar Producto o Referencia..." onkeyup="render()" onkeydown="handleSearchKey(event)" autofocus style="flex:2;">
             <button class="view-btn" onclick="toggleView()" id="btn-vista">🔲</button>
         </div>
         <div id="categorias" class="category-btns"></div>
@@ -530,8 +558,11 @@
             <tr>
                 <th>REF</th>
                 <th>Producto</th>
+                <th>UND</th>
                 <th>Precio Unit.</th>
                 <th style="width: 50px;">Cant.</th>
+                <th>Base</th>
+                <th>IVA</th>
                 <th>Subtotal</th>
                 <th style="width: 35px;"></th>
             </tr>
@@ -541,14 +572,24 @@
 </div>
 
 <div class="footer-actions">
-    <div class="total-container">TOTAL: <span id="total-dinero">$ 0</span></div>
+    <div class="total-container">
+        <div style="font-size: 0.8rem; opacity: 0.8;">Base: <span id="total-base">$ 0</span> | IVA: <span id="total-iva">$ 0</span></div>
+        TOTAL: <span id="total-dinero">$ 0</span>
+    </div>
     <div class="action-btns">
-        <button class="btn-reset" onclick="reiniciarPedido()" title="Atajo: F3">🔄 Limpiar [F3]</button>
-        <button id="btn-confirmar" class="btn-confirm" onclick="abrirModalPago()" title="Atajo: F2">💾 Confirmar [F2]</button>
-        <button id="btn-bill" class="btn-bill" onclick="generarFacturaExcel()" disabled>📊 Excel</button>
-        <button id="btn-print" class="btn-print" onclick="abrirModalPrint()" disabled title="Atajo: F4">🖨️ Imprimir [F4]</button>
-        <button id="btn-ticket" class="btn-ticket" onclick="abrirModalTicket()" disabled title="Atajo: F5">🎫 Ticket [F5]</button>
-        <button id="btn-send" class="btn-send" onclick="enviarPedido()" disabled title="Atajo: F6">✅ WhatsApp [F6]</button>
+        <button class="btn-reset" onclick="reiniciarPedido()" style="background: rgba(255,255,255,0.05); color: #94a3b8; border: 1px solid var(--border);" title="Atajo: F3">🔄 Limpiar [F3]</button>
+        <button id="btn-confirmar" class="btn-confirm" onclick="abrirModalPago()" style="background: var(--confirm); color: white; box-shadow: 0 8px 20px rgba(139, 92, 246, 0.4);" title="Atajo: F2">💾 Confirmar [F2] </button>
+        <button id="btn-bill" class="btn-bill" onclick="generarFacturaExcel()" style="background: #10b981; color: white;" disabled>📊 Excel</button>
+        <button id="btn-dian" class="btn-dian" onclick="reportarDIAN()" style="background: #0f172a; color: #00f2ff; border: 1px solid #00f2ff; box-shadow: 0 4px 15px rgba(0, 242, 255, 0.2);" disabled title="Atajo: F11">⚡ DIAN [F11]</button>
+        <button id="btn-print" class="btn-print" onclick="abrirModalPrint()" style="background: var(--print); color: white;" disabled title="Atajo: F4">🖨️ Imprimir [F4]</button>
+        <button id="btn-ticket" class="btn-ticket" onclick="abrirModalTicket()" style="background: var(--ticket); color: white;" disabled title="Atajo: F5">🎫 Ticket [F5]</button>
+        <button id="btn-send" class="btn-send" onclick="enviarPedido()" style="background: var(--whatsapp); color: white;" disabled title="Atajo: F6">✅ WhatsApp [F6]</button>
+        
+        <!-- Botones DIAN Post-Reporte (Ocultos inicialmente) -->
+        <div id="dian-outputs" style="display: none; align-items: center; gap: 10px;">
+            <button id="btn-dian-pdf" class="btn-circle" onclick="generarPDFDIAN()" style="background: #ef4444; color: white;" title="Ver PDF Factura">📄 PDF</button>
+            <button id="btn-dian-xml" class="btn-circle" onclick="descargarXMLDIAN()" style="background: #f59e0b; color: white;" title="Descargar XML DIAN">📂 XML</button>
+        </div>
     </div>
 </div>
 
@@ -594,8 +635,10 @@
                 try { 
                     carrito = JSON.parse(s); 
                     actualizarTabla(); 
+                    // Foco automático al buscador tras cargar
+                    setTimeout(() => document.getElementById('buscador').focus(), 500);
                     if(idPedidoActual) {
-                        const btns = ['btn-bill', 'btn-send', 'btn-ticket', 'btn-print'];
+                        const btns = ['btn-bill', 'btn-send', 'btn-ticket', 'btn-print', 'btn-dian'];
                         btns.forEach(b => {
                             const el = document.getElementById(b);
                             if(el) el.disabled = false;
@@ -619,11 +662,17 @@
                 puedeEditarPrecio = canEdit;
                 const rol = localStorage.getItem('userRol');
                 if (rol !== 'admin') {
-                    // Mapeo de permisos exactos desde usuarios.json
-                    if (localStorage.getItem('permExcel') === 'false') document.getElementById('btn-bill').style.display = 'none';
-                    if (localStorage.getItem('permPrint') === 'false') document.getElementById('btn-print').style.display = 'none';
-                    if (localStorage.getItem('permTicket') === 'false') document.getElementById('btn-ticket').style.display = 'none';
-                    if (localStorage.getItem('permWA') === 'false') document.getElementById('btn-send').style.display = 'none';
+                    const check = (id, key) => {
+                        if (localStorage.getItem(key) === 'false') {
+                            const el = document.getElementById(id);
+                            if(el) el.style.display = 'none';
+                        }
+                    };
+                    check('btn-bill', 'permExcel');
+                    check('btn-print', 'permPrint');
+                    check('btn-ticket', 'permTicket');
+                    check('btn-send', 'permWA');
+                    check('btn-dian', 'permDian');
                 }
             } catch (e) { console.error("Error validando permisos", e); }
         }
@@ -707,11 +756,11 @@
                 let statusClass = stock <= 0 ? 'stock-none' : (stock < 5 ? 'stock-low' : 'stock-high');
                 return `
                     <div class="card ${stock <= 0 ? 'out-of-stock' : ''}">
-                        <img src="${p.imagen || ''}" onclick="abrirZoom(this.src)" onerror="this.src='https://via.placeholder.com/200?text=📦'">
+                        <img src="${API.fixImage(p.imagen)}" onclick="abrirZoom(this.src)" onerror="this.src=API.DEFAULT_IMAGE">
                         <div class="info">
                             <span class="ref-label">REF: ${p.codigo}</span>
-                            <h3>${p.nombre} <small style="color:var(--accent); font-size:0.7rem;">(${p.unidad || 'Und'})</small></h3>
-                            <div class="price">$${parseFloat(p.precio || 0).toLocaleString()}</div>
+                            <h3>${API.formatProductName(p.nombre, p.unidad)}</h3>
+                            <div class="price">$${Math.round(parseFloat(p.precio || 0)).toLocaleString()}</div>
                             <span class="stock-badge ${statusClass}">${stock <= 0 ? 'Agotado' : 'Stock: ' + stock}</span>
                         </div>
                         <div class="order-zone">
@@ -741,24 +790,38 @@
 
         function actualizarTabla() {
             const tbody = document.getElementById('items-tabla');
-            let total = 0; let count = 0; let html = "";
+            let total = 0; let totalBase = 0; let totalIva = 0; let count = 0; let html = "";
+            const modoIva = (config.empresa && config.empresa.ivaModo) || 'incluido';
+
             for (let ref in carrito) {
                 const item = carrito[ref];
-                const sub = item.precio * item.cantidad;
-                total += sub; count += item.cantidad;
+                const pInfo = productos.find(x => x.codigo === ref) || {};
+                const perc = pInfo.ivaPorcentaje || 0;
+                const calc = API.calcularIVA(item.precio * item.cantidad, perc, modoIva);
+
+                total += calc.total;
+                totalBase += calc.base;
+                totalIva += calc.iva;
+                count += item.cantidad;
+
                 html += `
                     <tr>
                         <td>${ref}</td>
-                        <td>${item.nombre}</td>
+                        <td style="font-weight: 500;">${item.nombre}</td>
+                        <td style="color: var(--text-muted);">${item.unidad || 'Und'}</td>
                         <td><input type="number" value="${item.precio}" ${puedeEditarPrecio ? '' : 'readonly'} onchange="editarPrecio('${ref}', this.value)"></td>
                         <td><input type="number" value="${item.cantidad}" class="cart-qty-input" data-ref="${ref}" onchange="editarCant('${ref}', this.value)"></td>
-                        <td style="font-weight:bold">$${sub.toLocaleString()}</td>
+                        <td style="font-size: 0.85rem; opacity: 0.9;">$${API.formatNumber(calc.base)}</td>
+                        <td style="font-size: 0.85rem; opacity: 0.9; color: var(--accent);">$${API.formatNumber(calc.iva)}</td>
+                        <td style="font-weight:bold">$${API.formatNumber(calc.total)}</td>
                         <td><button onclick="eliminarItem('${ref}')">✕</button></td>
                     </tr>
                 `;
             }
-            tbody.innerHTML = html || '<tr><td colspan="6" style="text-align:center">Carrito vacío</td></tr>';
-            document.getElementById('total-dinero').innerText = `$ ${total.toLocaleString()}`;
+            tbody.innerHTML = html || '<tr><td colspan="8" style="text-align:center">Carrito vacío</td></tr>';
+            document.getElementById('total-dinero').innerText = `$ ${API.formatNumber(total)}`;
+            document.getElementById('total-base').innerText = `$ ${API.formatNumber(totalBase)}`;
+            document.getElementById('total-iva').innerText = `$ ${API.formatNumber(totalIva)}`;
             document.getElementById('cart-count').innerText = count;
             guardarCarrito();
         }
@@ -791,6 +854,14 @@
         }
 
         async function guardarPedidoFinal() {
+            if (window._isSaving) return;
+            window._isSaving = true;
+            const btnConf = document.getElementById('btn-confirmar');
+            if (btnConf) {
+                btnConf.disabled = true;
+                btnConf.innerText = "⏳ Procesando...";
+            }
+
             // SINCRONIZAR CANTIDADES MANUALES (Por si no se disparó onchange)
             const inputs = document.querySelectorAll('.cart-qty-input');
             inputs.forEach(inp => {
@@ -811,7 +882,15 @@
 
             const totalText = document.getElementById('total-dinero').innerText.replace(/[^\d]/g, "");
             const total = parseFloat(totalText);
-            if (total <= 0) return showToast("Carrito vacío", "warning");
+            
+            if (total <= 0) {
+                window._isSaving = false;
+                if (btnConf) {
+                    btnConf.disabled = false;
+                    btnConf.innerText = "💾 Confirmar [F2]";
+                }
+                return showToast("Carrito vacío", "warning");
+            }
 
             // VALIDACIÓN FINAL DE STOCK
             for (let ref in carrito) {
@@ -819,17 +898,45 @@
                 const prod = productos.find(x => x.codigo === ref);
                 const stockVal = prod ? (parseInt(prod.existencia) || 0) : 0;
                 if (item.cantidad > stockVal) {
+                    window._isSaving = false;
+                    if (btnConf) {
+                        btnConf.disabled = false;
+                        btnConf.innerText = "💾 Confirmar [F2]";
+                    }
                     return showToast(`Stock insuficiente para ${item.nombre}: ${stockVal} disp.`, "error");
                 }
             }
 
+            const itemsFinales = Object.values(carrito).map(it => {
+                const prod = productos.find(x => x.codigo === it.referencia) || {};
+                return {
+                    ...it,
+                    iva: prod.ivaPorcentaje || 0,
+                    precioCompra: prod.precioCompra || 0 // Capturamos el costo actual para auditoría
+                };
+            });
+
+            const bT = parseFloat(document.getElementById('total-base').innerText.replace(/[^\d]/g, "")) || 0;
+            const iT = parseFloat(document.getElementById('total-iva').innerText.replace(/[^\d]/g, "")) || 0;
+
+            // --- IDENTIDAD INMUTABLE DE PEDIDO ---
+            // Buscamos si ya existe un ID para este pedido en curso (por si hubo un refresco o reintento)
+            let idPersistente = localStorage.getItem('id_pedido_temp');
+            if (!idPersistente) {
+                idPersistente = Date.now();
+                localStorage.setItem('id_pedido_temp', idPersistente);
+            }
+
             const pedido = {
-                id: Date.now(),
+                id: Number(idPersistente),
                 cliente: (localStorage.getItem('nombreCliente') || "Cliente").toUpperCase(),
-                items: Object.values(carrito),
+                items: itemsFinales,
                 total: total,
+                baseTotal: bT,
+                ivaTotal: iT,
                 fecha: API.getFechaLocal(),
-                hora: new Date().toLocaleTimeString()
+                hora: new Date().toLocaleTimeString(),
+                moverStock: true // EXPLICIT: Ordenamos al servidor mover el inventario
             };
 
             try {
@@ -838,36 +945,45 @@
                     idPedidoActual = pedido.id;
                     guardarCarrito();
                     showToast("Venta guardada", "success");
-                    document.getElementById('btn-confirmar').disabled = true;
-                    document.getElementById('btn-confirmar').innerText = "Guardado";
-                    ['btn-bill', 'btn-send', 'btn-ticket', 'btn-print'].forEach(id => {
+                    
+                    if (btnConf) {
+                        btnConf.disabled = true;
+                        btnConf.innerText = "Guardado";
+                    }
+
+                    const mapping = {
+                        'btn-bill': 'permExcel',
+                        'btn-print': 'permPrint',
+                        'btn-ticket': 'permTicket',
+                        'btn-send': 'permWA',
+                        'btn-dian': 'permDian'
+                    };
+
+                    Object.keys(mapping).forEach(id => {
                         const el = document.getElementById(id);
-                        if(el) el.disabled = false;
+                        if(el) {
+                            const permKey = mapping[id];
+                            if (localStorage.getItem('userRol') !== 'admin' && localStorage.getItem(permKey) === 'false') {
+                                el.style.display = 'none';
+                            } else {
+                                el.disabled = false;
+                                el.style.display = 'block';
+                            }
+                        }
                     });
                     cerrarModalPago();
                     cargarData();
                 }
-            } catch (error) { showToast("Error al guardar", "error"); }
-        }
-
-        function reiniciarPedido() {
-            if (confirm("¿Nueva venta?")) {
-                carrito = {}; idPedidoActual = null;
-                localStorage.removeItem('carrito_pro_ventas');
-                localStorage.removeItem('id_pedido_temp');
-                actualizarTabla();
-                const btn = document.getElementById('btn-confirmar');
-                if(btn) {
-                    btn.disabled = false;
-                    btn.innerText = "💾 Confirmar [F2]";
+            } catch (error) { 
+                showToast("Error al guardar", "error"); 
+                window._isSaving = false;
+                if (btnConf) {
+                    btnConf.disabled = false;
+                    btnConf.innerText = "💾 Confirmar [F2]";
                 }
-                ['btn-bill', 'btn-send', 'btn-ticket', 'btn-print'].forEach(id => {
-                    const el = document.getElementById(id);
-                    if(el) el.disabled = true;
-                });
-                cargarData();
             }
         }
+
 
         function filtrar(cat) {
             categoriaActual = cat;
@@ -882,13 +998,16 @@
             document.getElementById('pago-total').innerText = document.getElementById('total-dinero').innerText;
             document.getElementById('pago-recibido').focus();
         }
-        function cerrarModalPago() { document.getElementById('modalPago').style.display = 'none'; }
+        function cerrarModalPago() { 
+            document.getElementById('modalPago').style.display = 'none'; 
+            document.getElementById('buscador').focus();
+        }
         
         function calcularCambio() {
             const tText = document.getElementById('pago-total').innerText.replace(/[^\d]/g, "");
             const t = parseFloat(tText) || 0;
             const r = parseFloat(document.getElementById('pago-recibido').value) || 0;
-            document.getElementById('pago-cambio').innerText = `$ ${(r - t).toLocaleString()}`;
+            document.getElementById('pago-cambio').innerText = `$ ${API.formatNumber(r - t)}`;
         }
 
         function enviarPedido() {
@@ -910,23 +1029,174 @@
             msg += `*CANT | PRODUCTO | SUBTOTAL*\n`;
             msg += `---------------------------------------------------------\n`;
             
-            let total = 0;
+            let total = 0; let totalBase = 0; let totalIva = 0;
+            const modoIva = (config.empresa && config.empresa.ivaModo) || 'incluido';
+
             for (let ref in carrito) {
                 const it = carrito[ref];
-                const sub = it.precio * it.cantidad;
-                total += sub;
+                const pInfo = productos.find(x => x.codigo === ref) || {};
+                const perc = pInfo.ivaPorcentaje || 0;
+                const calc = API.calcularIVA(it.precio * it.cantidad, perc, modoIva);
+                
+                const unitNeto = Math.round(it.precio / (1 + (perc / 100)));
+                const unitIva = Math.round(it.precio - unitNeto);
+
+                total += calc.total;
+                totalBase += calc.base;
+                totalIva += calc.iva;
+
                 msg += `🔹 *[${it.referencia}]* ${it.nombre}\n`;
-                msg += `    ${it.cantidad} ${it.unidad || 'Und'} x $${it.precio.toLocaleString()} = *$${sub.toLocaleString()}*\n`;
+                msg += `    ${it.cantidad} ${it.unidad || 'Und'} x $${Math.round(it.precio).toLocaleString()} (Neto: $${unitNeto.toLocaleString()} | IVA: $${unitIva.toLocaleString()}) = *$${Math.round(calc.total).toLocaleString()}*\n`;
                 msg += `---------------------------------------------------------\n`;
             }
             
             msg += `---------------------------------------------------------\n`;
-            msg += `*TOTAL PEDIDO: $${total.toLocaleString()}*\n`;
+            msg += `*BASE GRAVABLE: $${Math.round(totalBase).toLocaleString()}*\n`;
+            msg += `*IVA TOTAL: $${Math.round(totalIva).toLocaleString()}*\n`;
+            msg += `*TOTAL PEDIDO: $${Math.round(total).toLocaleString()}*\n`;
             msg += `---------------------------------------------------------\n`;
             msg += `_Enviado desde el Punto de Venta_`;
 
-            const tel = emp.proveedor || "573182744758";
+            const tel = (config.empresa && config.empresa.proveedor) || "573182744758";
             window.open(`https://wa.me/${tel}?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        function reiniciarPedido() {
+            if (Object.keys(carrito).length > 0) {
+                mostrarConfirmacion("¿REINICIAR VENTA?", "¿Deseas vaciar el pedido actual?", () => {
+                    ejecutarReinicio();
+                });
+            } else {
+                ejecutarReinicio();
+            }
+        }
+
+        function ejecutarReinicio() {
+            window._isSaving = false;
+            carrito = {};
+            idPedidoActual = null;
+            const btnConf = document.getElementById('btn-confirmar');
+            if (btnConf) {
+                btnConf.disabled = false;
+                btnConf.innerText = "💾 Confirmar [F2]";
+            }
+            
+            const mapping = {
+                'btn-bill': 'permExcel',
+                'btn-print': 'permPrint',
+                'btn-ticket': 'permTicket',
+                'btn-send': 'permWA',
+                'btn-dian': 'permDian'
+            };
+
+            Object.keys(mapping).forEach(id => {
+                const el = document.getElementById(id);
+                if(el) {
+                    el.disabled = true;
+                    const permKey = mapping[id];
+                    if (localStorage.getItem('userRol') !== 'admin' && localStorage.getItem(permKey) === 'false') {
+                        el.style.display = 'none';
+                    } else {
+                        el.style.display = 'block';
+                    }
+                    if (id === 'btn-dian') el.innerHTML = "⚡ DIAN [F11]";
+                }
+            });
+            
+            const out = document.getElementById('dian-outputs');
+            if(out) out.style.display = 'none';
+
+            actualizarTabla();
+            localStorage.removeItem('carrito_pro_ventas');
+            localStorage.removeItem('id_pedido_temp');
+            render();
+            
+            const b = document.getElementById('buscador');
+            b.value = "";
+            refocarBuscador(); // Blindaje de foco
+            showToast("Venta reiniciada", "info");
+        }
+
+        // --- BLINDAJE DE FOCO MAESTRO ---
+        function refocarBuscador() {
+            const b = document.getElementById('buscador');
+            if (!b) return;
+            b.disabled = false;
+            b.readOnly = false;
+            // Doble ciclo para asegurar que el navegador rinda y limpie capas
+            setTimeout(() => {
+                b.blur();
+                setTimeout(() => {
+                    b.focus();
+                    // Colocar el cursor al final si hay texto
+                    const val = b.value;
+                    b.value = '';
+                    b.value = val;
+                }, 50);
+            }, 50);
+        }
+
+        function mostrarConfirmacion(titulo, msg, onSi) {
+            document.getElementById('confirm-title').innerText = titulo;
+            document.getElementById('confirm-msg').innerText = msg;
+            const btnSi = document.getElementById('confirm-btn-yes');
+            btnSi.onclick = () => {
+                onSi();
+                cerrarConfirmacion();
+            };
+            document.getElementById('modalConfirm').style.display = 'flex';
+            // Enfocar el botón de aceptar para permitir ENTER inmediato
+            setTimeout(() => btnSi.focus(), 50);
+        }
+
+        async function reportarDIAN() {
+            if (!idPedidoActual) return showToast("Guarde el pedido primero", "warning");
+            const btn = document.getElementById('btn-dian');
+            const outputs = document.getElementById('dian-outputs');
+            
+            btn.innerHTML = "⏳ Enviando...";
+            btn.disabled = true;
+
+            try {
+                // Si ya fue reportado, solo mostramos los botones
+                // Pero el código original permitía reportar siempre
+                await API.reportarPedidoADian(idPedidoActual);
+                
+                showToast("Reporte enviado con éxito (Simulación)", "success");
+                btn.style.display = 'none'; // Ocultamos el botón principal de reporte
+                if(outputs) outputs.style.display = 'flex'; // Mostramos PDF y XML
+            } catch (e) {
+                showToast("Error DIAN: " + e.message, "error");
+                btn.innerHTML = "⚡ DIAN [F11]";
+                btn.disabled = false;
+            }
+        }
+
+        async function generarPDFDIAN() {
+            if (!idPedidoActual) return showToast("No hay pedido seleccionado", "warning");
+            showToast("Preparando documento...", "info");
+            try {
+                const url = await API.obtenerDocumentoDIAN(idPedidoActual, 'pdf');
+                window.open(url, '_blank');
+            } catch (e) {
+                showToast("Error: " + e.message, "error");
+            }
+        }
+
+        async function descargarXMLDIAN() {
+            if (!idPedidoActual) return showToast("No hay pedido seleccionado", "warning");
+            showToast("Preparando XML...", "info");
+            try {
+                const url = await API.obtenerDocumentoDIAN(idPedidoActual, 'xml');
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `Factura_DIAN_${idPedidoActual}.xml`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            } catch (e) {
+                showToast("Error: " + e.message, "error");
+            }
         }
 
         function cerrarSesion() {
@@ -935,12 +1205,21 @@
         }
 
         function abrirModalTicket() { document.getElementById('modalTicket').style.display = 'flex'; document.getElementById('tk-nombre').focus(); }
-        function cerrarModalTicket() { document.getElementById('modalTicket').style.display = 'none'; }
+        function cerrarModalTicket() { 
+            document.getElementById('modalTicket').style.display = 'none'; 
+            document.getElementById('buscador').focus();
+        }
         
         function abrirModalPrint() { document.getElementById('modalPrint').style.display = 'flex'; document.getElementById('print-nombre').focus(); }
-        function cerrarModalPrint() { document.getElementById('modalPrint').style.display = 'none'; }
+        function cerrarModalPrint() { 
+            document.getElementById('modalPrint').style.display = 'none'; 
+            document.getElementById('buscador').focus();
+        }
 
-        function cerrarConfirmacion() { document.getElementById('modalConfirm').style.display = 'none'; }
+        function cerrarConfirmacion() { 
+            document.getElementById('modalConfirm').style.display = 'none'; 
+            document.getElementById('buscador').focus();
+        }
 
         function obtenerHeaderEmpresa(cols) {
             let emp = { nombre: 'MI EMPRESA', nit: '', direccion: '', telefono: '', logoBase64: '' };
@@ -961,23 +1240,51 @@
 
         async function generarFacturaExcel() {
             if(!idPedidoActual) return showToast("Guarde el pedido primero", "warning");
-            const header = obtenerHeaderEmpresa(6);
+            const header = obtenerHeaderEmpresa(9);
             let htmlCont = `<table border="1">${header}
-                <tr><th colspan="6" style="background:#0f172a; color:#00f2ff; height:35px; text-align:center;">COMPROBANTE DE VENTA #${idPedidoActual}</th></tr>
+                <tr><th colspan="10" style="background:#0f172a; color:#00f2ff; height:35px; text-align:center;">COMPROBANTE DE VENTA #${idPedidoActual}</th></tr>
                 <tr style="background:#f1f5f9; font-weight:bold; text-align:center;">
-                    <th>PRODUCTO</th><th>REF</th><th>UND</th><th>CANT</th><th>PRECIO</th><th>SUBTOTAL</th>
+                    <th>PRODUCTO</th><th>REF</th><th>UND</th><th>CANT</th><th>PRECIO UN.</th><th>NETO UN.</th><th>IVA UN.</th><th>BASE</th><th>IVA</th><th>SUBTOTAL</th>
                 </tr>`;
             
             let total = 0;
+            let sumaBaseExacta = 0;
+            let sumaIvaExacta = 0;
+            const modoIva = (config.empresa && config.empresa.ivaModo) || 'incluido';
+
             for(let k in carrito) {
                 const it = carrito[k];
-                const sub = it.precio * it.cantidad;
-                total += sub;
-                htmlCont += `<tr><td>${it.nombre}</td><td>'${it.referencia}</td><td align="center">${it.unidad || 'Und'}</td><td align="center">${it.cantidad}</td><td align="right">$${it.precio.toLocaleString()}</td><td align="right">$${sub.toLocaleString()}</td></tr>`;
+                const pInfo = productos.find(x => x.codigo === it.referencia) || {};
+                const perc = pInfo.ivaPorcentaje || 0;
+                
+                const calc = API.calcularIVA(it.precio * it.cantidad, perc, modoIva);
+                
+                total += calc.total;
+                sumaBaseExacta += calc.base;
+                sumaIvaExacta += calc.iva;
+
+                const unitNeto = Math.round(it.precio / (1 + (perc / 100)));
+                const unitIva = Math.round(it.precio - unitNeto);
+                htmlCont += `<tr>
+                    <td>${it.nombre}</td>
+                    <td>'${it.referencia}</td>
+                    <td align="center">${it.unidad || 'Und'}</td>
+                    <td align="center">${it.cantidad}</td>
+                    <td align="right">$${API.formatNumber(it.precio)}</td>
+                    <td align="right">$${API.formatNumber(unitNeto)}</td>
+                    <td align="right">$${API.formatNumber(unitIva)}</td>
+                    <td align="right">$${API.formatNumber(calc.base)}</td>
+                    <td align="right">$${API.formatNumber(calc.iva)}</td>
+                    <td align="right">$${API.formatNumber(calc.total)}</td>
+                </tr>`;
             }
-            htmlCont += `<tr style="font-weight:bold; background:#f1f5f9;"><td colspan="5" align="right">TOTAL DE VENTA:</td><td align="right">$${total.toLocaleString()}</td></tr></table>`;
+
+            htmlCont += `
+                <tr style="font-weight:bold; background:#f8fafc;"><td colspan="9" align="right">SUBTOTAL (BASE):</td><td align="right">$${API.formatNumber(sumaBaseExacta)}</td></tr>
+                <tr style="font-weight:bold; background:#f8fafc;"><td colspan="9" align="right">IVA TOTAL:</td><td align="right">$${API.formatNumber(sumaIvaExacta)}</td></tr>
+                <tr style="font-weight:bold; background:#0f172a; color:white;"><td colspan="9" align="right">TOTAL A PAGAR:</td><td align="right">$${API.formatNumber(total)}</td></tr>
+            </table>`;
             
-            // Usamos la nueva función de la API que soporta MHT
             API.descargarExcelMHT(htmlCont, `Venta_${idPedidoActual}`, config.empresa ? config.empresa.logoBase64 : null);
         }
 
@@ -1019,37 +1326,49 @@
                     <table style="width:100%; border-collapse:collapse; font-size:10px; margin-top: 10px;">
                         <thead style="border-top:1px solid #000; border-bottom:1px solid #000;">
                             <tr>
-                                <th align="left" style="padding: 4px 2px;">REF</th>
-                                <th align="left" style="padding: 4px 2px;">PRODUCTO</th>
-                                <th align="center" style="padding: 4px 2px;">CANT</th>
-                                <th align="center" style="padding: 4px 2px;">UND</th>
-                                <th align="right" style="padding: 4px 2px;">P.UNIT</th>
-                                <th align="right" style="padding: 4px 2px;">TOTAL</th>
+                                <th align="left" style="padding: 4px 0;">ITEM / DESGLOSE (NETO | IVA)</th>
+                                <th align="right" style="padding: 4px 0;">TOTAL</th>
                             </tr>
                         </thead>
                         <tbody>`;
             
             let total = 0;
+            let sumaBase = 0;
+            let sumaIva = 0;
+            const modoIva = (config.empresa && config.empresa.ivaModo) || 'incluido';
+
             for(let k in carrito) {
                 const it = carrito[k];
-                const sub = it.precio * it.cantidad;
-                total += sub;
+                const pInfo = productos.find(x => x.codigo === it.referencia) || {};
+                const perc = pInfo.ivaPorcentaje || 0;
+                
+                const calc = API.calcularIVA(it.precio * it.cantidad, perc, modoIva);
+                
+                total += calc.total;
+                sumaBase += calc.base;
+                sumaIva += calc.iva;
+
+                const unitNeto = Math.round(it.precio / (1 + (perc / 100)));
+                const unitIva = Math.round(it.precio - unitNeto);
                 ticketHtml += `
                             <tr style="border-bottom: 0.5px solid #eee;">
-                                <td align="left" style="padding: 5px 2px; font-family: monospace;">${it.referencia}</td>
-                                <td align="left" style="padding: 5px 2px;">${it.nombre.toUpperCase().substring(0,12)}</td>
-                                <td align="center" style="padding: 5px 2px;">${it.cantidad}</td>
-                                <td align="center" style="padding: 5px 2px; color: #666;">${it.unidad || 'Und'}</td>
-                                <td align="right" style="padding: 5px 2px;">$${it.precio.toLocaleString()}</td>
-                                <td align="right" style="padding: 5px 2px; font-weight: bold;">$${sub.toLocaleString()}</td>
+                                <td align="left" style="padding: 5px 0;">
+                                    <strong style="font-family:monospace;">${it.referencia}</strong> - ${it.nombre.toUpperCase()}<br>
+                                    <span style="font-size: 9px; opacity: 0.8;">
+                                        ${it.cantidad} ${it.unidad || 'Und'} x $${API.formatNumber(it.precio)} (Neto: $${API.formatNumber(unitNeto)} | IVA: $${API.formatNumber(unitIva)})
+                                    </span>
+                                </td>
+                                <td align="right" style="padding: 5px 0; vertical-align: middle; font-weight: bold;">$${API.formatNumber(calc.total)}</td>
                             </tr>`;
             }
 
             ticketHtml += `
                         </tbody>
                     </table>
-                    <div style="border-top:1px solid #000; margin-top:5px; padding-top:5px; text-align:center;">
-                        <strong style="font-size:14px;">TOTAL: $${total.toLocaleString()}</strong>
+                    <div style="border-top:1px solid #000; margin-top:10px; padding-top:10px; text-align:right; font-family: monospace;">
+                        <div style="margin-bottom: 4px;">BASE GRAVABLE: $${API.formatNumber(sumaBase)}</div>
+                        <div style="margin-bottom: 4px;">IVA TOTAL: $${API.formatNumber(sumaIva)}</div>
+                        <div style="font-size:16px; font-weight: bold; margin-top: 5px; border-top: 1px dashed #000; padding-top: 5px;">TOTAL: $${API.formatNumber(total)}</div>
                     </div>
                     <div style="text-align:center; margin-top:15px; font-size:10px;">
                         ¡GRACIAS POR SU COMPRA!
@@ -1085,21 +1404,34 @@
             msg += `*CLIENTE:* ${nom.toUpperCase()}\n`;
             msg += `*FECHA:* ${new Date().toLocaleString()}\n`;
             msg += `---------------------------------------------------------\n`;
-            msg += `*CANT | PRODUCTO (UND) | TOTAL*\n`;
+            msg += `*CANT | PRODUCTO | TOTAL*\n`;
             msg += `---------------------------------------------------------\n`;
             
-            let total = 0;
+            let total = 0; let totalBase = 0; let totalIva = 0;
+            const modoIva = (config.empresa && config.empresa.ivaModo) || 'incluido';
+
             for (let k in carrito) {
                 const it = carrito[k];
-                const sub = it.precio * it.cantidad;
-                total += sub;
+                const pInfo = productos.find(x => x.codigo === it.referencia) || {};
+                const perc = pInfo.ivaPorcentaje || 0;
+                const calc = API.calcularIVA(it.precio * it.cantidad, perc, modoIva);
+                
+                const unitNeto = Math.round(it.precio / (1 + (perc / 100)));
+                const unitIva = Math.round(it.precio - unitNeto);
+
+                total += calc.total;
+                totalBase += calc.base;
+                totalIva += calc.iva;
+
                 msg += `🔹 *[${it.referencia}]* ${it.nombre}\n`;
-                msg += `    ${it.cantidad} ${it.unidad || 'Und'} x $${it.precio.toLocaleString()} = *$${sub.toLocaleString()}*\n`;
+                msg += `    ${it.cantidad} ${it.unidad || 'Und'} x $${Math.round(it.precio).toLocaleString()} (Neto: $${unitNeto.toLocaleString()} | IVA: $${unitIva.toLocaleString()}) = *$${Math.round(calc.total).toLocaleString()}*\n`;
                 msg += `---------------------------------------------------------\n`;
             }
             
             msg += `---------------------------------------------------------\n`;
-            msg += `*TOTAL A PAGAR: $${total.toLocaleString()}*\n`;
+            msg += `*BASE GRAVABLE: $${Math.round(totalBase).toLocaleString()}*\n`;
+            msg += `*IVA TOTAL: $${Math.round(totalIva).toLocaleString()}*\n`;
+            msg += `*TOTAL A PAGAR: $${Math.round(total).toLocaleString()}*\n`;
             msg += `---------------------------------------------------------\n`;
             msg += `_¡GRACIAS POR SU COMPRA!_\n`;
             msg += `*━━━━━━━━━━━━━━━━━━━━━━━━━*`;
@@ -1109,7 +1441,7 @@
         }
 
         function abrirZoom(src) {
-            if(!src) return;
+            if(!src || src.includes('undefined') || src.includes('null')) src = API.DEFAULT_IMAGE;
             document.getElementById('imgGrande').src = src;
             document.getElementById('modalZoom').style.display = 'flex';
         }
@@ -1118,27 +1450,42 @@
             await validarPermisos();
             await cargarData();
             cargarCarrito();
+            refocarBuscador();
         };
 
-        window.onkeydown = (e) => {
+        // --- SISTEMA DE ATAJOS ROBUSTO ---
+        document.addEventListener('keydown', (e) => {
             const btnConf = document.getElementById('btn-confirmar');
+            
             // F1: Enfoque Buscador
             if(e.key === 'F1') {
                 e.preventDefault();
-                document.getElementById('buscador').focus();
+                e.stopImmediatePropagation();
+                refocarBuscador();
             }
             // F2: Confirmar / Guardar
             if(e.key === 'F2' && btnConf && !btnConf.disabled) {
                 e.preventDefault();
                 abrirModalPago();
             }
-            // F3: Nuevo / Limpiar
-            if(e.key === 'F3') { e.preventDefault(); reiniciarPedido(); }
+            // F3: Nuevo / Limpiar (Prevenir Buscar del Navegador)
+            if(e.key === 'F3') { 
+                e.preventDefault(); 
+                e.stopImmediatePropagation();
+                reiniciarPedido(); 
+            }
             // F4: Imprimir
             if(e.key === 'F4') {
                 e.preventDefault();
                 const btn = document.getElementById('btn-print');
                 if(btn && !btn.disabled) abrirModalPrint();
+            }
+            // F11: Reporte DIAN
+            if(e.key === 'F11') {
+                e.preventDefault();
+                const btn = document.getElementById('btn-dian');
+                const hasPerm = localStorage.getItem('userRol') === 'admin' || localStorage.getItem('permDian') !== 'false';
+                if(btn && !btn.disabled && hasPerm) reportarDIAN();
             }
             // F5: Ticket WhatsApp
             if(e.key === 'F5') {
@@ -1153,12 +1500,35 @@
                 if(btn && !btn.disabled) enviarPedido();
             }
             
+            if(e.key === 'Enter') {
+                const mc = document.getElementById('modalConfirm');
+                if(mc && mc.style.display === 'flex') {
+                    e.preventDefault();
+                    document.getElementById('confirm-btn-yes').click();
+                }
+            }
+            
             if(e.key === 'Escape') {
                 cerrarModalPago();
                 cerrarModalPrint();
                 cerrarModalTicket();
-                document.getElementById('modalZoom').style.display = 'none';
+                cerrarConfirmacion();
+                const mz = document.getElementById('modalZoom');
+                if(mz) mz.style.display = 'none';
+                refocarBuscador();
             }
+        }, false);
+
+        // Recuperar foco al hacer click en zonas vacías
+        document.body.onclick = (e) => {
+            if(e.target.tagName === 'BODY' || e.target.classList.contains('container') || e.target.id === 'lista') {
+                refocarBuscador();
+            }
+        };
+
+        // Recuperar foco al volver a la ventana (Minimizar/Maximizar / ALT+TAB)
+        window.onfocus = () => {
+            refocarBuscador();
         };
     </script>
 </body>

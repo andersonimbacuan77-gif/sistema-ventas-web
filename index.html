@@ -9,6 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pro Inventory Control v2.0 - Dark Mode</title>
     <script src="api.js"></script>
+    <!-- Favicon interno para evitar errores 404/SSL -->
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTEyIDJMMiA3bDEwIDUgMTAtNS0xMC01ek0yIDE3bDEwIDUgMTAtNXYtM2wtMTAgNS0xMC01djN6bTAtNmwxMCA1IDEwLTV2LTNsLTEwIDUtMTAtNXYzeiIvPjwvc3ZnPg==">
     <style>
         :root {
             --primary: #6366f1;
@@ -260,49 +262,43 @@
             color: white;
         }
 
-        .category-filters { 
-            display: flex; 
-            gap: 12px; 
-            padding: 4px;
-            overflow-x: auto; 
-            background: rgba(255, 255, 255, 0.02);
+        .filter-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 100px;
-            padding: 6px;
+            padding: 10px 20px;
+            border-radius: 16px;
             width: fit-content;
-        }
-        .category-filters::-webkit-scrollbar { display: none; }
-
-        .filter-btn {
-            background: var(--card-bg); 
-            border: 1px solid var(--border);
-            color: var(--text-muted); 
-            padding: 8px 20px; 
-            border-radius: 30px; 
-            cursor: pointer; 
-            transition: 0.2s;
-            white-space: nowrap;
-            font-weight: 500;
-            font-size: 0.85rem;
+            backdrop-filter: blur(10px);
         }
 
-        .filter-btn:hover {
-            background: var(--card-hover);
-            color: white;
-            border-color: rgba(255, 255, 255, 0.3);
-            transform: translateY(-1px);
-        }
-
-        .filter-btn:active {
-            transform: scale(0.95);
-        }
-
-        .filter-btn.active {
-            background: var(--primary); 
-            color: white; 
-            border-color: var(--primary);
-            box-shadow: 0 4px 12px var(--primary-glow);
+        .filter-label {
+            font-size: 0.7rem;
             font-weight: 700;
+            color: var(--primary-light);
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .filter-select {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+            padding-right: 10px;
+            font-family: inherit;
+        }
+
+        .filter-select option {
+            background: var(--sidebar-bg);
+            color: white;
+            padding: 10px;
         }
 
         /* GRID VIEW */
@@ -647,7 +643,17 @@
                 </div>
             </div>
             
-            <div id="utilidad-tag" style="text-align: right; font-size: 0.85rem; color: var(--success); font-weight: 600; margin-bottom: 24px;">Utilidad: $0.00</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+                <div>
+                    <label>IVA (%)</label>
+                    <select id="iva-porcentaje" style="margin-bottom: 0;">
+                        <option value="0">0% (Exento / Excluido)</option>
+                        <option value="5">5% (Tarifa Reducida)</option>
+                        <option value="19" selected>19% (Tarifa General)</option>
+                    </select>
+                </div>
+                <div id="utilidad-tag" style="display: flex; align-items: flex-end; justify-content: flex-end; font-size: 0.85rem; color: var(--success); font-weight: 600; padding-bottom: 12px;">Utilidad: $0.00</div>
+            </div>
             
             <label>Imagen del Producto</label>
             <input type="file" id="foto" accept="image/*" style="font-size: 0.8rem; padding: 8px;">
@@ -689,7 +695,7 @@
     <div class="header-controls">
         <div class="search-area">
             <div class="search-wrapper">
-                <input type="text" id="buscador" placeholder="Buscar por nombre o referencia..." onkeyup="render()">
+                <input type="text" id="buscador" placeholder="Buscar por nombre o referencia..." onkeyup="render()" autofocus>
             </div>
             <div class="view-toggle">
                 <button class="view-btn active" id="btn-grid" onclick="cambiarVista('grid')">
@@ -700,7 +706,12 @@
                 </button>
             </div>
         </div>
-        <div id="filtros" class="category-filters"></div>
+        <div class="filter-container">
+            <span class="filter-label">🏷️ Categoría:</span>
+            <select id="filtros-select" class="filter-select" onchange="filtrar(this.value)">
+                <option value="Todas">Mostrar Todas</option>
+            </select>
+        </div>
     </div>
 
     <div id="lista" class="grid"></div>
@@ -778,24 +789,26 @@
 
     async function aplicarConfig() {
         try {
-            const config = await API.getConfig();
-            if(config.empresa && config.empresa.tema) {
-                API.applyTheme(config.empresa.tema);
+            const cfg = await API.getConfig();
+            config = cfg; // Guardar localmente
+            if(cfg.empresa && cfg.empresa.tema) {
+                API.applyTheme(cfg.empresa.tema);
             }
             
-            document.getElementById('categoria').innerHTML = (config.categorias || []).map(c => `<option value="${c}">${c}</option>`).join('');
-            document.getElementById('unidad').innerHTML = (config.unidades || []).map(u => `<option value="${u}">${u}</option>`).join('');
-
-            const fDiv = document.getElementById('filtros');
-            fDiv.innerHTML = `<button class="filter-btn ${categoriaActual==='Todas'?'active':''}" onclick="filtrar('Todas', event)">Todas</button>` +
-                (config.categorias || []).map(c => `<button class="filter-btn ${categoriaActual===c?'active':''}" onclick="filtrar('${c}', event)">${c}</button>`).join('');
+            // Llenar select del modal
+            document.getElementById('categoria').innerHTML = (cfg.categorias || []).map(c => `<option value="${c}">${c}</option>`).join('');
+            document.getElementById('unidad').innerHTML = (cfg.unidades || []).map(u => `<option value="${u}">${u}</option>`).join('');
+            
+            // Llenar select de filtros principal
+            const fSelect = document.getElementById('filtros-select');
+            fSelect.innerHTML = `<option value="Todas">🌟 Mostrar Todas</option>` +
+                (cfg.categorias || []).map(c => `<option value="${c}">${c}</option>`).join('');
+            
         } catch (e) { console.error("Error al aplicar config", e); }
     }
 
-    function filtrar(cat, e) {
+    function filtrar(cat) {
         categoriaActual = cat;
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        e.target.classList.add('active');
         render();
     }
 
@@ -819,6 +832,7 @@
         document.getElementById('modal-titulo').innerText = "Registrar Producto";
         document.getElementById('edit-index').value = "";
         document.querySelectorAll('#modal-form input:not([type="hidden"])').forEach(i => i.value = '');
+        document.getElementById('iva-porcentaje').value = 19;
         document.getElementById('foto').value = ""; // Limpiar input de archivo
         document.getElementById('utilidad-tag').innerText = "Utilidad: $0.00";
         document.getElementById('modal-form').style.display = 'flex';
@@ -841,6 +855,7 @@
             precioCompra: pc,
             precio: pv,
             margen: document.getElementById('margen').value,
+            ivaPorcentaje: parseInt(document.getElementById('iva-porcentaje').value) || 0,
             ganancia: (pv - pc).toFixed(2)
         };
 
@@ -907,9 +922,9 @@
             if (vistaActual === 'grid') {
                 return `
                     <div class="card-prod">
-                        <img src="${p.imagen || 'https://via.placeholder.com/120?text=📦'}" onclick="abrirZoom(this.src)">
+                        <img src="${API.fixImage(p.imagen)}" onclick="abrirZoom(this.src)" onerror="this.src=API.DEFAULT_IMAGE">
                         <div style="font-size: 0.65rem; color: var(--accent); text-transform: uppercase; font-weight: 800; margin-top: 12px; margin-bottom: 4px; letter-spacing: 0.5px; text-align: center;">${p.categoria || 'GENERAL'}</div>
-                        <h3 style="margin-top: 0;">${p.nombre}</h3>
+                        <h3 style="margin-top: 0;">${API.formatProductName(p.nombre, p.unidad)}</h3>
                         <div class="card-ref">REF: ${p.codigo}</div>
                         <div class="card-stock">Existencia: ${p.existencia || 0} ${p.unidad || 'UND'}</div>
                         <div class="card-price">$${parseFloat(p.precio || 0).toLocaleString()}</div>
@@ -922,9 +937,9 @@
             } else {
                 return `
                     <div class="card-prod">
-                        <img src="${p.imagen || 'https://via.placeholder.com/48?text=📦'}" onclick="abrirZoom(this.src)">
+                        <img src="${API.fixImage(p.imagen)}" onclick="abrirZoom(this.src)" onerror="this.src=API.DEFAULT_IMAGE">
                         <div class="info-content">
-                            <h3>${p.nombre}</h3>
+                            <h3>${API.formatProductName(p.nombre, p.unidad)}</h3>
                             <div style="font-size: 0.6rem; color: var(--accent); text-transform: uppercase; font-weight: 700; margin-top: 3px; letter-spacing: 0.5px;">${p.categoria || 'GENERAL'}</div>
                             <div class="card-ref" style="margin:0">REF: ${p.codigo}</div>
                             <div class="card-stock" style="margin:0; background:none; padding:0">Stock: ${p.existencia || 0} <span style="color:var(--text-muted); font-size: 0.7rem; margin-left:4px;">${p.unidad || 'UND'}</span></div>
@@ -952,6 +967,7 @@
         document.getElementById('precio-compra').value = p.precioCompra;
         document.getElementById('precio-venta').value = p.precio;
         document.getElementById('margen').value = p.margen || "";
+        document.getElementById('iva-porcentaje').value = p.ivaPorcentaje || 0;
         document.getElementById('foto').value = ""; // Limpiar input de archivo para evitar persistencia
         const c = parseFloat(p.precioCompra) || 0;
         const v = parseFloat(p.precio) || 0;
@@ -977,6 +993,7 @@
     }
 
     function abrirZoom(src) {
+        if(!src || src.includes('undefined') || src.includes('null')) src = API.DEFAULT_IMAGE;
         document.getElementById('zoom-src').src = src;
         document.getElementById('modal-img-zoom').style.display = 'flex';
     }
@@ -984,6 +1001,8 @@
     window.onload = async () => { 
         await aplicarConfig(); 
         await cargarProductos(); 
+        const b = document.getElementById('buscador');
+        if(b) b.focus();
     };
 </script>
 </body>

@@ -245,7 +245,7 @@
             font-weight: 700;
             letter-spacing: 1px;
         }
-        .filter-bar input {
+        .filter-bar input, .filter-bar select {
             background: var(--bg);
             border: 1px solid var(--border);
             color: white;
@@ -272,18 +272,18 @@
         .history-table th {
             background: rgba(255, 255, 255, 0.02);
             color: var(--text-muted);
-            padding: 12px 16px;
+            padding: 10px 12px;
             text-align: left;
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             text-transform: uppercase;
             letter-spacing: 1px;
             font-weight: 700;
             border-bottom: 1px solid var(--border);
         }
         .history-table td {
-            padding: 10px 16px;
+            padding: 8px 12px;
             border-bottom: 1px solid var(--border);
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--text);
         }
         .history-table tr:last-child td { border-bottom: none; }
@@ -562,7 +562,11 @@
                 <input type="text" id="m-nombre" readonly style="background: rgba(255,255,255,0.02); font-weight: 600;">
             </div>
             
-            <div class="form-group"><label>Proveedor</label><input type="text" id="m-proveedor"></div>
+            <div class="form-group"><label>N° de Factura / Remisión</label><input type="text" id="m-factura" placeholder="Ej: 63089"></div>
+            <div class="form-group"><label>Fecha de la Factura</label><input type="date" id="m-fecha-factura"></div>
+            <div class="form-group"><label>Proveedor</label><input type="text" id="m-proveedor" list="lista-proveedores" onfocus="this.select()" onmousedown="this.focus()">
+                <datalist id="lista-proveedores"></datalist>
+            </div>
             <div class="form-group"><label>Laboratorio</label><input type="text" id="m-laboratorio"></div>
             <div class="form-group"><label>Registro INVIMA</label><input type="text" id="m-invima"></div>
             
@@ -582,6 +586,25 @@
             <div class="form-group"><label>Def. Mayores</label><input type="text" id="m-may"></div>
             <div class="form-group"><label>Def. Menores</label><input type="text" id="m-men"></div>
             
+            <div class="form-group" style="border: 1px solid var(--primary-light); padding: 8px; border-radius: 8px; background: rgba(99, 102, 241, 0.05);">
+                <label style="color: var(--primary-light); font-weight: 700;">Precio de Compra (Base)</label>
+                <input type="number" id="m-precio-compra" placeholder="0" onkeyup="calcularIvaIngreso()">
+            </div>
+
+            <div class="form-group" style="background: rgba(245, 158, 11, 0.05); padding: 8px; border-radius: 8px; border: 1px solid rgba(245, 158, 11, 0.2);">
+                <label style="color: var(--warning); font-weight: 700;">IVA (%)</label>
+                <select id="m-iva-porcentaje" onchange="calcularIvaIngreso()">
+                    <option value="0">0% (Exento)</option>
+                    <option value="5">5% (Mínima)</option>
+                    <option value="19" selected>19% (General)</option>
+                </select>
+            </div>
+
+            <div class="form-group" style="background: rgba(16, 185, 129, 0.05); padding: 8px; border-radius: 8px; border: 1px solid rgba(16, 185, 129, 0.2);">
+                <label style="color: var(--success); font-weight: 700;">IVA Incluido (Desglose)</label>
+                <input type="text" id="m-iva-valor" readonly style="color: var(--success); font-weight: bold; background: transparent; border: none;">
+            </div>
+
             <div class="form-group">
                 <label>Cumple Acepta</label>
                 <select id="m-acepta"><option value="SI">SI</option><option value="NO">NO</option></select>
@@ -645,9 +668,17 @@
     <div class="filter-bar" id="contenedor-filtros">
         <div><label>Fecha Inicial:</label><input type="date" id="f-inicio"></div>
         <div><label>Fecha Final:</label><input type="date" id="f-fin"></div>
-        <div><label>Referencia (REF):</label><input type="text" id="f-ref" placeholder="Filtrar por REF..."></div>
+        <div><label>Referencia o Nombre:</label><input type="text" id="f-ref" placeholder="Buscar REF o Producto..."></div>
         <div><label>Proveedor:</label><input type="text" id="f-prov" placeholder="Buscar por proveedor..."></div>
         <div><label>Lote:</label><input type="text" id="f-lote" placeholder="Buscar por lote..."></div>
+        <div>
+            <label>Tipo de Movimiento:</label>
+            <select id="f-tipo">
+                <option value="">TODOS LOS MOVIMIENTOS</option>
+                <option value="INGRESO">🟢 SOLO INGRESOS</option>
+                <option value="EGRESO">🔴 SOLO EGRESOS</option>
+            </select>
+        </div>
         <div style="display: flex; flex-direction: row; gap: 12px; height: 48px;">
             <button onclick="filtrarHistorial()" class="btn-action btn-vence" style="flex: 1; font-size:0.75rem;">APLICAR FILTROS</button>
             <button onclick="generarExcel()" class="btn-action btn-excel" style="flex: 1; font-size:0.75rem;">📊 EXCEL INGRESOS</button>
@@ -664,10 +695,17 @@
                     <th>REF</th>
                     <th>Producto</th>
                     <th>U. Medida</th> 
+                    <th>Lab. / Fabricante</th>
                     <th>Proveedor</th>
                     <th>Lote</th>
                     <th>Vencimiento</th>
+                    <th style="text-align: center;">IVA %</th>
+                    <th style="text-align: right;">IVA Unit.</th>
+                    <th style="text-align: right;">IVA Total</th>
                     <th>Cant.</th>
+                    <th style="color: var(--primary-light); text-align: right;">V. Base</th>
+                    <th style="color: var(--primary-light); text-align: right;">V. Unitario</th>
+                    <th style="color: var(--accent); font-weight: bold; text-align: right;">Valor Total</th>
                     <th style="text-align: right;">Acciones</th>
                 </tr>
             </thead>
@@ -883,23 +921,48 @@
 
                 const campos = ['m-proveedor', 'm-laboratorio', 'm-invima', 'm-cant-emp', 'm-concentracion', 'm-forma', 
                               'm-presentacion', 'm-est-invima', 'm-lote', 'm-vence', 'm-cond', 'm-muestra', 
-                              'm-crit', 'm-may', 'm-men', 'm-obs', 'm-total-suma'];
+                              'm-crit', 'm-may', 'm-men', 'm-obs', 'm-total-suma', 'm-precio-compra', 'm-iva-valor', 'm-factura', 'm-fecha-factura'];
                 campos.forEach(id => document.getElementById(id).value = "");
                 document.getElementById('m-acepta').value = "SI";
                 document.getElementById('m-rechaza').value = "NO";
                 document.getElementById('m-nombre').value = p.nombre;
 
+                // Precarga de Costos y Atributos desde el catálogo (Base sugerida)
+                document.getElementById('m-precio-compra').value = p.precioCompra || 0;
+
                 const ings = await API.getIngresos();
-                const ultimoIngreso = [...ings].reverse().find(reg => reg.ref === p.codigo);
-                if (ultimoIngreso) {
-                    document.getElementById('m-proveedor').value = ultimoIngreso.proveedor || "";
-                    document.getElementById('m-laboratorio').value = ultimoIngreso.laboratorio || "";
-                    document.getElementById('m-invima').value = ultimoIngreso.invima || "";
-                    document.getElementById('m-concentracion').value = ultimoIngreso.concentracion || "";
-                    document.getElementById('m-forma').value = ultimoIngreso.forma || "";
-                    document.getElementById('m-presentacion').value = ultimoIngreso.presentacion || "";
-                    document.getElementById('m-est-invima').value = ultimoIngreso.estado_invima || "";
-                    document.getElementById('m-cond').value = ultimoIngreso.cond_almacen || "";
+
+                // 1. Memoria Global: Cargar Proveedor, Factura y Fecha del ÚLTIMO ingreso guardado en el sistema
+                const ultimoRegistroGlobal = ings[ings.length - 1];
+                if(ultimoRegistroGlobal) {
+                    document.getElementById('m-factura').value = ultimoRegistroGlobal.factura || "";
+                    document.getElementById('m-fecha-factura').value = ultimoRegistroGlobal.fecha_factura || "";
+                    document.getElementById('m-proveedor').value = ultimoRegistroGlobal.proveedor || "";
+                }
+
+                // 2. Sugerencias de Proveedores (Historial + Catálogo + Orden Alfabético)
+                const listaP = document.getElementById('lista-proveedores');
+                const provHistorial = ings.map(i => i.proveedor);
+                const provCatalogo = prods.map(p => p.proveedor);
+                
+                const proveedoresUnicos = [...new Set([...provHistorial, ...provCatalogo].filter(p => p))]
+                                          .sort((a, b) => a.localeCompare(b, undefined, {sensitivity: 'base'}));
+                
+                listaP.innerHTML = proveedoresUnicos.map(p => `<option value="${p}">`).join('');
+
+                // 3. Memoria Específica del Producto: Invima, Concentración, Lab, etc.
+                const ultimoIngresoProducto = [...ings].reverse().find(reg => reg.ref === p.codigo);
+                if (ultimoIngresoProducto) {
+                    document.getElementById('m-laboratorio').value = ultimoIngresoProducto.laboratorio || "";
+                    document.getElementById('m-invima').value = ultimoIngresoProducto.invima || "";
+                    document.getElementById('m-concentracion').value = ultimoIngresoProducto.concentracion || "";
+                    document.getElementById('m-forma').value = ultimoIngresoProducto.forma || "";
+                    document.getElementById('m-presentacion').value = ultimoIngresoProducto.presentacion || "";
+                    document.getElementById('m-est-invima').value = ultimoIngresoProducto.estado_invima || "";
+                    document.getElementById('m-cond').value = ultimoIngresoProducto.cond_almacen || "";
+                    document.getElementById('m-iva-porcentaje').value = ultimoIngresoProducto.iva_porcentaje || (p.ivaPorcentaje || 0);
+                } else {
+                    document.getElementById('m-iva-porcentaje').value = p.ivaPorcentaje || 0;
                 }
 
                 document.getElementById('modalIngreso').style.display = 'block';
@@ -933,6 +996,8 @@
                 const registro = {
                     id: Date.now(), tipo: 'INGRESO', fecha_registro: API.getFechaLocal(),
                     fecha_hora: new Date().toLocaleString(), ref: pActual.codigo, nombre: pActual.nombre,
+                    factura: document.getElementById('m-factura').value,
+                    fecha_factura: document.getElementById('m-fecha-factura').value,
                     proveedor: document.getElementById('m-proveedor').value, laboratorio: document.getElementById('m-laboratorio').value,
                     invima: document.getElementById('m-invima').value, cant_empaque: document.getElementById('m-cant-emp').value,
                     concentracion: document.getElementById('m-concentracion').value, forma: document.getElementById('m-forma').value,
@@ -942,6 +1007,15 @@
                     def_criticos: document.getElementById('m-crit').value, def_mayores: document.getElementById('m-may').value,
                     def_menores: document.getElementById('m-men').value, cumple_acepta: document.getElementById('m-acepta').value,
                     cumple_rechaza: document.getElementById('m-rechaza').value, observaciones: document.getElementById('m-obs').value,
+                    iva_porcentaje: parseInt(document.getElementById('m-iva-porcentaje').value) || 0,
+                    precio_compra: Math.round(parseFloat(document.getElementById('m-precio-compra').value) || 0),
+                    iva_valor: (function() {
+                        const p = parseFloat(document.getElementById('m-precio-compra').value) || 0;
+                        const c = parseInt(document.getElementById('m-total-suma').value) || 0;
+                        const per = parseInt(document.getElementById('m-iva-porcentaje').value) || 0;
+                        const tot = p * c;
+                        return Math.round(tot - (tot / (1 + (per / 100))));
+                    })(),
                     cantidad: cant,
                     estado: 'activo'
                 };
@@ -984,6 +1058,7 @@
                 const refFiltro = document.getElementById('f-ref').value.toLowerCase();
                 const provFiltro = document.getElementById('f-prov').value.toLowerCase();
                 const loteFiltro = document.getElementById('f-lote').value.toLowerCase();
+                const tipoFiltro = document.getElementById('f-tipo').value;
                 const body = document.getElementById('historial-body');
                 body.innerHTML = "";
                 
@@ -996,16 +1071,53 @@
                     const fLocal = API.getFechaLocal(m.id);
                     const cumpleFecha = (!inicio || fLocal >= inicio) && (!fin || fLocal <= fin);
                     const cumpleProv = !provFiltro || (m.proveedor && m.proveedor.toLowerCase().includes(provFiltro));
-                    const cumpleRef = !refFiltro || (m.ref && m.ref.toLowerCase().includes(refFiltro));
+                    const cumpleRef = !refFiltro || 
+                                     (m.ref && m.ref.toLowerCase().includes(refFiltro)) || 
+                                     (m.nombre && m.nombre.toLowerCase().includes(refFiltro));
                     const cumpleLote = !loteFiltro || (m.lote && m.lote.toLowerCase().includes(loteFiltro));
-                    return cumpleFecha && cumpleProv && cumpleRef && cumpleLote;
+                    const cumpleTipo = !tipoFiltro || m.tipo === tipoFiltro;
+                    return cumpleFecha && cumpleProv && cumpleRef && cumpleLote && cumpleTipo;
                 });
 
+                let totalIvaPagado = 0;
+                let desgloseIVA = {
+                    '19': { base: 0, iva: 0 },
+                    '5': { base: 0, iva: 0 },
+                    '0': { base: 0, iva: 0 }
+                };
+
                 filtrados.sort((a,b) => b.id - a.id);
+                
                 filtrados.forEach(m => {
                     const esIng = m.tipo === 'INGRESO';
-                    const esAgotado = m.estado === 'agotado';
                     const pInfo = productos.find(p => p.codigo === m.ref);
+                    
+                    const costoRef = parseFloat(m.precio_compra) || (pInfo ? parseFloat(pInfo.precioCompra) : 0);
+                    const porcRef = (typeof m.iva_porcentaje !== 'undefined' && m.iva_porcentaje !== null) ? parseInt(m.iva_porcentaje) : (pInfo ? parseInt(pInfo.ivaPorcentaje) : 0);
+                    
+                    // Siempre recalculamos el IVA para asegurar exactitud fiscal en la visualización (Cálculo Legal Incluido)
+                    let ivaActual = 0;
+                    if (costoRef > 0 && porcRef > 0) {
+                        const totalLinea = costoRef * m.cantidad;
+                        ivaActual = Math.round(totalLinea - (totalLinea / (1 + (porcRef / 100))));
+                    }
+
+                    m.iva_valor = ivaActual;
+                    m.iva_porcentaje = porcRef;
+                    m.precio_compra = costoRef;
+
+                    if(esIng) {
+                        totalIvaPagado += ivaActual;
+                        const key = porcRef.toString();
+                        if(desgloseIVA[key]) {
+                            const totalLineaIng = costoRef * m.cantidad;
+                            const baseIng = totalLineaIng - ivaActual;
+                            desgloseIVA[key].base += baseIng;
+                            desgloseIVA[key].iva += ivaActual;
+                        }
+                    }
+
+                    const esAgotado = m.estado === 'agotado';
                     const unidadMedida = pInfo ? pInfo.unidad : '-';
 
                     body.innerHTML += `<tr>
@@ -1016,12 +1128,30 @@
                         <td><code style="background: rgba(255,255,255,0.05); padding: 2px 4px; border-radius: 4px; font-size: 0.7rem;">${m.ref}</code></td>
                         <td style="font-weight: 500;">${m.nombre}</td>
                         <td style="color: var(--text-muted); font-size: 0.7rem;">${unidadMedida}</td> 
+                        <td style="color: var(--text-muted); font-size: 0.7rem;">${m.laboratorio || '-'}</td>
                         <td style="color: var(--text-muted); font-size: 0.7rem;">${m.proveedor || '-'}</td>
                         <td><span style="border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; font-size: 0.7rem;">${m.lote || '-'}</span></td>
                         <td style="color:var(--accent); font-weight: 600;">${m.vencimiento || '-'}</td>
-                        <td><b style="font-size: 0.85rem;">${m.cantidad}</b></td>
+                        <td style="text-align: center;"><span style="color:var(--warning); font-weight:700;">${porcRef}%</span></td>
+                        <td style="text-align: right; color: var(--accent); font-weight: 500;">
+                            $${API.formatNumber(Math.round(ivaActual / m.cantidad))}
+                        </td>
+                        <td style="text-align: right; color: ${esIng ? 'var(--accent)' : '#94a3b8'}; font-weight:bold; opacity: ${esIng ? 1 : 0.7};">
+                            $${API.formatNumber(ivaActual)}
+                        </td>
+                        <td style="text-align: center;"><b style="font-size: 0.85rem;">${m.cantidad}</b></td>
+                        <td style="color: var(--primary-light); font-weight: 500; text-align: right;">
+                            $${API.formatNumber(Math.round(costoRef - (ivaActual / m.cantidad)))}
+                        </td>
+                        <td style="color: var(--primary-light); font-weight: 500; text-align: right;">
+                            $${API.formatNumber(Math.round(costoRef))}
+                        </td>
+                        <td style="text-align: right; color: var(--success); font-weight: bold; border-left: 1px solid var(--border);">
+                            $${API.formatNumber(Math.round(costoRef * m.cantidad))}
+                        </td>
                         <td style="text-align: right;">
                             <div style="display:flex; gap:6px; justify-content: flex-end;">
+                                ${esIng ? `<button class="btn-action" onclick="imprimirActa(${m.id})" title="Imprimir Acta Técnica" style="padding: 6px 10px; font-size: 0.6rem; background: var(--primary); color:white; border:none;">🖨️ ACTA</button>` : ''}
                                 ${esIng && !esAgotado ? `<button class="btn-action btn-finish" onclick="marcarAgotado(${m.id})" title="Marcar como agotado" style="padding: 6px 10px; font-size: 0.6rem;">TERMINAR</button>` : ''}
                                 ${esIng && esAgotado ? `<span style="font-size:0.6rem; color:var(--text-muted); background: var(--border); padding: 2px 6px; border-radius: 4px; font-weight: 700;">AGOTADO</span>` : ''}
                                 <button class="btn-action btn-danger" onclick="eliminarMovimiento(${m.id}, '${m.tipo}', '${m.ref}', ${m.cantidad})" title="Eliminar registro" style="padding: 6px 10px; font-size: 0.6rem;">ELIMINAR</button>
@@ -1029,9 +1159,176 @@
                         </td>
                     </tr>`;
                 });
+
+                const resumenAnt = document.getElementById('resumen-iva-pagado');
+                if(resumenAnt) resumenAnt.remove();
+
+                document.getElementById('contenedor-filtros').insertAdjacentHTML('afterend', `
+                    <div id="resumen-iva-pagado" style="background: rgba(34, 197, 94, 0.05); border: 1px solid rgba(34, 197, 94, 0.2); padding: 15px 24px; border-radius: 18px; margin: 20px 0; display: flex; align-items: center; justify-content: space-between; backdrop-filter: blur(10px); box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
+                        <div style="display: flex; align-items: center; gap: 20px;">
+                            <div style="font-size: 2rem; background: linear-gradient(135deg, #22c55e, #10b981); width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 14px; color: white; box-shadow: 0 6px 15px rgba(34, 197, 94, 0.3);">💸</div>
+                            <div>
+                                <small style="color: var(--text-muted); text-transform: uppercase; font-weight: 800; letter-spacing: 1.5px; display: block; margin-bottom: 4px; font-family: 'Orbitron', sans-serif; font-size: 0.6rem;">IVA TOTAL PAGADO (Compras)</small>
+                                <h2 style="margin:0; color: #22c55e; font-family: 'Orbitron', sans-serif; font-size: 1.5rem; text-shadow: 0 0 10px rgba(34, 197, 94, 0.3);">$ ${API.formatNumber(Math.round(totalIvaPagado))}</h2>
+                                <div style="display: flex; gap: 15px; margin-top: 5px;">
+                                    <span style="font-size: 0.65rem; color: var(--text-muted);">Tarifa 19%: <b>$${API.formatNumber(Math.round(desgloseIVA['19'].iva))}</b></span>
+                                    <span style="font-size: 0.65rem; color: var(--text-muted);">Tarifa 5%: <b>$${API.formatNumber(Math.round(desgloseIVA['5'].iva))}</b></span>
+                                    <span style="font-size: 0.65rem; color: var(--text-muted);">Exento 0%: <b>$0</b></span>
+                                </div>
+                            </div>
+                            <div style="border-left: 2px solid var(--border); padding-left: 20px; height: 50px; display: flex; flex-direction: column; justify-content: center;">
+                                <small style="color: var(--text-muted); text-transform: uppercase; font-weight: 800; letter-spacing: 1px; font-size: 0.6rem; display: block; margin-bottom: 2px;">TOTAL COMPRAS (VALOR PAGADO)</small>
+                                <h3 style="margin:0; color: #38bdf8; font-family: 'Orbitron', sans-serif; font-size: 1.4rem;">$ ${API.formatNumber(Math.round(desgloseIVA['19'].base + desgloseIVA['5'].base + desgloseIVA['0'].base + totalIvaPagado))}</h3>
+                            </div>
+                        </div>
+                        <button onclick="generarExcelIVA()" class="btn-action btn-excel" style="height: 48px; padding: 0 24px; font-size: 0.8rem;">📊 EXPORTAR DETALLE IVA</button>
+                    </div>
+                `);
+
+                window.ultimoDesglose = desgloseIVA;
                 return filtrados;
             } catch(e) { console.error(e); }
         }
+        async function imprimirActa(id) {
+            try {
+                const ings = await API.getIngresos();
+                const m = ings.find(x => x.id === id);
+                if (!m) return alert("Movimiento no encontrado");
+
+                const config = await API.getConfig();
+                let emp = config.empresa || { nombre: 'MI EMPRESA' };
+                
+                // Obtener datos del admin logueado para la firma
+                const adminName = localStorage.getItem('adminLogueado') || localStorage.getItem('nombreCliente') || 'ADMINISTRADOR';
+                const adminDoc = localStorage.getItem('adminDocumento') ? `ID: ${localStorage.getItem('adminDocumento')}` : 'Identificación: ________________';
+
+                const win = window.open('', '_blank');
+                win.document.write(`
+                    <html>
+                    <head>
+                        <title>Acta de Recepción Técnica - ${m.lote}</title>
+                        <style>
+                            @page { size: portrait; margin: 1cm; }
+                            body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; color: #1e293b; line-height: 1.4; background: white; }
+                            
+                            .header { display: flex; align-items: center; gap: 20px; border-bottom: 2px solid #0f172a; padding-bottom: 15px; margin-bottom: 20px; }
+                            .logo-container img { max-width: 130px; max-height: 90px; object-fit: contain; }
+                            .header-info { flex-grow: 1; text-align: center; }
+                            .header h1 { margin: 0; font-size: 1.4rem; color: #0f172a; text-transform: uppercase; letter-spacing: 1px; }
+                            .company-name { font-weight: 800; font-size: 1.2rem; margin: 5px 0; color: #1e293b; }
+                            .company-info { font-size: 0.75rem; color: #64748b; font-weight: 500; }
+                            
+                            .section-title { background: #0f172a; color: white; padding: 6px 12px; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; margin: 15px 0 0 0; border-radius: 4px 4px 0 0; }
+                            
+                            .grid-container { 
+                                display: grid; 
+                                grid-template-columns: repeat(3, 1fr); 
+                                border-left: 1px solid #cbd5e1; 
+                                border-top: 1px solid #cbd5e1;
+                                margin-bottom: 10px;
+                            }
+                            
+                            .box { 
+                                border-right: 1px solid #cbd5e1; 
+                                border-bottom: 1px solid #cbd5e1; 
+                                padding: 6px 10px; 
+                                display: flex;
+                                flex-direction: column;
+                            }
+                            
+                            .label { font-weight: 700; font-size: 0.6rem; color: #475569; text-transform: uppercase; margin-bottom: 2px; }
+                            .val { font-size: 0.85rem; color: #0f172a; font-weight: 600; min-height: 1.1rem; }
+                            
+                            .full { grid-column: span 3; }
+                            .span-2 { grid-column: span 2; }
+                            
+                            .footer { margin-top: 60px; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
+                            .firma-box { border-top: 2px solid #0f172a; text-align: center; padding-top: 8px; position: relative; }
+                            .firma-label { font-weight: 700; font-size: 0.85rem; color: #0f172a; display: block; }
+                            .firma-sub { font-size: 0.7rem; color: #64748b; }
+                            .admin-name-tag { font-weight: bold; margin-bottom: 35px; display: block; font-size: 1.1rem; color: #334155; text-transform: uppercase; }
+                            
+                            .no-print { margin-top: 40px; text-align: center; border-top: 1px dashed #ccc; padding-top: 20px; }
+                            @media print { .no-print { display: none; } }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="header">
+                            ${emp.logoBase64 ? `<div class="logo-container"><img src="${emp.logoBase64}" alt="Logo"></div>` : ''}
+                            <div class="header-info">
+                                <h1>Acta de Recepción Técnica</h1>
+                                <div class="company-name">${emp.nombre.toUpperCase()}</div>
+                                <div class="company-info">NIT: ${emp.nit || '---'} | Dirección: ${emp.direccion || '---'} | Tel: ${emp.telefono || '---'}</div>
+                            </div>
+                        </div>
+
+                        <div class="section-title">1. Identificación del Producto y Compra</div>
+                        <div class="grid-container">
+                            <div class="box span-2"><div class="label">Nombre del Producto / Dispositivo</div><div class="val">${m.nombre}</div></div>
+                            <div class="box"><div class="label">Referencia / REF</div><div class="val">${m.ref}</div></div>
+                            <div class="box"><div class="label">Laboratorio / Fabricante</div><div class="val">${m.laboratorio || '---'}</div></div>
+                            <div class="box"><div class="label">Proveedor / Distribuidor</div><div class="val">${m.proveedor || '---'}</div></div>
+                            <div class="box"><div class="label">N° Factura / Remisión</div><div class="val" style="font-weight:bold; color:#0f172a;">${m.factura || '---'}</div></div>
+                            <div class="box"><div class="label">Fecha de Factura</div><div class="val">${m.fecha_factura || '---'}</div></div>
+                            <div class="box full"><div class="label">Fecha y Hora de Recepción en Sistema</div><div class="val">${m.fecha_hora}</div></div>
+                        </div>
+
+                        <div class="section-title">2. Especificaciones Técnicas y Calidad</div>
+                        <div class="grid-container">
+                            <div class="box"><div class="label">Registro Sanitario INVIMA</div><div class="val">${m.invima || '---'}</div></div>
+                            <div class="box"><div class="label">Vigencia Registro Sanitario</div><div class="val">${m.estado_invima || '---'}</div></div>
+                            <div class="box"><div class="label">Número de Lote</div><div class="val">${m.lote}</div></div>
+                            
+                            <div class="box"><div class="label">Concentración</div><div class="val">${m.concentracion || '---'}</div></div>
+                            <div class="box"><div class="label">Forma Farmacéutica</div><div class="val">${m.forma || '---'}</div></div>
+                            <div class="box"><div class="label">Presentación Comercial</div><div class="val">${m.presentacion || '---'}</div></div>
+                            
+                            <div class="box"><div class="label">Fecha de Vencimiento</div><div class="val" style="color:red">${m.vencimiento}</div></div>
+                            <div class="box"><div class="label">Condiciones Almacenamiento</div><div class="val">${m.cond_almacen || '---'}</div></div>
+                            <div class="box"><div class="label">Tamaño de Muestra</div><div class="val">${m.n_muestra || '---'} un</div></div>
+                        </div>
+
+                        <div class="section-title">3. Hallazgos y Evaluación de Atributos</div>
+                        <div class="grid-container">
+                            <div class="box"><div class="label">Cantidad Empaques REC.</div><div class="val">${m.cant_empaque || '0'}</div></div>
+                            <div class="box"><div class="label">Unidades Totales</div><div class="val">${m.cantidad}</div></div>
+                            <div class="box"><div class="label">Impuesto IVA (%)</div><div class="val">${m.iva_porcentaje || 0}%</div></div>
+                            
+                            <div class="box"><div class="label">Defectos Críticos</div><div class="val">${m.def_criticos || 'NINGUNO'}</div></div>
+                            <div class="box"><div class="label">Defectos Mayores</div><div class="val">${m.def_mayores || 'NINGUNO'}</div></div>
+                            <div class="box"><div class="label">Defectos Menores</div><div class="val">${m.def_menores || 'NINGUNO'}</div></div>
+                            
+                            <div class="box"><div class="label">Criterio de Aceptación</div><div class="val">${m.cumple_acepta === 'SI' ? 'CUMPLE' : 'NO CUMPLE'}</div></div>
+                            <div class="box"><div class="label">Criterio de Rechazo</div><div class="val">${m.cumple_rechaza === 'SI' ? 'RECHAZADO' : 'NO RECHAZADO'}</div></div>
+                            <div class="box"><div class="label">Estado en Inventario</div><div class="val">${m.estado === 'agotado' ? 'AGOTADO' : 'ACTIVO'}</div></div>
+                        </div>
+
+                        <div class="section-title">4. Observaciones Finales</div>
+                        <div class="grid-container">
+                            <div class="box full"><div class="label">Detalle de la Inspección</div><div class="val" style="font-style: italic;">${m.observaciones || 'Se realiza inspección técnica organoléptica cumpliendo con los estándares de calidad definidos por la normativa vigente.'}</div></div>
+                        </div>
+
+                        <div class="footer">
+                            <div class="firma-box">
+                                <b class="firma-label">Responsable de Recepción Técnica</b>
+                                <span class="firma-sub">Administrador del Sistema</span>
+                            </div>
+                            <div class="firma-box">
+                                <b class="firma-label">Entregado por (Proveedor/Transporte)</b>
+                                <span class="firma-sub">Firma / Sello / C.C.</span>
+                            </div>
+                        </div>
+
+                        <div class="no-print">
+                            <button onclick="window.print()" style="padding: 14px 40px; background: #0f172a; color:white; border:none; border-radius:10px; cursor:pointer; font-weight:bold; font-size:1rem; box-shadow: 0 10px 20px rgba(0,0,0,0.15);">🖨️ IMPRIMIR ACTA TÉCNICA</button>
+                        </div>
+                    </body>
+                    </html>
+                `);
+                win.document.close();
+            } catch(e) { console.error(e); }
+        }
+
 
         async function marcarAgotado(id) {
             abrirConfirmacion("¿MARCAR COMO AGOTADO?", "¿Desea marcar este lote como AGOTADO?", async () => {
@@ -1095,39 +1392,291 @@
             });
         }
 
+        async function generarExcelIVA() {
+            try {
+                const results = await filtrarHistorial();
+                if(!results || results.length === 0) return showToast("No hay registros para exportar", "warning");
+
+                // Filtramos todos los ingresos (incluyendo exentos 0% para reporte completo)
+                const dataIva = results.filter(m => m.tipo === 'INGRESO' && m.precio_compra > 0);
+                if(dataIva.length === 0) return showToast("No hay registros de compras para exportar", "warning");
+
+                const fInicio = document.getElementById('f-inicio').value || "Inicio";
+                const fFin = document.getElementById('f-fin').value || "Fin";
+
+                const { headerHtml, logoBase64 } = await obtenerHeaderEmpresa(13);
+
+                let tablaHtml = `<table border="1">
+                    ${headerHtml}
+                    <tr><th colspan="13" style="background-color: #f8fafc; color: #334155; font-size:14px; text-align:center; height:20px;">REPORTE FISCAL: DETALLE DE IVA PAGADO EN COMPRAS</th></tr>
+                    <tr><th colspan="13" style="background-color: #f8fafc; color: #64748b; font-size:12px; text-align:center; height:20px;">PERIODO: ${fInicio} AL ${fFin}</th></tr>
+                    <tr>
+                        <th style="background-color: #1e293b; color: white;">FECHA</th>
+                        <th style="background-color: #1e293b; color: white;">REF</th>
+                        <th style="background-color: #1e293b; color: white;">PRODUCTO</th>
+                        <th style="background-color: #1e293b; color: white;">PROVEEDOR</th>
+                        <th style="background-color: #1e293b; color: white;">LOTE</th>
+                        <th style="background-color: #1e293b; color: white;">CANT.</th>
+                        <th style="background-color: #1e293b; color: white;">V. UNITARIO (PAGADO)</th>
+                        <th style="background-color: #1e293b; color: white;">V. BASE UNIT.</th>
+                        <th style="background-color: #1e293b; color: white;">V. IVA UNIT.</th>
+                        <th style="background-color: #1e293b; color: white;">V. BASE TOTAL</th>
+                        <th style="background-color: #1e293b; color: white;">% IVA</th>
+                        <th style="background-color: #1e293b; color: white;">TOTAL IVA PAGADO</th>
+                        <th style="background-color: #16a34a; color: white;">TOTAL COMPRA (CON IVA)</th>
+                    </tr>`;
+                
+                let sumaTotalBase = 0;
+                let sumaTotalIva = 0;
+                let sumaTotalCompra = 0;
+
+                dataIva.forEach(m => {
+                    const totalC = Math.round(m.precio_compra * m.cantidad);
+                    const porc = (typeof m.iva_porcentaje !== 'undefined' && m.iva_porcentaje !== null) ? parseInt(m.iva_porcentaje) : 0;
+                    
+                    // Cálculo legal: IVA Incluido
+                    const iva = Math.round(totalC - (totalC / (1 + (porc / 100))));
+                    const baseTotal = totalC - iva;
+                    const baseUnit = Math.round(m.precio_compra / (1 + (porc / 100)));
+                    const ivaUnit = Math.round(m.precio_compra - baseUnit);
+                    
+                    sumaTotalBase += baseTotal;
+                    sumaTotalIva += iva;
+                    sumaTotalCompra += totalC;
+
+                    tablaHtml += `<tr style="height:20px;">
+                        <td>${m.fecha_hora}</td>
+                        <td align="center">'${m.ref}</td>
+                        <td>${m.nombre}</td>
+                        <td>${m.proveedor || "-"}</td>
+                        <td>${m.lote || "-"}</td>
+                        <td align="center">${m.cantidad}</td>
+                        <td align="right">$ ${Math.round(m.precio_compra).toLocaleString()}</td>
+                        <td align="right">$ ${baseUnit.toLocaleString()}</td>
+                        <td align="right">$ ${ivaUnit.toLocaleString()}</td>
+                        <td align="right">$ ${baseTotal.toLocaleString()}</td>
+                        <td align="center">${porc}%</td>
+                        <td align="right" style="color:#0ea5e9;">$ ${iva.toLocaleString()}</td>
+                        <td align="right" style="font-weight:bold; background-color: #f0fdf4; color:#16a34a;">$ ${totalC.toLocaleString()}</td>
+                    </tr>`;
+                });
+
+                tablaHtml += `
+                    <tr style="font-weight:bold; background-color: #f8fafc;">
+                        <td colspan="11" align="right" style="height:30px; color: #475569;">VALOR TOTAL BASE (NETO):</td>
+                        <td align="right" colspan="2" style="color: #475569;">$ ${Math.round(sumaTotalBase).toLocaleString()}</td>
+                    </tr>
+                    <tr style="font-weight:bold; background-color: #f0fdf4;">
+                        <td colspan="11" align="right" style="height:30px; color: #16a34a;">VALOR TOTAL IVA PAGADO:</td>
+                        <td align="right" colspan="2" style="color:#16a34a;">$ ${Math.round(sumaTotalIva).toLocaleString()}</td>
+                    </tr>
+                    <tr style="font-weight:bold; background-color: #0d9488; color: white;">
+                        <td colspan="11" align="right" style="height:35px;">VALOR TOTAL COMPRAS EN EL PERIODO (TOTAL PAGADO):</td>
+                        <td align="right" colspan="2" style="font-size:16px; color: white;">$ ${Math.round(sumaTotalCompra).toLocaleString()}</td>
+                    </tr>
+                </table>
+
+                <br>
+                <table border="1" style="width: 50%;">
+                    <tr><th colspan="4" style="background-color: #1e293b; color: white; height:30px;">RESUMEN FISCAL POR TARIFAS (COMPRAS)</th></tr>
+                    <tr style="background-color: #f8fafc; font-weight: bold;">
+                        <td align="center">TARIFA (%)</td>
+                        <td align="center">BASE GRAVABLE</td>
+                        <td align="center">IVA PAGADO</td>
+                        <td align="center">TOTAL COMPRA</td>
+                    </tr>
+                    <tr>
+                        <td align="center">19% (General)</td>
+                        <td align="right">$ ${Math.round(window.ultimoDesglose['19'].base).toLocaleString()}</td>
+                        <td align="right">$ ${Math.round(window.ultimoDesglose['19'].iva).toLocaleString()}</td>
+                        <td align="right">$ ${Math.round(window.ultimoDesglose['19'].base + window.ultimoDesglose['19'].iva).toLocaleString()}</td>
+                    </tr>
+                    <tr>
+                        <td align="center">5% (Reducida)</td>
+                        <td align="right">$ ${Math.round(window.ultimoDesglose['5'].base).toLocaleString()}</td>
+                        <td align="right">$ ${Math.round(window.ultimoDesglose['5'].iva).toLocaleString()}</td>
+                        <td align="right">$ ${Math.round(window.ultimoDesglose['5'].base + window.ultimoDesglose['5'].iva).toLocaleString()}</td>
+                    </tr>
+                    <tr>
+                        <td align="center">0% (Exento)</td>
+                        <td align="right">$ ${Math.round(window.ultimoDesglose['0'].base).toLocaleString()}</td>
+                        <td align="right">$ 0</td>
+                        <td align="right">$ ${Math.round(window.ultimoDesglose['0'].base).toLocaleString()}</td>
+                    </tr>
+                    <tr style="font-weight: bold; background-color: #dbeafe;">
+                        <td align="center">TOTALES</td>
+                        <td align="right">$ ${Math.round(window.ultimoDesglose['19'].base + window.ultimoDesglose['5'].base + window.ultimoDesglose['0'].base).toLocaleString()}</td>
+                        <td align="right">$ ${Math.round(window.ultimoDesglose['19'].iva + window.ultimoDesglose['5'].iva).toLocaleString()}</td>
+                        <td align="right">$ ${Math.round(window.ultimoDesglose['19'].base + window.ultimoDesglose['5'].base + window.ultimoDesglose['0'].base + window.ultimoDesglose['19'].iva + window.ultimoDesglose['5'].iva).toLocaleString()}</td>
+                    </tr>
+                </table>`;
+                
+                API.descargarExcelMHT(tablaHtml, `Reporte_IVA_Compras_${API.getFechaLocal()}`, logoBase64);
+            } catch(e) { console.error(e); showToast("Error al exportar reporte de IVA", "error");}
+        }
+
         async function generarExcel() {
             try {
                 const results = await filtrarHistorial();
                 if(!results || results.length === 0) return showToast("No hay registros para exportar", "warning");
 
-                const dataActual = results.filter(m => m.tipo === 'INGRESO');
-                if(dataActual.length === 0) return showToast("No hay registros de ingresos para exportar en este filtro", "warning");
+                const dataIngresos = results.filter(m => m.tipo === 'INGRESO');
+                if(dataIngresos.length === 0) return showToast("No hay registros de ingresos para exportar en este filtro", "warning");
 
-                const fInicio = document.getElementById('f-inicio').value || "Inicio";
+                // Agrupamiento por Proveedor y Factura (Incluyendo Fecha)
+                const grupos = dataIngresos.reduce((acc, m) => {
+                    const key = `${m.proveedor || 'SIN PROVEEDOR'} | FAC: ${m.factura || 'S/N'} (${m.fecha_factura || 'S/F'})`;
+                    if (!acc[key]) acc[key] = [];
+                    acc[key].push(m);
+                    return acc;
+                }, {});
+
+                const monthNames = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"];
+                
+                // Lógica de Título Dinámico (Nombre Empresa + Mes del Filtro o Actual)
+                const config = await API.getConfig();
+                const empNombre = (config.empresa && config.empresa.nombre) ? config.empresa.nombre.toUpperCase() : "EMPRESA";
+                const fInicio = document.getElementById('f-inicio').value;
                 const fFin = document.getElementById('f-fin').value || "Fin";
-
-                const { headerHtml, logoBase64 } = await obtenerHeaderEmpresa(23);
-
-                let tablaHtml = `<table border="1">
-                    ${headerHtml}
-                    <tr><th colspan="23" style="background-color: #f8fafc; color: #334155; font-size:14px; text-align:center; height:20px;">PERIODO CONSULTADO: ${fInicio} AL ${fFin}</th></tr>
-                    <tr>
-                        <th colspan="23" style="background-color: #020617; color: #00f2ff; font-size:1.4rem; height:50px;">ACTA DE RECEPCIÓN TÉCNICA DE MEDICAMENTOS Y DISPOSITIVOS</th>
-                    </tr>
-                    <tr>
-                        <th style="background-color: #1e293b; color: white; font-size: 0.7rem;">FECHA/HORA REGISTRO</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">REF/CÓDIGO</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">PRODUCTO</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">UNIDAD DE MEDIDA</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">PROVEEDOR</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">LABORATORIO</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">REG. INVIMA</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">CANT. EMPAQUES</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">CONCENTRACIÓN</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">FORMA FARM.</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">PRES. COMERCIAL</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">ESTADO INVIMA</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">LOTE</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">VENCIMIENTO</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">COND. ALMACEN.</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">N° MUESTRA</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">DEF. CRÍTICOS</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">DEF. MAYORES</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">DEF. MENORES</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">ACEPTA</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">RECHAZA</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">CANT. UNITARIA</th><th style="background-color: #1e293b; color: white; font-size: 0.7rem;">OBSERVACIONES</th>
-                    </tr>`;
                 
-                const productos = await API.getProductos();
-                dataActual.forEach(m => {
-                    const pInfo = productos.find(p => p.codigo === m.ref);
-                    const unidad = pInfo ? pInfo.unidad : "-";
-                    tablaHtml += `<tr style="height:20px;"><td>${m.fecha_hora}</td><td>'${m.ref}</td><td>${m.nombre}</td><td align="center">${unidad}</td><td>${m.proveedor || ""}</td><td>${m.laboratorio || ""}</td><td>${m.invima || ""}</td><td align="center">${m.cant_empaque || 0}</td><td>${m.concentracion || ""}</td><td>${m.forma || ""}</td><td>${m.presentacion || ""}</td><td>${m.estado_invima || ""}</td><td>${m.lote || ""}</td><td>${m.vencimiento || ""}</td><td>${m.cond_almacen || ""}</td><td>${m.n_muestra || ""}</td><td>${m.def_criticos || ""}</td><td>${m.def_mayores || ""}</td><td>${m.def_menores || ""}</td><td align="center">${m.cumple_acepta}</td><td align="center">${m.cumple_rechaza}</td><td align="center"><b>${m.cantidad}</b></td><td>${m.observaciones || ""}</td></tr>`;
+                let mesTitulo = "";
+                let anoTitulo = "";
+
+                if (fInicio) {
+                    const d = new Date(fInicio + "T00:00:00");
+                    mesTitulo = monthNames[d.getMonth()];
+                    anoTitulo = d.getFullYear();
+                } else if (dataIngresos.length > 0) {
+                    // Si no hay filtro, tomar el mes del registro más reciente del grupo
+                    const d = new Date(dataIngresos[0].id);
+                    mesTitulo = monthNames[d.getMonth()];
+                    anoTitulo = d.getFullYear();
+                } else {
+                    const d = new Date();
+                    mesTitulo = monthNames[d.getMonth()];
+                    anoTitulo = d.getFullYear();
+                }
+
+                const { headerHtml, logoBase64 } = await obtenerHeaderEmpresa(20);
+
+                // Datos del Usuario Logueado: leer desde la API para obtener el nombre actualizado
+                const userLoginKey = localStorage.getItem('userLogin') || 'admin';
+                let adminNom = localStorage.getItem('adminLogueado') || localStorage.getItem('nombreCliente') || 'ADMINISTRADOR';
+                try {
+                    const usuarios = await API.getUsuarios();
+                    const usuarioActual = usuarios.find(u => u.user === userLoginKey);
+                    if (usuarioActual && usuarioActual.nombre) adminNom = usuarioActual.nombre;
+                } catch(e) { /* Usar valor de localStorage como fallback */ }
+                const adminDoc = localStorage.getItem('adminDocumento');
+                const adminDocStr = adminDoc ? ` Cc. ${adminDoc}` : '';
+
+                let tablaHtml = `<table border="1">${headerHtml}`;
+
+                Object.keys(grupos).sort().forEach(grupoKey => {
+                    const items = grupos[grupoKey];
+                    const [proveedor, resto] = grupoKey.split(' | ');
+                    const fechaFactura = items[0].fecha_factura || items[0].fecha_registro;
+
+                    // Encabezado de Sección: Título dinámico por sección
+                    tablaHtml += `
+                        <tr><td colspan="20" style="height:15px; border:none;"></td></tr>
+                        <tr style="height:35px;">
+                            <th colspan="20" style="background-color: #f8fafc; color: #0f172a; font-size: 14px; text-align: left; padding-left: 10px; border-top: 2px solid #334155; text-transform: uppercase;">
+                                RECEPCIÓN TÉCNICA ${empNombre} ${mesTitulo} ${anoTitulo}
+                            </th>
+                        </tr>
+                        <tr style="background-color: #f1f5f9; font-weight: bold; font-size: 11px; height: 30px; vertical-align: middle;">
+                            <td colspan="7" style="padding: 0 10px; border: 1px solid #cbd5e1;">PROVEEDOR: ${proveedor.toUpperCase()}</td>
+                            <td colspan="13" style="padding: 0 10px; border: 1px solid #cbd5e1; border-left: none;">FECHA : ${items[0].fecha_factura || items[0].fecha_registro || 'S/F'}</td>
+                        </tr>
+                        <tr style="background-color: #f1f5f9; font-weight: bold; font-size: 11px; height: 30px; vertical-align: middle;">
+                            <td colspan="20" style="padding: 0 10px; border: 1px solid #cbd5e1; border-top: none;">FAC. ${items[0].factura || 'S/N'}</td>
+                        </tr>
+                        <tr style="background-color: #e2e8f0; color: #1e293b; text-align: center; font-size: 10px; font-weight: bold; height: 35px; vertical-align: middle;">
+                            <td rowspan="2" align="center" width="30" style="border: 1px solid #94a3b8;">NO</td>
+                            <td rowspan="2" width="280" style="border: 1px solid #94a3b8;">NOMBRE DEL MEDICAMENTO</td>
+                            <td rowspan="2" align="center" width="60" style="border: 1px solid #94a3b8; font-size: 8px;">CANTIDAD</td>
+                            <td rowspan="2" width="90" style="border: 1px solid #94a3b8;">CONCENTRACION</td>
+                            <td rowspan="2" width="110" style="border: 1px solid #94a3b8;">FORMA<br>FARMACEUTICA</td>
+                            <td rowspan="2" width="120" style="border: 1px solid #94a3b8;">PRESENTACION<br>COMERCIAL</td>
+                            <td rowspan="2" width="100" style="border: 1px solid #94a3b8;">LAB.</td>
+                            <td rowspan="2" width="120" style="border: 1px solid #94a3b8;">REGISTRO DE<br>INVIMA</td>
+                            <td rowspan="2" width="90" style="border: 1px solid #94a3b8;">ESTADO<br>REG.INVIMA</td>
+                            <td rowspan="2" width="90" style="border: 1px solid #94a3b8;">NUMERO DE<br>LOTE</td>
+                            <td colspan="2" style="border: 1px solid #94a3b8;">FECHA DE VENCIMIENTO</td>
+                            <td rowspan="2" width="130" style="border: 1px solid #94a3b8;">CONDICIONES ESPECIALES<br>ALMACENAMIENT</td>
+                            <td rowspan="2" align="center" width="50" style="border: 1px solid #94a3b8;">No.<br>MUESTRA</td>
+                            <td colspan="3" style="border: 1px solid #94a3b8;">DEFECTOS</td>
+                            <td colspan="2" style="border: 1px solid #94a3b8;">CUMPLE</td>
+                            <td rowspan="2" width="200" style="border: 1px solid #94a3b8;">OBSERVACIONES</td>
+                        </tr>
+                        <tr style="background-color: #e2e8f0; color: #1e293b; text-align: center; font-size: 9px; font-weight: bold; height: 25px; vertical-align: middle;">
+                            <td width="55" style="border: 1px solid #94a3b8;">AÑO</td>
+                            <td width="85" style="border: 1px solid #94a3b8;">MES</td>
+                            <td width="60" style="border: 1px solid #94a3b8;">CRITICOS</td>
+                            <td width="60" style="border: 1px solid #94a3b8;">MAYORES</td>
+                            <td width="60" style="border: 1px solid #94a3b8;">MENORES</td>
+                            <td width="60" style="border: 1px solid #94a3b8;">ACEPTA</td>
+                            <td width="60" style="border: 1px solid #94a3b8;">RECHAZA</td>
+                        </tr>`;
+
+                    items.forEach((m, idx) => {
+                        let ano = "", mes = "";
+                        if (m.vencimiento) {
+                            const partes = m.vencimiento.split('-'); // YYYY-MM-DD
+                            if (partes.length >= 2) {
+                                ano = partes[0];
+                                const mesNum = parseInt(partes[1]) - 1;
+                                mes = monthNames[mesNum] || "";
+                            }
+                        }
+
+                        tablaHtml += `
+                            <tr style="font-size: 10px; height: 25px;">
+                                <td align="center">${idx + 1}</td>
+                                <td>${m.nombre.toUpperCase()}</td>
+                                <td align="center">${m.cantidad}</td>
+                                <td>${m.concentracion || ""}</td>
+                                <td>${m.forma || ""}</td>
+                                <td>${m.presentacion || ""}</td>
+                                <td>${m.laboratorio || ""}</td>
+                                <td>${m.invima || ""}</td>
+                                <td>${m.estado_invima || ""}</td>
+                                <td>${m.lote || ""}</td>
+                                <td align="center">${ano}</td>
+                                <td align="center">${mes}</td>
+                                <td>${m.cond_almacen || ""}</td>
+                                <td align="center">${m.n_muestra || ""}</td>
+                                <td align="center">${m.def_criticos || "N/A"}</td>
+                                <td align="center">${m.def_mayores || "N/A"}</td>
+                                <td align="center">${m.def_menores || "N/A"}</td>
+                                <td align="center" style="font-weight:bold;">${m.cumple_acepta === 'SI' ? 'X' : ''}</td>
+                                <td align="center" style="font-weight:bold;">${m.cumple_rechaza === 'SI' ? 'X' : ''}</td>
+                                <td><small>${m.observaciones || ""}</small></td>
+                            </tr>`;
+                    });
+
+                    // Pie de Sección: Responsable de la Recepción
+                    tablaHtml += `
+                        <tr style="height:15px; border:none;"><td colspan="20" style="border:none;"></td></tr>
+                        <tr style="height:25px;">
+                            <td colspan="4" style="background-color: #f1f5f9; font-weight: bold; border: 1px solid #cbd5e1; padding-left: 10px; font-size: 11px;">
+                                RESPONSABLE DE LA RECEPCIÓN
+                            </td>
+                            <td colspan="16" style="border:none;"></td>
+                        </tr>
+                        <tr style="height:25px;">
+                            <td colspan="4" style="border: 1px solid #cbd5e1; padding-left: 10px; font-size: 11px; font-weight: 600; color: #334155;">
+                                ${adminNom.toUpperCase()}${adminDocStr}
+                            </td>
+                            <td colspan="16" style="border:none;"></td>
+                        </tr>
+                        <tr><td colspan="20" style="height:15px; border:none;"></td></tr>`;
                 });
+
                 tablaHtml += `</table>`;
-                
-                API.descargarExcelMHT(tablaHtml, `Recepcion_Tecnica_${API.getFechaLocal()}`, logoBase64);
-            } catch(e) { console.error(e); showToast("Error al exportar", "error");}
+                API.descargarExcelMHT(tablaHtml, `Recepcion_Tecnica_Agrupada_${API.getFechaLocal()}`, logoBase64);
+            } catch(e) { console.error(e); showToast("Error al generar recepción técnica agrupada", "error");}
         }
 
         async function generarExcelEgresos() {
@@ -1172,8 +1721,18 @@
             } catch(e) { console.error(e); showToast("Error al exportar egresos", "error");}
         }
 
+        function calcularIvaIngreso() {
+            const cant = parseInt(document.getElementById('m-total-suma').value) || 0;
+            const precioTotalUnit = parseFloat(document.getElementById('m-precio-compra').value) || 0;
+            const perc = parseInt(document.getElementById('m-iva-porcentaje').value) || 0;
+            
+            const totalFila = precioTotalUnit * cant;
+            const ivaVal = Math.round(totalFila - (totalFila / (1 + (perc / 100)))); // Cálculo Legal (IVA Incluido)
+            
+            document.getElementById('m-iva-valor').value = `$${ivaVal.toLocaleString()}`;
+        }
+
         window.onload = filtrarHistorial;
-    </script>
     </script>
 </body>
 </html>
